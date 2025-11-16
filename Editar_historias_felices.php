@@ -1,5 +1,11 @@
-<!-- formulario identico a fromulario historia felices, pero de una historia en especifico y pues se añade el boton de eliminar -->
+<!-- Formulario para crear una historia feliz uwu -->
 <?php 
+require_once('clases/Historias_f.php');
+$id = $_GET['id'];
+
+$historia_obj = new HistoriaFeliz();
+$historia = $historia_obj->obtenerHistoria($id);
+$mascotas = $historia_obj->obtenerMascotas();
 include('menu.php');
  ?>
 <!DOCTYPE html>
@@ -7,10 +13,9 @@ include('menu.php');
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title></title>
-
-	<style>
-		 h2{
+	<title>Formulario de historias felices</title>
+   <style>
+    h2{
     text-align: center;
     }
 
@@ -24,7 +29,7 @@ include('menu.php');
 }
 
 label {
-    text-align: center; 
+    text-align: center;  
 }
 
 input[type="text"] {
@@ -32,29 +37,51 @@ input[type="text"] {
     display: block;
     border-color: black;
 }
-	</style>
+
+
+   </style>
+
 </head>
 <body>
 <br>
-<h2>Editar una historia feliz</h2>
+<h2>Editar Historia feliz</h2>
 <br>
-<form>
-	<label>Nombre</label>
-	<input style="border-radius: 10px;" type="text" name="">
+  <form action="controladores/actualizar_historias_f.php" method="POST" enctype="multipart/form-data">
+	        <input type="hidden" name="id_historia" value="<?= $historia['id_historia_feliz'] ?>">
+
 
 	<label>Descripcion</label>
-	<textarea style="font-size: 30px; border-color: black; border-radius: 10px; resize: none;"></textarea>
+	<textarea style="font-size: 30px; border-color: black; border-radius: 10px; resize: none;" name ="descripcion"></textarea>
 
-	<label>Fotografia de la Mascota</label>
-	<input type="file" name="">
+        
+        Foto actual: <?= $historia['foto'] ?><br>
+        Nueva foto (opcional):<br>
+        <input type="file" name="foto"><br>
 
-	<a href="">
-		<button style="border-radius: 10px; border-color: whitesmoke; font-size: 25px; background: #85B79D; color:black;">Actualizar historia</button>
-	</a>
+<label for="">Mascota:</label>
+<select name="fk_mascota" required>
+    <option value="">Selecciona una mascota</option>
+    <?php
+    require_once('clases/Historias_f.php');
+    $historia_obj = new HistoriaFeliz();
+    $mascotas = $historia_obj->obtenerMascotas();
+    
+    foreach($mascotas as $mascota){
+    ?>
+                <option value="<?= $mascota['id_mascotas'] ?>" <?= $mascota['id_mascotas'] == $historia['fk_mascota'] ? 'selected' : '' ?>>
+            <?= $mascota['nombre'] ?>
+        </option>
+    <?php } ?>
+</select>
+
+
+<input type="submit" name="guardar" value="Guardar Historia">
+<br>
+
 </form>
 
 </body>
 </html>
-<?php 
+<?php
 include('Pie_pagina.php');
- ?>
+?>

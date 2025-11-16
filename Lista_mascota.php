@@ -42,8 +42,7 @@ $mascotas = $clase->mostrarPorRefugio($id_refugio);
                 </td>
                 <td><?= $mascota['nombre'] ?></td>
                 <td>
-                    <a href="editar_mascota.php?id=<?= $mascota['id_mascotas'] ?>&id_refugio=<?= $id_refugio ?>">Editar</a> |
-                    <a href="controladores/eliminar_mascota.php?id=<?= $mascota['id_mascotas'] ?>&id_refugio=<?= $id_refugio ?>">Eliminar</a>
+                    <a href="Detalle_mascota.php?id=<?= $mascota['id_mascotas'] ?>&id_refugio=<?= $id_refugio ?>">Ver Detalles</a>
                 </td>
             </tr>
         <?php 
