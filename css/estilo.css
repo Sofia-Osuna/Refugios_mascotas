@@ -163,3 +163,30 @@ input[type="text"] {
     font-size: 16px;
     box-sizing: border-box;
 }
+
+.tabla-refugio {
+    width: 80%;
+    margin: 30px auto;
+    border-collapse: collapse;
+    font-size: 16px;
+    background-color: #fff;
+}
+
+.tabla-refugio th,
+.tabla-refugio td {
+    border: 2px solid #85B79D;
+    padding: 10px;
+    text-align: center;
+}
+
+.tabla-refugio th {
+    font-weight: bold;
+}
+
+.tabla-refugio tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.tabla-refugio tr:hover {
+    background-color: #ececec;
+}
