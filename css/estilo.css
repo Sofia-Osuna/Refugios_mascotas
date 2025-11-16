@@ -87,3 +87,106 @@ input {
 .boton:hover {
     background-color: #FCCA46;
 }
+
+
+
+h1 {
+    margin-left: 40px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    text-align: left;
+}
+
+.cards-container {
+    display: flex;
+    gap: 20px;
+    margin-left: 80px;
+    margin-top: 10px;
+}
+
+.card {
+    width: 250px;
+    padding: 15px;
+    border-radius: 15px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.15);
+    text-align: left;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 15px;
+    background-color: #85B79D;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.sub-navbar {
+    background-color: #FCCA46;
+    width: 100%;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.sub-navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+    gap: 100px;
+    justify-content: center;
+}
+
+.sub-navbar a {
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+}
+
+label {
+    display: block;
+    margin-left: 40px;
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+input[type="text"] {
+    width: 300px;
+    padding: 8px 12px;
+    margin-left: 40px;
+    border: 2px solid black;
+    border-radius: 10px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.tabla-refugio {
+    width: 80%;
+    margin: 30px auto;
+    border-collapse: collapse;
+    font-size: 16px;
+    background-color: #fff;
+}
+
+.tabla-refugio th,
+.tabla-refugio td {
+    border: 2px solid #85B79D;
+    padding: 10px;
+    text-align: center;
+}
+
+.tabla-refugio th {
+    font-weight: bold;
+}
+
+.tabla-refugio tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.tabla-refugio tr:hover {
+    background-color: #ececec;
+}
