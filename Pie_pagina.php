@@ -18,12 +18,13 @@
 
     <!-- ya se que le dije que todo lo del texto va en el estilo. una vez que terminen  -->
     <style>
+
         .textocolor{
             color: #283D3B;
         }
         .Piecustom{
             background-color: #85B79D; 
-        }
+        }   
 
     </style>
 <footer class=" Piecustom py-4 mt-5">
