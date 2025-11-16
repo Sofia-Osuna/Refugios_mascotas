@@ -14,25 +14,36 @@ include('menu.php');
     text-align: center;
     }
 
-    form {
-    max-width: 600px;
-    margin: 0 auto;  
+
+.tarjeta-historias{
+     min-height: 60vh; 
     display: flex;
-    flex-direction: column;
-    align-items: center;  
-    gap: 20px;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+    background: gray;
+     max-width: 800px;
+     margin: 40px auto;
+     padding: 0 20px;
+     background: ghostwhite;
 }
 
-label {
-    text-align: center;  
+.boton-historia{
+    background: #419D78;
+            border-color: #419D78;
+            border-radius: 10px;
+             height: 50px;
+            width: 150px;
 }
 
-input[type="text"] {
-    width: 400px;  
-    display: block;
-    border-color: black;
-}
+textarea{
+   resize: none;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 
+}
 
    </style>
 
@@ -41,21 +52,31 @@ input[type="text"] {
 <br>
 <h2>Agregar una historia feliz</h2>
 <br>
-<form>
-	<label>Nombre</label>
-	<input style="border-radius: 10px;" type="text" name="">
 
+<div class="tarjeta-historias">
+<form>
+    <br>
+	<label>Nombre</label>
+	<input type="text" name="">
+    <br>
 	<label>Descripcion</label>
-	<textarea style="font-size: 30px; border-color: black; border-radius: 10px; resize: none;"></textarea>
+    <br>
+	<textarea></textarea>
+    <br> <br>
 
 	<label>Fotografia de la Mascota</label>
+    <br>
 	<input type="file" name="">
-
+    <br> <br>
 	<a href="">
-		<button style="border-radius: 10px; border-color: whitesmoke; font-size: 25px; background: #85B79D; color:black;">Guardar historia</button>
+		<button class="boton-historia">Guardar historia</button>
+        <br> <br>
 	</a>
+ <br>
+</div>
+<br>
 </form>
-
+<br>
 </body>
 </html>
 <?php 
