@@ -55,40 +55,41 @@ textarea{
 
 
 <div class="tarjeta-historias">
- <form action="controladores/Insertar_historias_f.php" method="POST" enctype="multipart/form-data">
+    <form action="controladores/Insertar_historias_f.php" method="POST" enctype="multipart/form-data">
 
 
-	<label>Descripcion</label>
-	<textarea style="font-size: 30px; border-color: black; border-radius: 10px; resize: none;" name ="descripcion"></textarea>
+	    <label>Descripcion</label>
+	    <textarea style="font-size: 30px; border-color: black; border-radius: 10px; resize: none;" name ="descripcion"></textarea>
 
-	<label>Fotografia de la Mascota</label>
-	<input type="file" name="Foto">
+	    <label>Fotografia de la Mascota</label>
+	    <input type="file" name="Foto">
 
-  <label for="">Mascota:</label><br>
-  <select name="fk_mascota" required>
-    <option value="">Selecciona una mascota</option>
-    <?php
-    require_once('clases/Historias_f.php');
-    $historia_obj = new HistoriaFeliz();
-    $mascotas = $historia_obj->obtenerMascotas();
+        <label for="">Mascota:</label><br>
+        <select name="fk_mascota" required>
+        <option value="">Selecciona una mascota</option>
+        <?php
+            require_once('clases/Historias_f.php');
+            $historia_obj = new HistoriaFeliz();
+            $mascotas = $historia_obj->obtenerMascotas();
     
-    foreach($mascotas as $mascota){
-    ?>
-        <option value="<?= $mascota['id_mascotas'] ?>">
+            foreach($mascotas as $mascota){
+        ?>
+            <option value="<?= $mascota['id_mascotas'] ?>">
             <?= $mascota['nombre'] ?>
-        </option>
-    <?php } ?>
-  </select>
+            </option>
+        <?php 
+            } 
+        ?>
+        </select>
 
-  <br><br>
+        <br><br>
 
-  <input type="submit" name="guardar" value="Guardar Historia">
-  <br>
+        <input class ="boton-historia" type="submit" name="guardar" value="Guardar Historia">
+        <br>
 
-  </form>
+    </form>
 </div>
 <br>
-
 <br>
 </body>
 </html>
