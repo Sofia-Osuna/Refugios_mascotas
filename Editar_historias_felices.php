@@ -53,6 +53,9 @@ input[type="text"] {
 	<label>Descripcion</label>
 	<textarea style="font-size: 30px; border-color: black; border-radius: 10px; resize: none;" name ="descripcion"></textarea>
 
+	<?php if($historia['foto'] != 'sin_foto.jpg'){ ?>
+    <img src="imagenes_animales/<?= $historia['foto'] ?>" width="200" style="margin: 10px 0;"><br>
+<?php } ?>
         
         Foto actual: <?= $historia['foto'] ?><br>
         Nueva foto (opcional):<br>

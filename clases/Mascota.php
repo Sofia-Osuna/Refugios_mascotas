@@ -56,9 +56,9 @@ function eliminar($id_mascota){
     return $this->conexion->query($consulta);
 }
 
-function actualizar($id_mascota, $nombre, $descripcion, $fk_especie){
+function actualizar($id_mascota, $nombre, $descripcion, $foto, $fk_especie){
     $consulta = "UPDATE mascotas SET nombre = '$nombre', descripcion = '$descripcion', 
-                 fk_especie = '$fk_especie' WHERE id_mascotas = $id_mascota";
+                 foto = '$foto', fk_especie = '$fk_especie' WHERE id_mascotas = $id_mascota";
     return $this->conexion->query($consulta);
 }
 }
