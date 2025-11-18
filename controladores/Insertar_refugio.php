@@ -6,16 +6,15 @@
     $descripcion = $_POST["descripcion"];
     //$foto = $_POST["foto"];
     //lo de foto esta pendiente
-    $estado= $_POST["estado"];
-    $municipio = $_POST["municipio"];
+    $colonia = $_POST['cbx_colonia'];//checar esto temprano por que no se si funciones
     $nombre_calle = $_POST["nombre_calle"];
     $numero_exterior = $_POST["numero_exterior"];
     $numero_interior = $_POST["numero_interior"];
-    $cp = $_POST["cp"];
+
 
     include ('../clases/Refugio.php');
     $clase = new Refugio();
-    $resultado = $clase ->guardar($nombre,  $descripcion, $estado, $municipio, $nombre_calle,  $numero_exterior, $numero_interior, $cp );
+    $resultado = $clase ->guardar($nombre,  $descripcion, $colonia, $nombre_calle,  $numero_exterior, $numero_interior );
 
     if($resultado){
         header('location: ../Lista_refugio.php');

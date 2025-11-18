@@ -1,6 +1,7 @@
 <?php 
 include('menu.php');
 ?>
+<!-- Eliminar este archivo -->
 <!DOCTYPE html>
 <html>
 <head>
