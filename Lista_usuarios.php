@@ -1,6 +1,7 @@
 <?php 
 include('menu.php');
 ?>
+<!-- eliminar ese archivo -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
