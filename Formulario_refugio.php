@@ -1,3 +1,6 @@
+<?php 
+include('menu.php');
+ ?>
 <?php
     error_reporting(E_ALL); //esto es para que me muestre los errores
     ini_set('display_errors', 1);
@@ -56,7 +59,10 @@
     <!-- fin del script para los selects anidados -->
 </head>
 <body>
-    <form action="controladores/Insertar_refugio.php" method="POST" enctype="multipart/form-data">
+    <div class="card-ref">
+    
+        <br>
+        <h3>Hola</h3>
         <label for="">Nombre del refugio: </label>
         <input class="inp" type="text" name="nombre" id=""><br><br>
 
@@ -107,4 +113,8 @@
 
         <input  class="boton" type="submit" name="guardar" id="">
     </form>
+    </div>
+    <?php 
+    include('Pie_pagina.php');
+     ?>
 

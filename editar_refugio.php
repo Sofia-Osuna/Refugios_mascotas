@@ -14,9 +14,40 @@ $municipios = $clase->conexion->query("SELECT id_municipio, nombre FROM municipi
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Refugio</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .form-contenedor {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background: ghostwhite;
+        }
+
+         label {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        input, select, textarea {
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fafafa;
+            font-family: Arial, sans-serif;
+
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: none;
+        }
+    </style>
     
 <body>
-    
+    <div class="form-contenedor">
     <form action="controladores/actualizar_refugio.php" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="id_refugio" value="<?= $refugio['id_refugio'] ?>">
         
@@ -60,9 +91,10 @@ $municipios = $clase->conexion->query("SELECT id_municipio, nombre FROM municipi
         <label for="">Codigo Postal: </label>
         <input class="inp" type="text" name="cp" value="<?= $refugio['cp'] ?>"><br><br>
 
-        <input class="boton" type="submit" name="guardar" value="Actualizar">
+        
 
     </form>
+    </div>
 </body>
 </html>
 <?php 

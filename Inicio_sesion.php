@@ -39,7 +39,7 @@
 
 </head>
 <body>
-<h1>¡Bienvenido!</h1>
+<h1>Bienvenido</h1>
 <br>
 
 <label>Nombre de usuario</label>

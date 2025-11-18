@@ -24,7 +24,7 @@ if (!$resultado ){
 <head>
     <meta charset="UTF-8">
     <title>Editar especie</title>
-
+   <link rel="stylesheet" href="css/bootstrap.css">
     <style>
          h1{
             text-align: center;
@@ -45,13 +45,7 @@ if (!$resultado ){
     }
     
     input[type="text"] {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        margin-bottom: 15px;
-        box-sizing: border-box;
-        border-color: black;
+     
     }
 
     .formulario_contenedor{
@@ -62,25 +56,25 @@ if (!$resultado ){
     }
 
     .actualizar-boton{
-          background-color: #85B79D;
-            color: #333;
-            padding: 12px ;
-            border: none;
+          background: #419D78;
+            border-color: #419D78;
             border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+             height: 50px;
+            width: 200px;
+            font-weight: bold;
     }
 
     .cancelar-boton{
-         background-color: #FF802E;
-            color: #333;
-            padding: 12px ;
-            border: none;
+          background: #FF802E;
             border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+            border-color: #FF802E;
+            height: 50px;
+            width: 150px;
+            font-weight: bold;
+
+    }
+
+    body{
 
     }
 
@@ -91,12 +85,13 @@ if (!$resultado ){
     </style>
 </head>
 <body>
-<br> <br>
-    <h1>Editar especies</h1>
+<br> 
+    
     <div class="formulario_contenedor">
     <form method="POST" action="controladores/actualizar_especie.php">
         <input type="hidden" name="id_especie" value="<?= $resultado['id_especie'] ?>">
-        <br>
+        <h3 style="font-weight: 700;">Editar especie</h3>
+        <br> <br>
         <label>Nombre de la especie:</label>
         <br>
         <input type="text" name="nombre" value="<?= $resultado['nombre'] ?>" required>
