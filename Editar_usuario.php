@@ -21,6 +21,7 @@ $usuario = $clase->obtenerPorId($id_usuario);
     <style>
         h2{
             text-align: center;
+
         }
 
         .tarjeta-editar{
@@ -42,6 +43,7 @@ $usuario = $clase->obtenerPorId($id_usuario);
             border-radius: 10px;
              height: 50px;
             width: 150px;
+            font-weight: bold;
         }
 
         .boton-eliminar{
@@ -50,30 +52,36 @@ $usuario = $clase->obtenerPorId($id_usuario);
             border-color: #FF802E;
             height: 50px;
             width: 150px;
+            font-weight: bold;
         }
+
+      
+
+      
 
 
     </style>
 </head>
 <body>
   <br>
-    <h2>Editar datos del usuario</h2>
-    <br>
+   
     <div class="tarjeta-editar">
     <form action="controladores/actualizar_usuario.php" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="id_usuario" value="<?= $usuario['id_usuario'] ?>">
         <br>
-        <label for="">Nombre de usuario: </label>
-        <input class="inp" type="text" name="nombre" value="<?= htmlspecialchars($usuario['nombre']) ?>" required><br><br>
+         <h2 style="font-weight: 700; text-align: center;">Editar datos del usuario</h2>
+        <br> <br>
+        <label style="text-align: center;" for="">Nombre de usuario: </label>
+        <input> class="inp" type="text" name="nombre" value="<?= htmlspecialchars($usuario['nombre']) ?>" required><br><br>
 
         <label for="">Contraseña: </label>
-        <input class="inp" type="password" name="password" value="<?= htmlspecialchars($usuario['password']) ?>" required><br><br>
+        <input> class="inp" type="password" name="password" value="<?= htmlspecialchars($usuario['password']) ?>" required><br><br>
         <!--Que no se me olvide ver como hacer para ocultar y mostrar la contraseña, se hace con javascript, un boton y asi xdxd-->
         <label for="">Foto de perfil</label>
         <input type="file" name="foto"><br><br>
         
         <label for="">Correo </label>
-        <input class="inp" type="text" name="correo" value="<?= htmlspecialchars($usuario['correo']) ?>" required><br><br>
+        <input class="" type="text" name="correo" value="<?= htmlspecialchars($usuario['correo']) ?>" required><br><br>
 
         <a href="">
             <button class="boton-guardar">Guardar cambios</button>
