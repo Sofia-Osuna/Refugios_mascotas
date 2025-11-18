@@ -15,32 +15,24 @@
     return $this->conexion;
 }
 
-        function guardar($nombre,  $descripcion, $estado, $municipio, $nombre_calle,  $numero_exterior, $numero_interior, $cp){
-            $consulta = "INSERT INTO estado (id_estado, nombre, fk_pais, estatus) VALUES (null, '{$estado}', 1, 1);";
-            $respuesta = $this -> conexion -> query($consulta);        
-            $id1 = mysqli_insert_id($this->conexion);
-            
-            $consulta = "INSERT INTO municipio (id_municipio, nombre, fk_estado, estatus) VALUES (null, '{$municipio}', '{$id1}', 1);";
-            $respuesta = $this -> conexion -> query($consulta);        
-            $id2 = mysqli_insert_id($this->conexion);
-
-            $consulta = "INSERT INTO direccion (id_direccion, nombre_calle, numero_exterior, numero_interior, cp, fk_municipio) VALUES (null, '{$nombre_calle}', '{$numero_exterior}', '{$numero_interior}', '{$cp}', '{$id2}');";
+        function guardar($nombre,  $descripcion, $colonia, $nombre_calle,  $numero_exterior, $numero_interior){
+            $consulta = "INSERT INTO direccion (id_direccion, nombre_calle, numero_exterior, numero_interior, fk_colonia) VALUES (null, '{$nombre_calle}', '{$numero_exterior}', '{$numero_interior}', '{$colonia}' );";
             $respuesta = $this -> conexion -> query($consulta);
-            $id3 = mysqli_insert_id($this->conexion);
+            $id = mysqli_insert_id($this->conexion);
 
             $consulta = "INSERT INTO refugio (id_refugio, nombre, descripcion, foto, estatus) VALUES (null, '{$nombre}', '{$descripcion}', 'pendiente', 1);";
             $respuesta = $this -> conexion -> query($consulta);
-            $id4 = mysqli_insert_id($this->conexion);
+            $id2 = mysqli_insert_id($this->conexion);
 
-            $consulta = "INSERT INTO refugio_direcciones (id_refugio_direcciones, fk_refugio, fk_direccion, estatus) VALUES (null, '{$id4}','{$id3}', 1);";
+            $consulta = "INSERT INTO refugio_direcciones (id_refugio_direcciones, fk_refugio, fk_direccion, estatus) VALUES (null, '{$id2}','{$id}', 1);";
             $respuesta = $this -> conexion -> query($consulta);
-            
-          
             return $respuesta;
         }
 
         // esto es para poder tener los refugios y mostrarlos en la tabla si te lo juro
   function mostrar(){
+    /*
+    consulta antigua, eliminar luego de confirmar que todo funciona
     $consulta = "SELECT r.id_refugio, r.nombre, r.descripcion, r.estatus,
                  e.nombre as estado, m.nombre as municipio
                  FROM refugio r, refugio_direcciones rd, direccion d, municipio m, estado e
@@ -51,18 +43,27 @@
                  AND r.estatus = 1
                  AND rd.estatus = 1
                  ORDER BY r.nombre";
+                 */
+       
+        $consulta = "SELECT r.id_refugio, r.nombre, r.descripcion, r.estatus, c.nombre as colonia, m.nombre as municipio, e.nombre as estado
+        FROM refugio r INNER JOIN refugio_direcciones rd ON r.id_refugio = rd.fk_refugio 
+        INNER JOIN direccion d ON rd.fk_direccion=d.id_direccion 
+        INNER JOIN colonia c ON d.fk_colonia=c.id_colonia 
+        INNER JOIN  municipio m ON c.fk_municipio=m.id_municipio
+        INNER JOIN estado e ON m.fk_estado=e.id_estado
+        ORDER BY r.nombre ASC";
+        $respuesta = $this->conexion->query($consulta);
     
-    $respuesta = $this->conexion->query($consulta);
-    
-    $refugios = [];
-    while($row = $respuesta->fetch_assoc()){
-        $refugios[] = $row;
-    }
-    return $refugios;
+        $refugios = [];
+        while($row = $respuesta->fetch_assoc()){
+            $refugios[] = $row;
+        }
+        return $refugios;
 }
 
 //esto es pa obtener el id del refugio xd
 function Id($id_refugio){
+    //EDITAR ESTO actualizar al estandar de insertar -sofía
      $consulta = "SELECT r.*, rd.id_refugio_direcciones, rd.fk_direccion,
                  d.nombre_calle, d.numero_exterior, d.numero_interior, d.cp, d.fk_municipio,
                  m.nombre as municipio, m.fk_estado,
