@@ -44,9 +44,11 @@ class Mascota{
     }
     return $especies;
 }
-
 function obtenerMascota($id_mascota){
-    $consulta = "SELECT * FROM mascotas WHERE id_mascotas = $id_mascota";
+    $consulta = "SELECT m.*, e.nombre as nombre_especie 
+                 FROM mascotas m, especie e 
+                 WHERE m.fk_especie = e.id_especie 
+                 AND m.id_mascotas = $id_mascota";
     $respuesta = $this->conexion->query($consulta);
     return $respuesta->fetch_assoc();
 }

@@ -26,7 +26,7 @@ $mascota = $mascota_obj->obtenerMascota($id);
         
         <h2><?= $mascota['nombre'] ?></h2>
         
-        <p><strong>Especie:</strong> <?= $mascota['fk_especie'] ?></p>
+<p><strong>Especie:</strong> <?= $mascota['nombre_especie'] ?></p>
         
         <h3>Descripción:</h3>
         <p><?= $mascota['descripcion'] ?></p>

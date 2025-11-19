@@ -39,22 +39,24 @@
 
 </head>
 <body>
+	<form action="controladores/iniciar_sesion.php">
 <h1>Bienvenido</h1>
 <br>
 
 <label>Nombre de usuario</label>
 <br>
 
-<input type="text" name="usuario">
+<input type="text" name="user">
 <br>
 
 <label>Contraseña</label>
 <br>
 
-<input type="password" name="contraseña">
+<input type="password" name="contra">
 <br>
 
 <input type="submit" value="Iniciar sesion" name="Iniciar sesion">
+</form>
 <br><br>
 
 <h5>¿No tienes cuenta?</h5>

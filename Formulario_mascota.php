@@ -91,7 +91,8 @@ $especies = $mascota_obj->obtenerEspecies();
     </div>
 
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
 
 <?php 
 include('Pie_pagina.php');
