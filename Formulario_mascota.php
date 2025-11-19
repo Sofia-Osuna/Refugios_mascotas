@@ -13,103 +13,88 @@ $especies = $mascota_obj->obtenerEspecies();
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agregar Mascota</title>
-
-  
-
-    <style>
-        h1{
-            text-align: center;
-        }
-
-        .tarjeta-mascotas{
-
-    min-height: 60vh; 
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 40px 20px;
-    background: gray;
-     max-width: 800px;
-     margin: 40px auto;
-     padding: 0 20px;
-     background: ghostwhite;
-        }
-
-        .btn-guardar-mascota{
-           background: #419D78;
-            border-color: #419D78;
-            border-radius: 10px;
-             height: 50px;
-            width: 200px;
-            font-weight: bold;
-        }
-
-        .btn-cancelar-mascota{
-          background: #FF802E;
-            border-radius: 10px;
-            border-color: #FF802E;
-            height: 50px;
-            width: 150px;
-            font-weight: bold;
-        }
-
-        select{
-            border-radius: 6px;
-        }
-
-        textarea{
-            width: 250px;
-            height: 140px;
-            border-radius: 7px;
-
-        }
-
-        
-    </style>
+    
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    
+    <!-- Tu CSS personalizado (después de Bootstrap) -->
+    <link rel="stylesheet" href="css/estilo.css">
+    
+    <!-- jQuery -->
+    <script src="js/jquery-3.7.1.js"></script>
 </head>
 <body>
-    <div class="tarjeta-mascotas">
-    <form action="controladores/insertar_mascota.php" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="fk_refugio" value="<?= $id_refugio ?>">
-        <br> <br> 
-        <h3 style="font-weight: bold;">Agregar Mascota al Refugio</h3>
-        <br> <br>
-        <label for="">Nombre de la mascota: </label>
-        <input type="text" name="nombre" required><br><br>
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-header" style="background-color: #85B79D;">
+                        <h3 class="mb-0 text-white">Agregar Mascota al Refugio</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <form action="controladores/insertar_mascota.php" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="fk_refugio" value="<?= $id_refugio ?>">
+                            
+                            <!-- Información básica de la mascota -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="nombre" class="form-label fw-bold">Nombre de la mascota:</label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                </div>
 
-        <label for="">Descripción: </label>
-          <textarea style="border-radius: 7px;" name="descripcion" required></textarea>
-          <br><br>
-      <label for="">Foto: </label>
-        <input type="file" name="foto"><br><br>
-        <label for="">Especie: </label>
-        <select name="fk_especie" required>
-            <option value="">Selecciona una especie</option>
-            <?php foreach($especies as $especie){ ?>
-                <option value="<?= $especie['id_especie'] ?>">
-                    <?= $especie['nombre'] ?>
-                </option>
-            <?php } ?>
-        </select>
+                                <div class="col-md-6 mb-3">
+                                    <label for="fk_especie" class="form-label fw-bold">Especie:</label>
+                                    <select name="fk_especie" id="fk_especie" class="form-select" required>
+                                        <option value="">Selecciona una especie</option>
+                                        <?php foreach($especies as $especie){ ?>
+                                            <option value="<?= $especie['id_especie'] ?>">
+                                                <?= $especie['nombre'] ?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
 
-        <br><br><br>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="foto" class="form-label fw-bold">Foto:</label>
+                                    <input type="file" class="form-control" id="foto" name="foto" accept="image/*">
+                                </div>
+                            </div>
 
-        <input class="btn-guardar-mascota" type="submit" name="guardar" value="Guardar Mascota">
-        <br>
-        <a href="detalles_refugio.php?id=<?= $id_refugio ?>">
-            <button class="btn-cancelar-mascota">Cancelar</button>
+                            <div class="row">
+                                <div class="col-12 mb-4">
+                                    <label for="descripcion" class="form-label fw-bold">Descripción:</label>
+                                    <textarea class="form-control" id="descripcion" name="descripcion" rows="4" required></textarea>
+                                </div>
+                            </div>
 
-            <br> <br>
-        </a>
-    </form>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                <a href="detalles_refugio.php?id=<?= $id_refugio ?>" class="btn btn-lg me-md-2 text-white" style="background-color: #FF802E;">
+                                    Cancelar
+                                </a>
+                                <button type="submit" name="guardar" class="btn btn-lg text-white" style="background-color: #419D78;">
+                                    Guardar Mascota
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</body>
-</html>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <?php 
 include('Pie_pagina.php');
- ?>
+?>
+</body>
+</html>

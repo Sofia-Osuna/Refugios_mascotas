@@ -1,3 +1,4 @@
+/*ES UN COCHINERO AQUI SOLO USEN LAS CLASES ESTABLECIDAS DE BOOTSTRAP UNICAMENTE*/
 .navbar-custom {
     background-color: #85B79D; 
 }
@@ -20,45 +21,46 @@ body {
 .navbar-custom {
     background-color: #85B79D; 
     padding: 6px 15px;
-    height: 100px;  /* altura igual al original */
-    width: 100%;   /* ocupa todo el ancho */
+    height: 100px;
+    width: 100%;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .navbar-custom .navbar-brand {
-    font-weight: 500; /* menos marcado que bold */
+    font-weight: 500;
     font-size: 20px; 
-    color: black;  /* sigue siendo negro */
+    color: black;
     display: flex;
-    align-items: center; /* centra verticalmente con la imagen */
+    align-items: center;
 }
 
 .navbar-custom .navbar-brand img {
     margin-right: 10px;
-    height: 60px; /* mismo tamaño que tu diseño original */
+    height: 60px;
 }
 
 /* Formulario centrado */
 .form-container {
     display: flex;
-    justify-content: center; /* centra el formulario horizontalmente */
+    justify-content: center;
     margin-top: 40px;
 }
 
-form {
+/* CAMBIADO: Ahora solo afecta a forms dentro de .form-container */
+.form-container form {
     width: 250px;
-    text-align: center; /* centra labels e inputs */
+    text-align: center;
 }
 
-label {
+.form-container label {
     font-weight: bold;
     display: block;
-    margin-bottom: 8px; /* espacio entre label e input */
+    margin-bottom: 8px;
 }
 
-input {
+.form-container input {
     width: 100%;
-    margin-bottom: 15px; /* espacio entre inputs */
+    margin-bottom: 15px;
     padding: 6px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -83,8 +85,6 @@ input {
     background-color: #FCCA46;
 }
 
-
-
 h1 {
     margin-left: 40px;
     margin-top: 20px;
@@ -100,7 +100,8 @@ h1 {
     margin-top: 10px;
 }
 
-.card {
+/* CAMBIADO: Renombrado a .card-custom para no chocar con Bootstrap */
+.card-custom {
     width: 250px;
     padding: 15px;
     border-radius: 15px;
@@ -109,7 +110,8 @@ h1 {
     text-align: left;
 }
 
-button {
+/* CAMBIADO: Ahora solo afecta botones dentro de .card-custom */
+.card-custom button {
     margin-top: 10px;
     padding: 10px 15px;
     border: none;
@@ -142,14 +144,18 @@ button {
     font-size: 18px;
 }
 
-label {
+/* CAMBIADO: Más específico para no afectar labels de Bootstrap */
+.form-container label,
+.cards-container label {
     display: block;
     margin-left: 40px;
     margin-top: 10px;
     font-size: 18px;
 }
 
-input[type="text"] {
+/* CAMBIADO: Más específico para no afectar inputs de Bootstrap */
+.form-container input[type="text"],
+.cards-container input[type="text"] {
     width: 300px;
     padding: 8px 12px;
     margin-left: 40px;
