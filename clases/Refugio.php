@@ -64,6 +64,7 @@
 //esto es pa obtener el id del refugio xd
 function Id($id_refugio){
     //EDITAR ESTO actualizar al estandar de insertar -sofía
+    /*
      $consulta = "SELECT r.*, rd.id_refugio_direcciones, rd.fk_direccion,
                  d.nombre_calle, d.numero_exterior, d.numero_interior, d.cp, d.fk_municipio,
                  m.nombre as municipio, m.fk_estado,
@@ -75,7 +76,13 @@ function Id($id_refugio){
                  AND m.fk_estado = e.id_estado
                  AND r.id_refugio = $id_refugio
                  AND rd.estatus = 1";
-    
+    */
+    $consulta = "SELECT r.*, d.*, c.nombre, c.codigo_postal, c.tipo, m.nombre, e.nombre FROM refugio r 
+    INNER JOIN refugio_direcciones rd ON r.id_refugio = rd.fk_refugio
+    INNER JOIN direccion d ON rd.fk_direccion = d.id_direccion 
+    INNER JOIN colonia c ON d.fk_colonia = c.id_colonia
+    INNER JOIN municipio m ON c.fk_municipio = m.id_municipio
+    INNER JOIN estado e ON m.fk_estado = e.id_estado WHERE rd.estatus = 1 ";
     $respuesta = $this->conexion->query($consulta);
     return $respuesta->fetch_assoc();
 }

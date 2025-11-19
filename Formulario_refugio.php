@@ -1,120 +1,156 @@
 <?php 
 include('menu.php');
- ?>
+?>
 <?php
-    error_reporting(E_ALL); //esto es para que me muestre los errores
+    error_reporting(E_ALL);
     ini_set('display_errors', 1);
 
     require('clases/Conexion.php');
     $mysqli = new Conexion();
-    //en esta consulta se pide solo el id y el nombre del estado, el order by es para que aparezcan en orden alfabetico
     $consulta = "SELECT nombre, id_estado FROM estado ORDER BY nombre ASC";
     $resultado = $mysqli->query($consulta);
-
 ?>
 <!DOCTYPE html>
-
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario Refugio</title>
-    <!-- este es el jQuery -->
-    <script languaje="javascript" src="js/jquery-3.7.1.js" ></script>
-    <!-- aqui inicia el script para los selects dinamicos, o anidados, no le muevan por favor -sofía -->
-    <script language = "javascript" >
+    
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.css " rel="stylesheet">
+    
+    <!-- Tu CSS personalizado (después de Bootstrap) -->
+    <link rel="stylesheet" href="css/estilo.css">
+    
+    <!-- jQuery -->
+    <script src="js/jquery-3.7.1.js"></script>
+    
+    <!-- Script para selects dinámicos -->
+    <script language="javascript">
         $(document).ready(function(){
-            
-           
-
-            $("#cbx_estado").change(function (){
-                //esto de aqui es para que, si el usuario selecciona otro estado, ya habiendo seleccionado las 3 opciones, entoncese va borrar la opcion de
-                //colonia, a su valor inicial xd
+            $("#cbx_estado").change(function(){
                 $("#cbx_municipio").html('<option value="0">Cargando...</option>');
                 $("#cbx_colonia").html('<option value="0">Selecciona primero un municipio</option>');
             
-                $("#cbx_estado option:selected").each(function () {
+                $("#cbx_estado option:selected").each(function(){
                     id_estado = $(this).val();
-                    $.post("includes/getMunicipio.php", {id_estado: id_estado
-                    },function(data){
+                    $.post("includes/getMunicipio.php", {id_estado: id_estado}, function(data){
                         $("#cbx_municipio").html(data);
                     });
                 });
             });
-        });
 
-        $(document).ready(function(){
-            
-            $("#cbx_municipio").change(function (){
-                $("#cbx_municipio option:selected").each(function () {
+            $("#cbx_municipio").change(function(){
+                $("#cbx_municipio option:selected").each(function(){
                     id_municipio = $(this).val();
-                    $.post("includes/getColonia.php", {id_municipio: id_municipio
-                    },function(data){
+                    $.post("includes/getColonia.php", {id_municipio: id_municipio}, function(data){
                         $("#cbx_colonia").html(data);
                     });
                 });
             });
         });
     </script>
-    <!-- fin del script para los selects anidados -->
 </head>
 <body>
-    <div class="card-ref">
-    
-        <br>
-        <h3>Hola</h3>
-        <label for="">Nombre del refugio: </label>
-        <input class="inp" type="text" name="nombre" id=""><br><br>
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10">
+                <div class="card shadow-sm">
+                    <div class="card-header" style="background-color: #85B79D;">
+                        <h3 class="mb-0 text-white">Registro de Refugio</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <form action="procesar_refugio.php" method="POST" enctype="multipart/form-data">
+                            
+                            <!-- Información básica -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="nombre" class="form-label fw-bold">Nombre del refugio:</label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                </div>
 
-        <label for="">descripción del refugio: </label>
-        <textarea name="descripcion" id=""></textarea>
+                                <div class="col-md-6 mb-3">
+                                    <label for="foto" class="form-label fw-bold">Foto:</label>
+                                    <input type="file" class="form-control" id="foto" name="foto" accept="image/*">
+                                </div>
+                            </div>
 
-        <label for="">Foto: </label>
-        <input type="file" name="foto"><br><br>
+                            <div class="row">
+                                <div class="col-12 mb-4">
+                                    <label for="descripcion" class="form-label fw-bold">Descripción del refugio:</label>
+                                    <textarea class="form-control" id="descripcion" name="descripcion" rows="4" required></textarea>
+                                </div>
+                            </div>
 
+                            <hr class="my-4">
 
-        <h3>Dirección</h3>
-        <!--  inicio de selects para estado, municipio y colonia -->
-        <!-- select de estado -->
-        <div>
-            <label for="">Selecciona tu estado</label>
-            <select name="cbx_estado" id="cbx_estado">
-                <option value="0">Seleccionar estado: </option>
-                <?php
-                    while($fila = $resultado -> fetch_assoc()){
-                        ?>  
-                        <option value="<?php echo $fila['id_estado']?>"><?php echo $fila['nombre']?></option>
-                        <?php
-                    }
-                    ?>
-            </select>
+                            <!-- Dirección -->
+                            <h5 class="mb-3 fw-bold">Dirección</h5>
+                            
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="cbx_estado" class="form-label fw-bold">Selecciona tu estado:</label>
+                                    <select name="cbx_estado" id="cbx_estado" class="form-select" required>
+                                        <option value="0">Seleccionar estado</option>
+                                        <?php
+                                            while($fila = $resultado->fetch_assoc()){
+                                                echo '<option value="'.$fila['id_estado'].'">'.$fila['nombre'].'</option>';
+                                            }
+                                        ?>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label for="cbx_municipio" class="form-label fw-bold">Selecciona tu municipio:</label>
+                                    <select name="cbx_municipio" id="cbx_municipio" class="form-select" required>
+                                        <option value="0">Selecciona primero un estado</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label for="cbx_colonia" class="form-label fw-bold">Selecciona tu localidad o colonia:</label>
+                                    <select name="cbx_colonia" id="cbx_colonia" class="form-select" required>
+                                        <option value="0">Selecciona primero un municipio</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="nombre_calle" class="form-label fw-bold">Nombre de la calle:</label>
+                                    <input type="text" class="form-control" id="nombre_calle" name="nombre_calle" required>
+                                </div>
+
+                                <div class="col-md-3 mb-3">
+                                    <label for="numero_exterior" class="form-label fw-bold">Número Exterior:</label>
+                                    <input type="text" class="form-control" id="numero_exterior" name="numero_exterior" required>
+                                </div>
+                                
+                                <div class="col-md-3 mb-3">
+                                    <label for="numero_interior" class="form-label fw-bold">Número Interior:</label>
+                                    <input type="text" class="form-control" id="numero_interior" name="numero_interior" placeholder="Opcional">
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2 mt-4">
+                                <button type="submit" name="guardar" class="btn btn-lg text-white" style="background-color: #FCCA46;">
+                                    Enviar
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- select para municipio -->
-        <div>
-            <label for="">Selecciona tu municipio: </label>
-            <select name="cbx_municipio" id="cbx_municipio"></select>
-        </div>
-
-        <!-- select para colonia -->
-        <div>
-            <label for="">Selecciona tu localidad o colonia: </label>
-            <select name="cbx_colonia" id="cbx_colonia"></select>
-        </div>
-        <!-- Ttermina los select para estado, municipio, colonia -->
-
-        <label for="">Nombre de la calle: </label>
-        <input class="inp" type="text" name="nombre_calle" id=""><br><br>
-
-        <label for="">Número Interior: </label>
-        <input class="inp" type="text" name="numero_interior" id=""><br><br>
-
-        <label for="">Número Exterior: </label>
-        <input class="inp" type="text" name="numero_exterior" id=""><br><br>
-
-        <input  class="boton" type="submit" name="guardar" id="">
-    </form>
     </div>
-    <?php 
-    include('Pie_pagina.php');
-     ?>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<?php 
+include('Pie_pagina.php');
+?>
+</body>
+</html>
