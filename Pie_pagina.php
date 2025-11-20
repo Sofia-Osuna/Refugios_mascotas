@@ -60,7 +60,8 @@
           Lorena <br> 
           Pedro<br>
           <strong>Correo del proyecto</strong><br>
-          refupetsproyecto4tocuatri@gmail.com
+          <strong class="texto-lora">refupetsproyecto4tocuatri@gmail.com</strong>
+          
         </p>
         <p class="small">UNIVERSIDAD TECNOLOGICA DE ESCUINAPA<br>Aplicaciones web</p>
       </div>

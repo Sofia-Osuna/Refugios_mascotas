@@ -2,9 +2,6 @@
 .navbar-custom {
     background-color: #85B79D; 
 }
-.navbar-custom2 {
-    background-color: #FCCA46; 
-}
 h1{
     text-align: center;
  }
@@ -190,4 +187,137 @@ h1 {
 
 .tabla-refugio tr:hover {
     background-color: #ececec;
+}
+/*ESTO ES PARA NAVBAR DE REFUGIO*/
+
+#navbarRefugio,
+#navbarRefugio .container-fluid,
+#navbarRefugio .navbar-collapse,
+#navbarRefugio .navbar-nav {
+    background-color: #FCCA46 !important;
+}
+
+#navbarRefugio .nav-link {
+    color: #000 !important;
+}
+
+#navbarRefugio .nav-link:hover {
+    color: #85B79D !important;
+}
+
+/*
+Esto de aqui es para el tipo de letra, estamos usando Montserrat, Open sans Y Lora
+*/
+/* Open Sans */
+@font-face {
+    font-family: 'Open Sans';
+    src: url('../fonts/OpenSans-Regular.ttf') format('truetype');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('../fonts/OpenSans-Bold.ttf') format('truetype');
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('../fonts/OpenSans-Light.ttf') format('truetype');
+    font-weight: 300;
+}
+
+/* Montserrat */
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/Montserrat-Regular.ttf') format('truetype');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/Montserrat-SemiBold.ttf') format('truetype');
+    font-weight: 700;
+}
+
+/* Lora */
+@font-face {
+    font-family: 'Lora';
+    src: url('../fonts/Lora-Bold.ttf') format('truetype');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Lora';
+    src: url('../fonts/Lora-Regular.ttf') format('truetype');
+    font-weight: 700;
+}
+
+/* Aplicar fuentes */
+body {
+    font-family: 'Open Sans', Arial, sans-serif !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', Arial, sans-serif !important;
+}
+
+.navbar, .nav-link, .navbar-brand {
+    font-family: 'Montserrat', Arial, sans-serif !important;
+    font-weight: 700 !important;
+
+}
+
+/*Como el texto lora se aplica para advertencias o cosas especificas, aqui esta una clase especifica*/
+.texto-lora{
+    font-family: 'Lora', Georgia, serif !important;
+    font-weight: 700 !important;
+}
+
+/*Estas son las clases usadas en el index, pero a lo mejor las pueden reutilizar*/
+/* Efecto hover para las cards */
+.hover-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2) !important;
+}
+
+/* Cards - asegurar que todas tengan la misma altura */
+.card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.card-title {
+    font-family: 'Montserrat', sans-serif;
+    color: #2c3e50;
+}
+
+.card-text {
+    font-family: 'Open Sans', sans-serif;
+    color: #555;
+}
+
+/* Botones con efecto hover */
+.btn {
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.carousel-image {
+    height: 500px;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
 }

@@ -54,7 +54,7 @@ function obtenerMascota($id_mascota){
 }
 
 function eliminar($id_mascota){
-    $consulta = "UPDATE mascotas SET estatus = 0 WHERE id_mascotas = $id_mascota";
+    $consulta = "UPDATE mascotas SET estatus = 'indisponible' WHERE id_mascotas = $id_mascota";
     return $this->conexion->query($consulta);
 }
 
