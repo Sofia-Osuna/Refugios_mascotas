@@ -12,7 +12,7 @@
 <body>
 		
 
-<!--este tambien esta bien ya -->
+<!--este tambien esta bien ya  -->
 </body>
 </html>
 <?php 

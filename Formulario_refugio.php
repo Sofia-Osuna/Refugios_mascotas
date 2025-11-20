@@ -17,11 +17,6 @@ include('menu.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario Refugio</title>
     
-    <!-- Bootstrap CSS -->
-    <link href="css/bootstrap.css " rel="stylesheet">
-    
-    <!-- Tu CSS personalizado (después de Bootstrap) -->
-    <link rel="stylesheet" href="css/estilo.css">
     
     <!-- jQuery -->
     <script src="js/jquery-3.7.1.js"></script>
@@ -147,7 +142,7 @@ include('menu.php');
     </div>
 
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
 
 <?php 
 include('Pie_pagina.php');

@@ -1,7 +1,5 @@
 /*ES UN COCHINERO AQUI SOLO USEN LAS CLASES ESTABLECIDAS DE BOOTSTRAP UNICAMENTE*/
-.navbar-custom {
-    background-color: #85B79D; 
-}
+
 h1{
     text-align: center;
  }
@@ -16,13 +14,22 @@ body {
 
 
 .navbar-custom {
-    background-color: #85B79D; 
-    padding: 6px 15px;
-    height: 100px;
-    width: 100%;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
+     background-color: #85B79D;
+    position: relative;
+    z-index: 1050 !important;
+  }
+  
+  .navbar-collapse {
+    background-color: #85B79D;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 5px;
+    position: relative;
+    z-index: 1051 !important;
+  }
+  
 
+  
 .navbar-custom .navbar-brand {
     font-weight: 500;
     font-size: 20px; 
@@ -315,9 +322,15 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-.carousel-image {
-    height: 500px;
-    width: 100%;
-    object-fit: cover;
-    object-position: center;
+.carousel,
+.carousel-refupets {
+    position: relative;
+    z-index: 1 !important; /* Mucho más bajo */
 }
+
+.carousel,
+  .carousel-refupets,
+  section {
+    position: relative;
+    z-index: 1 !important;
+  }
