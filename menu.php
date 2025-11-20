@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +11,8 @@
 
     <link rel="stylesheet" href="css/estilo.css">
     <!-- Poner otra imagen, no se con un corazon o algo asi -->
+
+
     <link rel="icon" type="image/png" href="img_sistema/logo_color.png"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -41,22 +46,22 @@
             
         <div class="col-md-4">
           <ul class="navbar-nav">
-            <h5 class = "navbar-">Usuario</h5>
-            <li class="nav-item"><a class="nav-link" href="inicio_sesion.">Iniciar sesion</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Ver perfil</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Cerrar sesión</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Lista de usuario</a></li>
+            <h5 class = "navbar-"><?=$_SESSION['username'] ?> </h5>
+            <li class="nav-item"><a class="nav-link" href="inicio_sesion.php">Iniciar sesion</a></li>
+            <li class="nav-item"><a class="nav-link" href="Datospersonales.php">Ver perfil</a></li>
+            <li class="nav-item"><a class="nav-link" href="">Cerrar sesión</a></li>
+            <li class="nav-item"><a class="nav-link" href="Lista_usuario.php">Lista de usuario</a></li>
           </ul>
         </div>
 
         <div class="col-md-4">
           <ul class="navbar-nav">
 
-            <li class="nav-item"><a class="nav-link" href="#">Lista de Refugio</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Crear un nuevo refugio</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">ver mi Refugio</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Lista de refugios</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">ver especies</a></li>
+            <li class="nav-item"><a class="nav-link" href="Lista_refugio.php">Lista de Refugio</a></li>
+            <li class="nav-item"><a class="nav-link" href="Formulario_refugio.php">Crear un nuevo refugio</a></li>
+            <li class="nav-item"><a class="nav-link" href="detalles_refugio.php">ver mi Refugio</a></li>
+            <li class="nav-item"><a class="nav-link" href="Lista_refugio.php">Lista de refugios</a></li>
+            <li class="nav-item"><a class="nav-link" href="Lista_especie.php">ver especies</a></li>
           </ul>
           
 
