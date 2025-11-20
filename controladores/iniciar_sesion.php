@@ -1,11 +1,11 @@
 <?php
-$user = $_POST["user"];
-$contra = $_POST["contra"];
+    $user = $_POST["user"];
+    $contra = $_POST["contra"];
 
 
-include ("../clases/Usuario.php");
+    include ("../clases/Usuario.php");
 
-$clase = new Usuario();
+    $clase = new Usuario();
 
-$resultado = $clase->login($user,$contra);
+    $resultado = $clase->login($user,$contra);
 ?>

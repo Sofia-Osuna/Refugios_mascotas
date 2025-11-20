@@ -1,0 +1,1 @@
+<!-- Esta clase es para las preguntas dinamicas de los formularios -->

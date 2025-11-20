@@ -7,35 +7,8 @@
 	<title>Inicio de sesion</title>
 
 
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/bootstrap.css" rel="stylesheet">
 
-	<style>
-
-		h1{
-			text-align: center;
-		}
-
-		label{
-			text-align: center;
-			display: block;
-		}
-
-		input {
-            margin: 0 auto;
-            display: block;
-        }
-
-        h5{
-        	text-align: center;
-        }
-
-        a{
-        	display: block;
-        	text-align: center;
-        }
-
-		
-	</style>
 
 </head>
 <body>

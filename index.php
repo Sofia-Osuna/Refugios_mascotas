@@ -1,185 +1,208 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu principal</title>
-
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-        h1{
-            text-align: center;
-        }
-
-        .cards-container {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    padding: 20px;
-}
-
-.card {
-    width: 250px;
-    border: 1px solid #ddd;
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-.card-image {
-    width: 100%;
-    height: 180px;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 15px;
-}
-
-.card-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.card h2 {
-    font-size: 18px;
-    margin: 10px 0;
-}
-
-.card p {
-    font-size: 14px;
-    line-height: 1.5;
-    margin: 10px 0 20px 0;
-}
-
-.card button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-        
-    </style>
-
-    <link rel="stylesheet" href="css/estilo.css">
-   
-   
-
-</head>
-<body>
-
 <?php
     include('menu.php');
 ?>
-
-<div></div>
-<h1>¡RefuPets!</h1>
-<br><br><br><br>
-<figure>
-   <img src="Imagenes_animales/gatos.webp"> 
-   <figcaption>
-       ¡Encuentra a tu compañero ideal!
-   </figcaption>
-  </figure>
-  <br><br>
-
-  <h2>¿Como funciona?</h2>
-  <br>
-  <i>En RefuPet podras encontrar refugios para mascotas ubicados en toda la republica, Dentro de cada refugio podrás ver la amplia selección de mascotas disponibles para adoptar, ¡Será imposible no encontrar a un compañero que se adapte a tí!</i>
-  <br><br><br><br><br>
-
-  <h2>Estos amigos necesitan un hogar</h2>
-  <br><br>
-
-  <div class="cards-container">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RefuPETS</title>
     
-    <div class="card">
-        <div class="card-image">
-            <img src="" alt="Mascota">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+
+  
+<?php
+// php para el carrusel
+
+$carpeta_imagenes = 'Imagenes_animales/'; // Carpeta donde están las imágenes
+$extensiones_validas = array('jpg', 'jpeg', 'png', 'gif', 'webp'); // Extensiones permitidas
+$numero_imagenes_aleatorias = 5; // Cuántas imágenes mostrar en el carrusel
+
+
+$imagenes = array();
+if (is_dir($carpeta_imagenes)) {
+    $archivos = scandir($carpeta_imagenes);
+    foreach ($archivos as $archivo) {
+        $extension = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
+        if (in_array($extension, $extensiones_validas)) {
+            $imagenes[] = $carpeta_imagenes . $archivo;
+        }
+    }
+}
+
+
+shuffle($imagenes);
+$imagenes_carrusel = array_slice($imagenes, 0, $numero_imagenes_aleatorias);
+
+
+?>
+
+<!--Inicio del carrusel -->
+<section class="carousel-section py-5" style="background: linear-gradient(135deg, #85B79D 0%, #FCCA46 100%);">
+    <div class="container">
+        <h2 class="text-center mb-5 fw-bold text-white">Nuestras Historias de Éxito</h2>
+        
+        <?php if (count($imagenes_carrusel) > 0): ?>
+        <div id="carouselRefuPets" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <!-- Indicadores -->
+            <div class="carousel-indicators">
+                <?php foreach ($imagenes_carrusel as $index => $imagen): ?>
+                <button type="button" 
+                        data-bs-target="#carouselRefuPets" 
+                        data-bs-slide-to="<?php echo $index; ?>" 
+                        <?php echo $index === 0 ? 'class="active" aria-current="true"' : ''; ?>
+                        aria-label="Slide <?php echo $index + 1; ?>">
+                </button>
+                <?php endforeach; ?>
+            </div>
+
+            <!-- diapositivas? -->
+            <div class="carousel-inner rounded shadow-lg">
+                <?php foreach ($imagenes_carrusel as $index => $imagen): ?>
+                <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
+                    <img src="<?php echo htmlspecialchars($imagen); ?>" 
+                         class="d-block w-100 carousel-image" 
+                         alt="Mascota <?php echo $index + 1; ?>">
+                    <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+                        <h5 class="fw-bold">¡Encuentra tu compañero ideal!</h5>
+                        <p>Cada mascota tiene una historia única y está esperando por ti.</p>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+            <!-- fin diapositiva o no sé como -->
+
+            <!-- Controles -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselRefuPets" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselRefuPets" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
         </div>
-        
-        <h2>nombre</h2>
-        <p>Descripción</p>
-        
-        <button>Ver más información</button>
-    </div>
-
-    
-    <div class="card">
-        <div class="card-image">
-            <img src="" alt="Max">
+        <?php else: ?>
+        <div class="alert alert-warning text-center" role="alert">
+            <p class="texto-lora mb-0">No se encontraron imágenes en la carpeta especificada.</p>
         </div>
-        
-        <h2>Max</h2>
-        <p>Perrito recién rescatado, 4-5 meses de edad, bastante juguetón y amigable</p>
-        
-        <button>Ver más información</button>
+        <?php endif; ?>
     </div>
-
-   
-    <div class="card">
-        <div class="card-image">
-            <img src="" alt="Güera">
+</section>
+    <!-- Fin del carusel -->
+     
+    <!-- Cómo Funciona -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-4 fw-bold">¿Cómo funciona?</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <p class="text-center fs-5">
+                        En RefuPet podrás encontrar refugios para mascotas ubicados en toda la república. 
+                        Dentro de cada refugio podrás ver la amplia selección de mascotas disponibles para adoptar. 
+                        ¡Será imposible no encontrar a un compañero que se adapte a ti!
+                    </p>
+                </div>
+            </div>
         </div>
-        
-        <h2>güera</h2>
-        <p>Perrita de 1-2 años de edad, bastante inteligente, amigable, sabe dar la pata y aprende trucos con facilidad</p>
-        
-        <button>Ver más información</button>
-    </div>
-</div>
-<br><br>
-<h2>Explora los refugios disponibles</h2>
-<br><br>
+    </section>
 
-<div class="cards-container">
-    
-    <div class="card">
-        <div class="card-image">
-            <img src="" alt="Refugio">
+    <!-- Mascotas Disponibles -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5 fw-bold">Estos amigos necesitan un hogar</h2>
+            
+            <div class="row g-4">
+                <!-- Card Mascota 1 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm hover-card">
+                        <img src="Imagenes_animales/placeholder.jpg" class="card-img-top" alt="Mascota" style="height: 250px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold">Nombre</h5>
+                            <p class="card-text flex-grow-1">Descripción de la mascota...</p>
+                            <a href="#" class="btn text-white mt-auto" style="background-color: #85B79D;">Ver más información</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Mascota 2 - Max -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm hover-card">
+                        <img src="Imagenes_animales/max.jpg" class="card-img-top" alt="Max" style="height: 250px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold">Max</h5>
+                            <p class="card-text flex-grow-1">Perrito recién rescatado, 4-5 meses de edad, bastante juguetón y amigable</p>
+                            <a href="#" class="btn text-white mt-auto" style="background-color: #85B79D;">Ver más información</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Mascota 3 - Güera -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm hover-card">
+                        <img src="Imagenes_animales/guera.jpg" class="card-img-top" alt="Güera" style="height: 250px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold">Güera</h5>
+                            <p class="card-text flex-grow-1">Perrita de 1-2 años de edad, bastante inteligente, amigable, sabe dar la pata y aprende trucos con facilidad</p>
+                            <a href="#" class="btn text-white mt-auto" style="background-color: #85B79D;">Ver más información</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <h2>nombre</h2>
-        <p>Descripción</p>
-        
-        <button>Ver más información</button>
-    </div>
+    </section>
 
-    
-    <div class="card">
-        <div class="card-image">
-            <img src="" alt="Refugio la lomita">
+    <!-- Refugios Disponibles -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5 fw-bold">Explora los refugios disponibles</h2>
+            
+            <div class="row g-4">
+                <!-- Card Refugio 1 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm hover-card">
+                        <img src="Imagenes_animales/refugio-placeholder.jpg" class="card-img-top" alt="Refugio" style="height: 250px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold">Nombre del Refugio</h5>
+                            <p class="card-text flex-grow-1">Descripción del refugio...</p>
+                            <a href="#" class="btn text-white mt-auto" style="background-color: #FCCA46;">Ver más información</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Refugio 2 - La Lomita -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm hover-card">
+                        <img src="Imagenes_animales/lomita.jpg" class="card-img-top" alt="Refugio la lomita" style="height: 250px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold">Refugio La Lomita</h5>
+                            <p class="card-text flex-grow-1">Ubicado en el corazón de la ciudad, dedicado al rescate y cuidado de mascotas abandonadas.</p>
+                            <a href="#" class="btn text-white mt-auto" style="background-color: #FCCA46;">Ver más información</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Refugio 3 - Girasol -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm hover-card">
+                        <img src="Imagenes_animales/girasol.jpg" class="card-img-top" alt="Refugio girasol" style="height: 250px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold">Refugio Girasol</h5>
+                            <p class="card-text flex-grow-1">Espacio amplio y seguro para nuestros amigos peludos, con atención veterinaria profesional.</p>
+                            <a href="#" class="btn text-white mt-auto" style="background-color: #FCCA46;">Ver más información</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <h2>Refugio la lomita</h2>
-        <p>Ubicado en...</p>
-        
-        <button>Ver más información</button>
-    </div>
+    </section>
 
-   
-    <div class="card">
-        <div class="card-image">
-            <img src="" alt="Refugio girasol">
-        </div>
-        
-        <h2>Refugio girasol</h2>
-        <p>Ubicado en...</p>
-        
-        <button>Ver más información</button>
-    </div>
-</div>
-
-
-
-    
-
-
-
-
+    <!-- Bootstrap JS -->
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/carousel.js"></script>
 
 </body>
 </html>

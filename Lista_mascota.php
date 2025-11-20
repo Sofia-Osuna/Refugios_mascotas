@@ -26,6 +26,7 @@ $mascotas = $clase->mostrarPorRefugio($id_refugio);
     <thead>
         <tr>
             <th>Foto</th>
+
             <th>Nombre</th>
 
             <th>Acciones</th>
