@@ -64,8 +64,9 @@
         $respuesta = $this->conexion->query($consulta);
         return $respuesta;
         }
+        
         function login($user, $contra){
-            $consulta ="SELECT * FROM usuario WHERE (username='{$user}') AND pass='{$contra}' ";
+            $consulta ="SELECT * FROM usuario WHERE (nombre='{$user}' AND password='{$contra}') ";
             $respuesta = $this->conexion->query($consulta);
           return $respuesta;
         }

@@ -12,7 +12,7 @@
 
 </head>
 <body>
-	<form action="controladores/iniciar_sesion.php">
+	<form action="controladores/iniciar_sesion.php" method="POST">
 <h1>Bienvenido</h1>
 <br>
 
@@ -28,7 +28,7 @@
 <input type="password" name="contra">
 <br>
 
-<input type="submit" value="Iniciar sesion" name="Iniciar sesion">
+<input type="submit" value="Iniciar sesion" name="Ingresar">
 </form>
 <br><br>
 
