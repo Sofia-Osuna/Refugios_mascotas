@@ -49,7 +49,7 @@ session_start();
             <h5 class = "navbar-"><?=$_SESSION['username'] ?> </h5>
             <li class="nav-item"><a class="nav-link" href="inicio_sesion.php">Iniciar sesion</a></li>
             <li class="nav-item"><a class="nav-link" href="Datospersonales.php">Ver perfil</a></li>
-            <li class="nav-item"><a class="nav-link" href="controladores/cerrar_sesion.php">Cerrar sesión</a></li>
+            <li class="nav-item"><a class="nav-link" href="controladores/cerrar_sesion.php">Cerrar sesión </a></li>
             <li class="nav-item"><a class="nav-link" href="Lista_usuario.php">Lista de usuario</a></li>
           </ul>
         </div>
