@@ -322,6 +322,7 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
+<<<<<<< Updated upstream
 .carousel,
 .carousel-refupets {
     position: relative;
@@ -334,3 +335,12 @@ h1, h2, h3, h4, h5, h6 {
     position: relative;
     z-index: 1 !important;
   }
+=======
+.carousel-image {
+    height: 500px;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+>>>>>>> Stashed changes
