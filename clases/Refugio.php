@@ -56,20 +56,6 @@
 
 //esto es pa obtener el id del refugio xd
 function Id($id_refugio){
-    //EDITAR ESTO actualizar al estandar de insertar -sofía
-    /*
-     $consulta = "SELECT r.*, rd.id_refugio_direcciones, rd.fk_direccion,
-                 d.nombre_calle, d.numero_exterior, d.numero_interior, d.cp, d.fk_municipio,
-                 m.nombre as municipio, m.fk_estado,
-                 e.nombre as estado
-                 FROM refugio r, refugio_direcciones rd, direccion d, municipio m, estado e
-                 WHERE r.id_refugio = rd.fk_refugio
-                 AND rd.fk_direccion = d.id_direccion
-                 AND d.fk_municipio = m.id_municipio
-                 AND m.fk_estado = e.id_estado
-                 AND r.id_refugio = $id_refugio
-                 AND rd.estatus = 1";
-    */
     $consulta = "SELECT 
     r.*, d.*, t.telefono, cr.correo, c.nombre as localidad, c.codigo_postal, c.tipo, m.nombre as municipio, e.nombre as estado FROM refugio r 
     INNER JOIN telefono_refugio t ON t.fk_refugio=r.id_refugio
@@ -78,10 +64,15 @@ function Id($id_refugio){
     INNER JOIN direccion d ON rd.fk_direccion = d.id_direccion 
     INNER JOIN colonia c ON d.fk_colonia = c.id_colonia
     INNER JOIN municipio m ON c.fk_municipio = m.id_municipio
-    INNER JOIN estado e ON m.fk_estado = e.id_estado ";
+    INNER JOIN estado e ON m.fk_estado = e.id_estado 
+    WHERE r.id_refugio = $id_refugio
+    AND r.estatus = 1
+    AND rd.estatus = 1
+    LIMIT 1;";
     $respuesta = $this->conexion->query($consulta);
     return $respuesta->fetch_assoc();
     }
+
     function eliminar($id_refugio){
     // esto pa dar de baja la direcion refugi pa 
     $consulta = "UPDATE refugio_direcciones SET estatus = 0 WHERE fk_refugio = ?";
