@@ -10,11 +10,13 @@
     $nombre_calle = $_POST["nombre_calle"];
     $numero_exterior = $_POST["numero_exterior"];
     $numero_interior = $_POST["numero_interior"];
+    $telefono = $_POST["telefono"];
+    $correo = $_POST["correo"];
 
 
     include ('../clases/Refugio.php');
     $clase = new Refugio();
-    $resultado = $clase ->guardar($nombre,  $descripcion, $colonia, $nombre_calle,  $numero_exterior, $numero_interior );
+    $resultado = $clase ->guardar($nombre,  $descripcion, $colonia, $nombre_calle,  $numero_exterior, $numero_interior, $telefono, $correo);
 
     if($resultado){
         header('location: ../Lista_refugio.php');

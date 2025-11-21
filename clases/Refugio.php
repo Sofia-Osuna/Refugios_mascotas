@@ -15,7 +15,7 @@
     return $this->conexion;
 }
 
-        function guardar($nombre,  $descripcion, $colonia, $nombre_calle,  $numero_exterior, $numero_interior){
+        function guardar($nombre,  $descripcion, $colonia, $nombre_calle,  $numero_exterior, $numero_interior, $telefono, $correo){
             $consulta = "INSERT INTO direccion (id_direccion, nombre_calle, numero_exterior, numero_interior, fk_colonia) VALUES (null, '{$nombre_calle}', '{$numero_exterior}', '{$numero_interior}', '{$colonia}' );";
             $respuesta = $this -> conexion -> query($consulta);
             $id = mysqli_insert_id($this->conexion);
@@ -24,6 +24,12 @@
             $respuesta = $this -> conexion -> query($consulta);
             $id2 = mysqli_insert_id($this->conexion);
 
+            $consulta = "INSERT INTO correo_refugio (id_correo_refugio, correo, fk_refugio, estatus) VALUES (null, '{$correo}', '{$id2}', 1);";
+            $respuesta = $this -> conexion -> query($consulta);
+
+            $consulta = "INSERT INTO telefono_refugio (id_telefono_refugio, telefono, fk_refugio, estatus) VALUES (null, '{$telefono}', '{$id2}', 1);";
+            $respuesta = $this -> conexion -> query($consulta);
+
             $consulta = "INSERT INTO refugio_direcciones (id_refugio_direcciones, fk_refugio, fk_direccion, estatus) VALUES (null, '{$id2}','{$id}', 1);";
             $respuesta = $this -> conexion -> query($consulta);
             return $respuesta;
@@ -31,20 +37,7 @@
 
         // esto es para poder tener los refugios y mostrarlos en la tabla si te lo juro
   function mostrar(){
-    /*
-    consulta antigua, eliminar luego de confirmar que todo funciona
-    $consulta = "SELECT r.id_refugio, r.nombre, r.descripcion, r.estatus,
-                 e.nombre as estado, m.nombre as municipio
-                 FROM refugio r, refugio_direcciones rd, direccion d, municipio m, estado e
-                 WHERE r.id_refugio = rd.fk_refugio
-                 AND rd.fk_direccion = d.id_direccion
-                 AND d.fk_municipio = m.id_municipio
-                 AND m.fk_estado = e.id_estado
-                 AND r.estatus = 1
-                 AND rd.estatus = 1
-                 ORDER BY r.nombre";
-                 */
-       
+
         $consulta = "SELECT r.id_refugio, r.nombre, r.descripcion, r.estatus, c.nombre as colonia, m.nombre as municipio, e.nombre as estado
         FROM refugio r INNER JOIN refugio_direcciones rd ON r.id_refugio = rd.fk_refugio 
         INNER JOIN direccion d ON rd.fk_direccion=d.id_direccion 
@@ -77,15 +70,18 @@ function Id($id_refugio){
                  AND r.id_refugio = $id_refugio
                  AND rd.estatus = 1";
     */
-    $consulta = "SELECT r.*, d.*, c.nombre, c.codigo_postal, c.tipo, m.nombre, e.nombre FROM refugio r 
+    $consulta = "SELECT 
+    r.*, d.*, t.telefono, cr.correo, c.nombre as localidad, c.codigo_postal, c.tipo, m.nombre as municipio, e.nombre as estado FROM refugio r 
+    INNER JOIN telefono_refugio t ON t.fk_refugio=r.id_refugio
+    INNER JOIN correo_refugio cr ON cr.fk_refugio=r.id_refugio
     INNER JOIN refugio_direcciones rd ON r.id_refugio = rd.fk_refugio
     INNER JOIN direccion d ON rd.fk_direccion = d.id_direccion 
     INNER JOIN colonia c ON d.fk_colonia = c.id_colonia
     INNER JOIN municipio m ON c.fk_municipio = m.id_municipio
-    INNER JOIN estado e ON m.fk_estado = e.id_estado WHERE rd.estatus = 1 ";
+    INNER JOIN estado e ON m.fk_estado = e.id_estado ";
     $respuesta = $this->conexion->query($consulta);
     return $respuesta->fetch_assoc();
-}
+    }
     function eliminar($id_refugio){
     // esto pa dar de baja la direcion refugi pa 
     $consulta = "UPDATE refugio_direcciones SET estatus = 0 WHERE fk_refugio = ?";
