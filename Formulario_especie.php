@@ -9,14 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario para nuevas especies</title>
 
+
+
     <style>
         .boton-agregar{
              background-color: #85B79D;
             color: #333;
             padding: 12px ;
             border: none;
-            border-radius: 10px;
-            font-size: 16px;
+            border-radius: 15px;
+            font-size: 20px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
@@ -55,18 +57,18 @@
 </head>
 <body>
     <br>
-     <h1>Formulario para nuevas especies</h1>
+   
      <br>
      <div class="tarejta-agregar">
     <form action="controladores/Insertar_especie.php" method="POST" enctype="multipart/form-data">
-        <label for="">nombre de la especie</label>
+        <label for="">nombre de la especie:</label>
         <br>
         <input class="inp" type="text" name="nombre" id="">
         <br>
 
        <a href="">
         <br>
-           <button class="boton-agregar">Agregar especie</button>
+           <button class="boton-agregar">Confirmar</button>
            <br>
        </a>
     <br>
