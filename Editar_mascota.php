@@ -10,118 +10,92 @@ $especies = $mascota_obj->obtenerEspecies();
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Editar Mascota</title>
-
-    <style>
-        h2{
-            text-align: center;
-        }
-
-        .tarjeta-mascota-editar{
-              min-height: 60vh; 
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 40px 20px;
-    background: gray;
-     max-width: 800px;
-     margin: 40px auto;
-     padding: 0 20px;
-     background: ghostwhite;
-        }
-
-
-
-        label{
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        textarea{
-            width: 250px;
-            height: 140px;
-            border-radius: 7px;
-
-        }
-
-        .boton-actualizar-mascota{
-            background: #419D78;
-            border-color: #419D78;
-            border-radius: 10px;
-             height: 50px;
-            width: 150px;
-            font-weight: bold;
-        }
-
-        .boton-cancelacion{
-        background: #FF802E;
-            border-radius: 10px;
-            border-color: #FF802E;
-            height: 50px;
-            width: 150px;
-            font-weight: bold;
-        }
-
-        select{
-            border-radius: 6px;
-        }
-
-        
-           
-        
-    </style>
+    
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    
+    <!-- Tu CSS personalizado -->
+    <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-header" style="background-color: #85B79D;">
+                        <h3 class="mb-0 text-white">Editar Mascota</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <form action="controladores/actualizar_mascota.php" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="id_mascota" value="<?= $mascota['id_mascotas'] ?>">
+                            <input type="hidden" name="id_refugio" value="<?= $id_refugio ?>">
+                            
+                            <!-- Información básica de la mascota -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="nombre" class="form-label fw-bold">Nombre de la mascota:</label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" value="<?= $mascota['nombre'] ?>" required>
+                                </div>
 
-    
-   <div class="tarjeta-mascota-editar">
-  <form action="controladores/actualizar_mascota.php" method="POST" enctype="multipart/form-data">
-    <input type="hidden" name="id_mascota" value="<?= $mascota['id_mascotas'] ?>">
-    <input type="hidden" name="id_refugio" value="<?= $id_refugio ?>">
-    <br> <br>
-    <h2>Editar mascota</h2>
-    <br> <br>
-    Nombre:<br>
-    <input type="text" name="nombre" value="<?= $mascota['nombre'] ?>" required><br><br>
-    
-    Descripción:
-    <br> 
-    <textarea name="descripcion" required><?= $mascota['descripcion'] ?></textarea>
-    <br><br>
-    
-    Foto actual: <?= $mascota['foto'] ?>
-    <br> <br>
-    Nueva foto (opcional):
-    <br> <br>
-    <input type="file" name="foto">
-    <br><br>
-    
-    Especie:<br>
-    <select name="fk_especie" required>
-        <?php foreach($especies as $especie){ ?>
-            <option value="<?= $especie['id_especie'] ?>" <?= $especie['id_especie'] == $mascota['fk_especie'] ? 'selected' : '' ?>>
-                <?= $especie['nombre'] ?>
-            </option>
-        <?php } ?>
-    </select>
+                                <div class="col-md-6 mb-3">
+                                    <label for="fk_especie" class="form-label fw-bold">Especie:</label>
+                                    <select name="fk_especie" id="fk_especie" class="form-select" required>
+                                        <option value="">Selecciona una especie</option>
+                                        <?php foreach($especies as $especie){ ?>
+                                            <option value="<?= $especie['id_especie'] ?>" <?= $especie['id_especie'] == $mascota['fk_especie'] ? 'selected' : '' ?>>
+                                                <?= $especie['nombre'] ?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
 
-    <br><br><br>
-    
-    <button class="boton-actualizar-mascota" type="submit">Actualizar</button>
-    <br> <br>
-    <a href="Lista_mascota.php?id_refugio=<?= $id_refugio ?>">
-        <button class="boton-cancelacion">Cancelar</button>
-    </a>
-    <br> <br> <br>
-</form>
-</div> 
-</body>
-</html>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="foto" class="form-label fw-bold">Foto:</label>
+                                    <?php if($mascota['foto'] != 'sin_foto.jpg'){ ?>
+                                        <div class="mb-2">
+                                            <small class="text-muted">Foto actual: <?= $mascota['foto'] ?></small>
+                                        </div>
+                                    <?php } ?>
+                                    <input type="file" class="form-control" id="foto" name="foto" accept="image/*">
+                                    <small class="text-muted">Nueva foto (opcional)</small>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 mb-4">
+                                    <label for="descripcion" class="form-label fw-bold">Descripción:</label>
+                                    <textarea class="form-control" id="descripcion" name="descripcion" rows="4" required><?= $mascota['descripcion'] ?></textarea>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                <a href="Lista_mascota.php?id_refugio=<?= $id_refugio ?>" class="btn btn-lg me-md-2 text-white" style="background-color: #FF802E;">
+                                    Cancelar
+                                </a>
+                                <button type="submit" class="btn btn-lg text-white" style="background-color: #419D78;">
+                                    Actualizar Mascota
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="js/bootstrap.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+
 <?php 
 include('Pie_pagina.php');
- ?>
+?>
+</body>
+</html>
