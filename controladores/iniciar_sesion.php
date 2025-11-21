@@ -23,6 +23,6 @@ if(mysqli_num_rows($resultado) > 0  ){
         header('location:../formulario_producto.php');
     }
  }else{
-    header('location: ../login.php');
+    header('location: ../inicio');
 }
 ?>

@@ -40,8 +40,9 @@ $usuario = $clase->mostrar();
             <?php if(count($usuario) > 0): ?>
                 <?php foreach($usuario as $usuario): ?>
                     <tr>
-                        <td><?= htmlspecialchars($usuario['foto']) ?></td>
-                        <td><?= htmlspecialchars($usuario['nombre']) ?></td>
+  <td>
+                    <img src="img_usuarios/<?= $usuario['foto'] ?>" width="100" height="100">
+                </td>                        <td><?= htmlspecialchars($usuario['nombre']) ?></td>
                         <td><?= htmlspecialchars($usuario['password']) ?></td>
                         <td><?= htmlspecialchars($usuario['correo']) ?></td>
                         <td>

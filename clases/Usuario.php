@@ -11,8 +11,8 @@
             $this -> conexion = new Conexion();
 
         }
-        function guardar($nombre, $password, $correo){
-            $consulta = "INSERT INTO usuario (id_usuario, nombre, password, foto, fk_rol, estatus) VALUES (null, '{$nombre}', '{$password}', 'foto', 2, 1);";
+        function guardar($nombre, $password, $correo,$foto){
+            $consulta = "INSERT INTO usuario (id_usuario, nombre, password, foto, fk_rol, estatus) VALUES (null, '{$nombre}', '{$password}', '{$foto}', 2, 1);";
             $respuesta = $this -> conexion -> query($consulta);
             /*
             este no me funciona porque no le puse parametros xdxd
@@ -46,8 +46,8 @@
             return $usuario;
         }
 
-        function editar($id_usuario, $nombre, $password, $correo){
-            $consulta = "UPDATE usuario SET nombre = '$nombre', password = '$password' WHERE id_usuario = $id_usuario";
+        function editar($id_usuario, $nombre, $password, $correo,$foto){
+            $consulta = "UPDATE usuario SET nombre = '$nombre', password = '$password', foto='$foto' WHERE id_usuario = $id_usuario";
             $respuesta = $this->conexion->query($consulta);
             
            
