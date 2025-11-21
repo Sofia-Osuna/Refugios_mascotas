@@ -1,39 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<br><br>
-	<title>Inicio de sesion</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de sesión</title>
 
-
-	<link href="css/bootstrap.css" rel="stylesheet">
-
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet">
 
 </head>
-<body>
-	<form action="controladores/iniciar_sesion.php" method="POST">
-<h1>Bienvenido</h1>
-<br>
 
-<label>Nombre de usuario</label>
-<br>
+<body class="bg-light">
 
-<input type="text" name="user">
-<br>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="w-100" style="max-width: 400px;">
 
-<label>Contraseña</label>
-<br>
+        <h2 class="text-center mb-4 fw-bold" style="color:#85B79D;">
+            Bienvenido
+        </h2>
 
-<input type="password" name="contra">
-<br>
+        <form action="controladores/iniciar_sesion.php" method="POST">
 
-<input type="submit" value="Iniciar sesion" name="Ingresar">
-</form>
-<br><br>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Nombre de usuario</label>
+                <input type="text" name="user" class="form-control fw-bold" required>
+            </div>
 
-<h5>¿No tienes cuenta?</h5>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Contraseña</label>
+                <input type="password" name="contra" class="form-control fw-bold" required>
+            </div>
 
-<a>Crea tu cuenta aqui</a>
+            <button type="submit" name="Ingresar"
+                class="btn w-100 fw-bold text-white"
+                style="background-color: #85B79D;">
+                Iniciar sesión
+            </button>
+        </form>
+
+        <div class="text-center mt-3">
+            <p class="mb-1 fw-bold text-muted">¿No tienes cuenta?</p>
+            <a href="#" class="fw-bold text-decoration-none" style="color:#85B79D;">
+                Crea tu cuenta aquí
+            </a>
+        </div>
+
+    </div>
+</div>
+
 </body>
 </html>
