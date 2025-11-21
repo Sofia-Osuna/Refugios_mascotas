@@ -57,7 +57,11 @@
 //esto es pa obtener el id del refugio xd
 function Id($id_refugio){
     $consulta = "SELECT 
-    r.*, d.*, t.telefono, cr.correo, c.nombre as localidad, c.codigo_postal, c.tipo, m.nombre as municipio, e.nombre as estado FROM refugio r 
+    r.*, d.*, t.telefono, cr.correo, 
+    c.nombre as localidad, c.codigo_postal, c.tipo, c.id_colonia, c.fk_municipio,
+    m.nombre as municipio, m.id_municipio, m.fk_estado,
+    e.nombre as estado, e.id_estado
+    FROM refugio r 
     INNER JOIN telefono_refugio t ON t.fk_refugio=r.id_refugio
     INNER JOIN correo_refugio cr ON cr.fk_refugio=r.id_refugio
     INNER JOIN refugio_direcciones rd ON r.id_refugio = rd.fk_refugio
@@ -71,7 +75,7 @@ function Id($id_refugio){
     LIMIT 1;";
     $respuesta = $this->conexion->query($consulta);
     return $respuesta->fetch_assoc();
-    }
+}
 
     function eliminar($id_refugio){
     // esto pa dar de baja la direcion refugi pa 
@@ -86,53 +90,38 @@ function Id($id_refugio){
     $stmt->bind_param("i", $id_refugio);
     return $stmt->execute();
 }
-function actualizar($id_refugio, $nombre, $descripcion, $estado_nombre, $municipio_nombre, 
-                   $nombre_calle, $numero_exterior, $numero_interior, $cp){
+       function actualizar($id_refugio, $nombre, $descripcion, $colonia, $nombre_calle, $numero_exterior, $numero_interior, $telefono, $correo, $foto){
     
-    $refugio = $this->Id($id_refugio);
-    $id_direccion = $refugio['fk_direccion'];
-    
-    // 1. Buscar el ID del estado por nombre
-    $consulta = "SELECT id_estado FROM estado WHERE nombre = '$estado_nombre'";
+    // 1. Obtener el id_direccion del refugio
+    $consulta = "SELECT fk_direccion FROM refugio_direcciones WHERE fk_refugio = $id_refugio";
     $resultado = $this->conexion->query($consulta);
+    $row = $resultado->fetch_assoc();
+    $id_direccion = $row['fk_direccion'];
     
-    if($resultado->num_rows > 0){
-        $estado = $resultado->fetch_assoc();
-        $id_estado = $estado['id_estado'];
-    } else {
-        // Si no existe, crearlo
-        $consulta = "INSERT INTO estado (nombre, fk_pais, estatus) VALUES ('$estado_nombre', 1, 1)";
-        $this->conexion->query($consulta);
-        $id_estado = mysqli_insert_id($this->conexion);
-    }
-    
-    //
-    $consulta = "SELECT id_municipio FROM municipio WHERE nombre = '$municipio_nombre' AND fk_estado = $id_estado";
-    $resultado = $this->conexion->query($consulta);
-    
-    if($resultado->num_rows > 0){
-        $municipio = $resultado->fetch_assoc();
-        $id_municipio = $municipio['id_municipio'];
-    } else {
-        // esto es para que se cree el municipio por si no existe creo...
-        $consulta = "INSERT INTO municipio (nombre, fk_estado, estatus) VALUES ('$municipio_nombre', $id_estado, 1)";
-        $this->conexion->query($consulta);
-        $id_municipio = mysqli_insert_id($this->conexion);
-    }
-    
-    // para actualizar los datos del refugio
-    $consulta = "UPDATE refugio SET nombre = '$nombre', descripcion = '$descripcion' 
-                 WHERE id_refugio = $id_refugio";
+    // 2. Actualizar dirección
+    $consulta = "UPDATE direccion SET nombre_calle = '$nombre_calle', numero_exterior = '$numero_exterior', 
+                 numero_interior = '$numero_interior', fk_colonia = '$colonia' WHERE id_direccion = $id_direccion";
     $this->conexion->query($consulta);
     
-    //pa actualizar la direcion
-    $consulta = "UPDATE direccion SET nombre_calle = '$nombre_calle', 
-                 numero_exterior = '$numero_exterior', numero_interior = '$numero_interior', 
-                 cp = '$cp', fk_municipio = $id_municipio 
-                 WHERE id_direccion = $id_direccion";
+    // 3. Actualizar refugio
+    if($foto != ''){
+        $consulta = "UPDATE refugio SET nombre = '$nombre', descripcion = '$descripcion', foto = '$foto' 
+                     WHERE id_refugio = $id_refugio";
+    } else {
+        $consulta = "UPDATE refugio SET nombre = '$nombre', descripcion = '$descripcion' 
+                     WHERE id_refugio = $id_refugio";
+    }
     $this->conexion->query($consulta);
     
-     return true;
-    }
+    // 4. Actualizar correo
+    $consulta = "UPDATE correo_refugio SET correo = '$correo' WHERE fk_refugio = $id_refugio";
+    $this->conexion->query($consulta);
+    
+    // 5. Actualizar teléfono
+    $consulta = "UPDATE telefono_refugio SET telefono = '$telefono' WHERE fk_refugio = $id_refugio";
+    $this->conexion->query($consulta);
+    
+    return true;
+}
 }
 ?>
