@@ -56,7 +56,7 @@ include('menu.php');
                         <h3 class="mb-0 text-white">Registro de Refugio</h3>
                     </div>
                     <div class="card-body p-4">
-                        <form action="procesar_refugio.php" method="POST" enctype="multipart/form-data">
+                        <form action="controladores/Insertar_refugio.php" method="POST" enctype="multipart/form-data">
                             
                             <!-- Información básica -->
                             <div class="row">
@@ -77,6 +77,18 @@ include('menu.php');
                                     <textarea class="form-control" id="descripcion" name="descripcion" rows="4" required></textarea>
                                 </div>
                             </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="nombre" class="form-label fw-bold">Telefono:</label>
+                                        <input type="text" class="form-control" id="telefono" name="telefono" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="nombre" class="form-label fw-bold">Correo:</label>
+                                        <input type="text" class="form-control" id="correo" name="correo" required>
+                                    </div>
+                                </div>
+                            </div>
+
 
                             <hr class="my-4">
 
@@ -109,7 +121,7 @@ include('menu.php');
                                         <option value="0">Selecciona primero un municipio</option>
                                     </select>
                                 </div>
-                            </div>
+                            
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
@@ -141,7 +153,7 @@ include('menu.php');
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
+
     
 
 <?php 
