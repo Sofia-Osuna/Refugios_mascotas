@@ -46,9 +46,12 @@ session_start();
             
         <div class="col-md-4">
           <ul class="navbar-nav">
-            <h5 class = "navbar-"><?=$_SESSION['username'] ?> </h5>
-            <li class="nav-item"><a class="nav-link" href="inicio_sesion.php">Iniciar sesion</a></li>
-            <li class="nav-item"><a class="nav-link" href="Datospersonales.php">Ver perfil</a></li>
+<?php if(isset($_SESSION['username'])){ ?>
+    <h5 class="navbar-"><?= $_SESSION['username'] ?></h5>
+<?php } else { ?>
+    <a href="Inicio_sesion.php">Iniciar sesión</a>
+<?php } ?>            
+<li class="nav-item"><a class="nav-link" href="Datospersonales.php">Ver perfil</a></li>
             <li class="nav-item"><a class="nav-link" href="controladores/cerrar_sesion.php">Cerrar sesión </a></li>
             <li class="nav-item"><a class="nav-link" href="Lista_usuario.php">Lista de usuario</a></li>
           </ul>
