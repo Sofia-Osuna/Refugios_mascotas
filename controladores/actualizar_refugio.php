@@ -17,7 +17,7 @@ $foto = $_FILES["foto"]["name"];
 
     //if que me dio la ia para que funcione en mac os xd
     if($foto != ""){
-    $ruta = "../img_usuarios/" . $foto;
+    $ruta = "../img_refugio/" . $foto;
     
     // SOLUCIÓN MAC: Verificar y ajustar permisos silenciosamente
     $directorio_imagenes = dirname($ruta);
@@ -31,7 +31,7 @@ $foto = $_FILES["foto"]["name"];
         // Si falla, usar nombre único para evitar conflictos de permisos
         $extension = pathinfo($foto, PATHINFO_EXTENSION);
         $nombre_unico = uniqid() . '.' . $extension;
-        $ruta_alternativa = "../img_usuarios/" . $nombre_unico;
+        $ruta_alternativa = "../img_refugio/" . $nombre_unico;
         
         if(move_uploaded_file($tmp, $ruta_alternativa)){
             $foto = $nombre_unico;

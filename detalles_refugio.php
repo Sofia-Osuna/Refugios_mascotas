@@ -28,7 +28,7 @@ $refugio = $clase->Id($id);
                 <div class="row g-0">
                     <div class="col-md-5">
                         <?php if(!empty($refugio['foto'])): ?>
-                            <img src="<?= htmlspecialchars($refugio['foto']) ?>" 
+                            <img src="img_refugio/<?= htmlspecialchars($refugio['foto']) ?>" 
                                  class="img-fluid w-100 h-100" 
                                  style="object-fit: cover; min-height: 400px;" 
                                  alt="Foto del refugio">

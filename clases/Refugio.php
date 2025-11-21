@@ -15,12 +15,12 @@
     return $this->conexion;
 }
 
-        function guardar($nombre,  $descripcion, $colonia, $nombre_calle,  $numero_exterior, $numero_interior, $telefono, $correo){
+        function guardar($nombre,  $descripcion, $colonia, $nombre_calle,  $numero_exterior, $numero_interior, $telefono, $correo,$foto){
             $consulta = "INSERT INTO direccion (id_direccion, nombre_calle, numero_exterior, numero_interior, fk_colonia) VALUES (null, '{$nombre_calle}', '{$numero_exterior}', '{$numero_interior}', '{$colonia}' );";
             $respuesta = $this -> conexion -> query($consulta);
             $id = mysqli_insert_id($this->conexion);
 
-            $consulta = "INSERT INTO refugio (id_refugio, nombre, descripcion, foto, estatus) VALUES (null, '{$nombre}', '{$descripcion}', 'pendiente', 1);";
+            $consulta = "INSERT INTO refugio (id_refugio, nombre, descripcion, foto, estatus) VALUES (null, '{$nombre}', '{$descripcion}', '{$foto}', 1);";
             $respuesta = $this -> conexion -> query($consulta);
             $id2 = mysqli_insert_id($this->conexion);
 
