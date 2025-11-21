@@ -14,7 +14,7 @@ include('clases/Especie.php');
 $clase = new Especie();
 $resultado= $clase->Id($id_especie);
 
-if (!$resultado ){ 
+if (!$resultado ){
     echo "Especie no encontrada";
     exit;
 }
