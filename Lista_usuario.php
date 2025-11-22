@@ -14,20 +14,16 @@ $usuarios = $clase->mostrar();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Usuarios</title>
     
-    <!-- Bootstrap CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
     
-    <!-- Tu CSS personalizado -->
-    <link rel="stylesheet" href="css/estilo.css">
+   <link rel="stylesheet" href="css/estilo.css">
     
-    <!-- Para el buscador (si lo implementas después) -->
     <script src="js/jquery-3.7.1.js"></script>
 </head>
 <body>
 
 <div class="container my-5">
     
-    <!-- Header con título y botón -->
     <div class="row align-items-center mb-4">
         <div class="col">
             <h1 class="display-5 fw-bold">Gestión de Usuarios</h1>
@@ -44,7 +40,6 @@ $usuarios = $clase->mostrar();
         </div>
     </div>
 
-    <!-- Mensajes de éxito -->
     <?php if(isset($_GET['msg'])): ?>
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <?php 
@@ -56,7 +51,6 @@ $usuarios = $clase->mostrar();
         </div>
     <?php endif; ?>
 
-    <!-- Sección de filtros -->
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-body p-4">
             <h5 class="fw-bold mb-3">
@@ -69,7 +63,6 @@ $usuarios = $clase->mostrar();
             <form method="GET" action="">
                 <div class="row g-3">
                     
-                    <!-- Filtro por nombre -->
                     <div class="col-md-6">
                         <label for="filtro_nombre" class="form-label fw-semibold">Buscar por nombre</label>
                         <input type="text" 
@@ -79,7 +72,6 @@ $usuarios = $clase->mostrar();
                                placeholder="Ej: Juan Pérez">
                     </div>
                     
-                    <!-- Filtro por correo -->
                     <div class="col-md-4">
                         <label for="filtro_correo" class="form-label fw-semibold">Correo electrónico</label>
                         <input type="text" 
@@ -89,7 +81,6 @@ $usuarios = $clase->mostrar();
                                placeholder="Ej: usuario@ejemplo.com">
                     </div>
                     
-                    <!-- Botones -->
                     <div class="col-md-2 d-flex align-items-end gap-2">
                         <button type="submit" class="btn text-white flex-grow-1" style="background-color: #FE7F2D;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -109,7 +100,6 @@ $usuarios = $clase->mostrar();
         </div>
     </div>
 
-    <!-- Grid de usuarios -->
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         
         <?php if(count($usuarios) > 0): ?>
@@ -118,7 +108,6 @@ $usuarios = $clase->mostrar();
             <div class="col">
                 <div class="card h-100 shadow-sm border-0 hover-card">
                     
-                    <!-- Foto del usuario -->
                     <div style="height: 200px; overflow: hidden;">
                         <?php if(!empty($usuario['foto']) && file_exists("img_usuarios/" . $usuario['foto'])): ?>
                             <img src="img_usuarios/<?= htmlspecialchars($usuario['foto']) ?>" 
@@ -135,15 +124,12 @@ $usuarios = $clase->mostrar();
                         <?php endif; ?>
                     </div>
                     
-                    <!-- Contenido de la tarjeta -->
                     <div class="card-body d-flex flex-column">
                         
-                        <!-- Nombre del usuario -->
                         <h5 class="card-title fw-bold mb-2" style="color: #2c3e50;">
                             <?= htmlspecialchars($usuario['nombre']) ?>
                         </h5>
                         
-                        <!-- Correo -->
                         <div class="mb-3">
                             <small class="text-muted d-flex align-items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FCCA46" class="bi bi-envelope-fill me-1" viewBox="0 0 16 16">
@@ -153,7 +139,6 @@ $usuarios = $clase->mostrar();
                             </small>
                         </div>
                         
-                        <!-- Contraseña (oculta por seguridad, mostramos solo indicador) -->
                         <div class="mb-3">
                             <small class="text-muted d-flex align-items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FE7F2D" class="bi bi-key-fill me-1" viewBox="0 0 16 16">
@@ -163,7 +148,6 @@ $usuarios = $clase->mostrar();
                             </small>
                         </div>
                         
-                        <!-- Botones de acción -->
                         <div class="d-grid gap-2 mt-auto">
                             <a href="Detalles_usuario.php?id=<?= $usuario['id_usuario'] ?>" 
                                class="btn btn-sm text-white" 
@@ -194,7 +178,6 @@ $usuarios = $clase->mostrar();
         
     </div>
     
-    <!-- Mensaje si no hay usuarios -->
     <?php if(empty($usuarios)): ?>
     <div class="text-center py-5">
         <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="#ccc" class="bi bi-people mb-3" viewBox="0 0 16 16">
@@ -207,8 +190,6 @@ $usuarios = $clase->mostrar();
 
 </div>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
