@@ -1,11 +1,8 @@
 <?php
 include('menu.php');
-include('clases/Refugio.php');
+
 include('menu_refugio.php');
 
-$clase = new Refugio();
-$id = $_GET['id'];
-$refugio = $clase->Id($id);
 ?>
 
 <!DOCTYPE html>

@@ -4,8 +4,14 @@ include('clases/Refugio.php');
 
 $clase = new Refugio();
 $resultado = $clase->mostrar();
-?>
 
+$mysqli = new Conexion();
+$consulta = "SELECT nombre, id_estado FROM estado ORDER BY nombre ASC";
+$estado = $mysqli->query($consulta);
+?> 
+<!-- MUCHAS COSAS ESTAN ESTAN MAL
+ -la lista muestra refugios dados de baja
+ -los filtros de busqueda estan raros..... -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -17,7 +23,34 @@ $resultado = $clase->mostrar();
     <script src="js/buscar_refugio.js"></script>
 </head>
 <body>
+<!-- script para filtrado por los selects 
+    esto lo vas a copiar y pegar practicamente, lo que esta en con # son el nombre/id de los selects
+    te recomiendo que uses el mismo nombre y el mismo id
+-->
+     <script language="javascript">
+$(document).ready(function(){
+    $("#cbx_estado").change(function(){
+        const estadoSeleccionado = $(this).val();
+        
+        if(estadoSeleccionado && estadoSeleccionado !== '') {
+            const idEstado = $("#cbx_estado option:selected").data('id');
+            
+            $("#cbx_municipio").html('<option value="">Cargando...</option>');
+            $("#cbx_municipio").prop('disabled', true); // Deshabilitar mientras carga
+            
+            $.post("includes/getMunicipioFiltro.php", {id_estado: idEstado}, function(data){
+                $("#cbx_municipio").html('<option value="">Todos los municipios</option>' + data);
+                $("#cbx_municipio").prop('disabled', false); // Habilitar después de cargar
+                
+            });
+        } else {
+            $("#cbx_municipio").html('<option value="">Todos los municipios</option>');
+            $("#cbx_municipio").prop('disabled', false);
+        }
+    });
+});
 
+    </script>
 
 <div class="container my-5">
     
@@ -52,7 +85,7 @@ $resultado = $clase->mostrar();
                 <div class="row g-3">
                     
                     <!-- Filtro por nombre -->
-                    <div class="col-md-4">
+                    <div class="col-12 col-md-6 col-lg-4">
                         <label for="filtro_nombre" class="form-label fw-semibold">Buscar por nombre</label>
                         <input type="text" 
                                class="form-control" 
@@ -62,36 +95,36 @@ $resultado = $clase->mostrar();
                     </div>
                     
                     <!-- Filtro por estado -->
-                    <div class="col-md-3">
-                        <label for="filtro_estado" class="form-label fw-semibold">Estado</label>
-                        <select class="form-select" id="filtro_estado" name="filtro_estado">
-                            <option value="">Todos los estados</option>
-                            <!-- Aquí van tus opciones de estados -->
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <label for="cbx_estado" class="form-label fw-semibold">Estado</label>
+                        <select class="form-select" id="cbx_estado" name="cbx_estado">
+                            <option value="">Estado</option>
+                            <?php
+                                while($fila = $estado->fetch_assoc()){
+                                    echo '<option value="'.htmlspecialchars($fila['nombre']).'" data-id="'.$fila['id_estado'].'">'.htmlspecialchars($fila['nombre']).'</option>';
+                                }
+                            ?>
                         </select>
                     </div>
                     
                     <!-- Filtro por municipio -->
-                    <div class="col-md-3">
-                        <label for="filtro_municipio" class="form-label fw-semibold">Municipio</label>
-                        <select class="form-select" id="filtro_municipio" name="filtro_municipio">
-                            <option value="">Todos los municipios</option>
-                            <!-- Aquí van tus opciones de municipios -->
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <label for="cbx_municipio" class="form-label fw-bold">Selecciona tu municipio:</label>
+                        <select name="cbx_municipio" id="cbx_municipio" class="form-select">
+                            <option value=" ">Selecciona primero un estado</option>
                         </select>
                     </div>
                     
                     <!-- Botones -->
-                    <div class="col-md-2 d-flex align-items-end gap-2">
-                        <button type="submit" class="btn text-white flex-grow-1" style="background-color: #FE7F2D;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    <div class="col-12 col-md-6 col-lg-2 d-flex align-items-end">
+                        <button type="button" id="btn-limpiar" class="btn btn-naranja w-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise me-1" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
                             </svg>
+                            Limpiar
                         </button>
-                        <a href="Lista_refugio.php" class="btn btn-outline-secondary flex-grow-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                            </svg>
-                        </a>
+
                     </div>
                     
                 </div>
@@ -172,8 +205,18 @@ $resultado = $clase->mostrar();
         <?php endforeach; ?>
         
     </div>
-    
-    <!-- Mensaje si no hay refugios -->
+    <!-- 
+        Ahora si, mensaje en el caso de que el filtro no encuentre resultado Muestra UNA EPICA IMAGEN DE UNA RATA EXPLOTANDO
+        LO QUIERO EN TODOS LOS FILTROS GIR -->
+        <div id="mensaje-sin-resultados" class="text-center py-5" style="display: none;">
+            <img src="img_sistema/_-ezgif.com-loop-count.gif" alt="rata" class="img-fluid mb-3"
+            style="max-width: 300px; width: 100%; height: auto; border-radius: 10px;"> 
+            <h4 class="text-muted fw-bold">No se encontro ningún Refugio</h4>
+            <p class="text-muted">Intenta de nuevo</p>
+        </div>
+
+
+    <!-- Mensaje en el caso de que no haya ningun refugio registrado.... lo cual dudo xdxdxd-->
     <?php if(empty($resultado)): ?>
     <div class="text-center py-5">
         <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="#ccc" class="bi bi-inbox mb-3" viewBox="0 0 16 16">

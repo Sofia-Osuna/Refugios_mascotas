@@ -1,7 +1,6 @@
     <?php
     include('menu.php');
     include('clases/Refugio.php');
-    include('clases/Conexion.php');
 
     $clase = new Refugio();
     $id = $_GET['id'];
@@ -11,6 +10,13 @@
     $mysqli = new Conexion();
     $consulta = "SELECT nombre, id_estado FROM estado ORDER BY nombre ASC";
     $resultado = $mysqli->query($consulta);
+    
+    //este de aqui brayan bro es para cargar especificamente el municipio y localidad/colonia 
+    $consulta2 = "SELECT nombre, id_municipio FROM municipio WHERE fk_estado = {$refugio['id_estado']}";
+    $resultado2 = $mysqli->query($consulta2);
+
+    $consulta3 = "SELECT nombre, id_colonia FROM colonia WHERE fk_municipio = {$refugio['id_municipio']}";
+    $resultado3 = $mysqli->query($consulta3);
     ?>
 
     <!DOCTYPE html>
@@ -109,10 +115,11 @@
                                         <label for="cbx_estado" class="form-label fw-bold">Selecciona tu estado:</label>
                                         <select name="cbx_estado" id="cbx_estado" class="form-select" required>
                                             <option value="0">Seleccionar estado</option>
+                                            <!-- esto de aqui es para cargar el opction con el estado -->
                                             <?php
                                                 while($fila = $resultado->fetch_assoc()){
-                                                    echo '<option value="'.$fila['id_estado'].'">'.$fila['nombre'].'</option>';
-                                                }
+                                                    $selected = ($fila['id_estado'] == $refugio['id_estado']) ? 'selected' : '';
+                                                    echo '<option value="'.$fila['id_estado'].'" '.$selected.'>'.$fila['nombre'].'</option>';                                                }
                                             ?>
                                         </select>
                                     </div>
@@ -120,7 +127,12 @@
                                             <div class="col-md-4 mb-3">
                                         <label for="cbx_municipio" class="form-label fw-bold">Selecciona tu municipio:</label>
                                         <select name="cbx_municipio" id="cbx_municipio" class="form-select" required>
-                                        <option value="0">Selecciona primero un estado</option>
+                                            <option value="0">Selecciona primero un estado</option>
+                                            <?php
+                                                while($fila = $resultado2->fetch_assoc()){
+                                                    $selected = ($fila['id_municipio'] == $refugio['id_municipio']) ? 'selected' : '';
+                                                    echo '<option value="'.$fila['id_municipio'].'" '.$selected.'>'.$fila['nombre'].'</option>';                                                }
+                                            ?>
                                         </select>
                                         
                                         
@@ -128,7 +140,12 @@
                                             <div class="col-md-4 mb-3">
                                         <label for="cbx_colonia" class="form-label fw-bold">Selecciona tu localidad o colonia:</label>
                                         <select name="cbx_colonia" id="cbx_colonia" class="form-select" required>
-                                            <option value="0">Selecciona primero un municipio</option>
+                                            <option value="0">Selecciona primero una colonia</option>
+                                             <?php
+                                                while($fila = $resultado3->fetch_assoc()){
+                                                    $selected = ($fila['id_colonia'] == $refugio['id_colonia']) ? 'selected' : '';
+                                                    echo '<option value="'.$fila['id_colonia'].'" '.$selected.'>'.$fila['nombre'].'</option>';                                                }
+                                            ?>
                                         </select>
                                     </div>
                                 
