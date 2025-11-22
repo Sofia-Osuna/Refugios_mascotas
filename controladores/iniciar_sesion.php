@@ -16,13 +16,11 @@ if(mysqli_num_rows($resultado) > 0  ){
     $_SESSION['idusuario'] =$datos['id_usuario'];
     $_SESSION['username'] = $datos['nombre'];
     $_SESSION['fk_rol'] = $datos['fk_rol'];
-    if($_SESSION['fk_rol'] == 2){
+    if($_SESSION['fk_rol'] == 2 || $_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3 ){
     header('location: ../index.php');  
-  }
-    else{
-        header('location:../formulario_producto.php');
     }
- }else{
-    header('location: ../inicio');
+   
+    }else{
+   echo"Usuario no encontrado";
 }
 ?>

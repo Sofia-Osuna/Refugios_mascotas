@@ -35,7 +35,7 @@ include("menu.php");
                        
        <!-- Botones más abajo -->
 <div class="d-flex justify-content-center gap-3" style="margin-top: 400px;">
-    <button type="button" class="btn btn-danger fw-bold px-4">Agregar más preguntas</button>
+    <button type="button" class="btn btn-danger fw-bold px-4" href="Agregar_Preguntas">Agregar más preguntas</button>
     <button type="button" class="btn" style="background-color: #FCCA46; color: #333; font-weight: bold; padding: 10px 20px;">Editar</button>
 </div>
 

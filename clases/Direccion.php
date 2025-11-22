@@ -12,13 +12,13 @@
 
         }
         public function getConexion() {
-        return $this->conexion;
+            return $this->conexion;
         }
 
-        function mostrar(){
-            $consulta = "SELECT * FROM estado;";
-            $respuesta = $this->conexion->query($consulta);
-            return $respuesta;
+        function mostrarE(){
+            //mostrar estado xdxd
+            $consulta = "SELECT nombre, id_estado FROM estado ORDER BY nombre ASC";
+            $respuesta = $this -> conexion -> query($consulta);
         }
 
     }

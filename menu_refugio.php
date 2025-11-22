@@ -1,3 +1,13 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+include('clases/Refugio.php');
+
+$clase = new Refugio();
+$id = $_GET['id'];
+$refugio = $clase->Id($id);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +48,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link fw-semibold text-dark px-3s" href="#">
+                    <a class="nav-link fw-semibold text-dark px-3s" href="Lista_mascota.php?id_refugio=<?= $refugio['id_refugio'] ?>">
                         Historias Felices
                     </a>
                 </li>

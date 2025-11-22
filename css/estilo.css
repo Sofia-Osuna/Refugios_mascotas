@@ -402,3 +402,21 @@ h1, h2, h3, h4, h5, h6 {
     background-color: #c82333;
     color: white;
 }
+
+/*Boton naranja generico para reutilizar, por favor usenlooooo AAAAAA*/
+.btn-naranja {
+    background-color: #FE7F2D;
+    border-color: #FE7F2D;
+    color: white;
+}
+
+.btn-naranja:hover {
+    background-color: #e56d1f; 
+    border-color: #e56d1f;
+    color: white;
+}
+
+.btn-naranja:active {
+    background-color: #cc5d1a; 
+    border-color: #cc5d1a;
+}

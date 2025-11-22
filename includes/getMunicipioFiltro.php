@@ -1,4 +1,8 @@
 <?php
+/*
+para hacer el filtadro de especie vas a necesitar hacer un archivo como este xdxd, copias y cambias 
+-sofi
+*/ 
     error_reporting(E_ALL); //esto es para que me muestre los errores
     ini_set('display_errors', 1);
 
@@ -11,7 +15,7 @@
 
     $html = " <option value='0'>Selecciona un municipio</option>";
     while($fila = $resultadom -> fetch_assoc()){
-        $html .= " <option value=".$fila['id_municipio'].">".$fila['nombre']."</option>";
+        $html .= " <option value=".$fila['nombre'].">".$fila['nombre']."</option>";
         
     }
     echo $html;
