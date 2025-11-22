@@ -9,13 +9,13 @@
     $foto = $_FILES["foto"]["name"];
     $tmp = $_FILES["foto"]["tmp_name"];
 
-    include('../clases/Usuario.php');
+    require_once('../clases/Usuario.php');
     if($foto != ""){
         $ruta = "../img_usuarios/" . $foto;
         move_uploaded_file($tmp, $ruta);
     } else {
         // Mantener foto anterior
-        $clase_temp = new Mascota();
+        $clase_temp = new Usuario();
         $mascota_actual = $clase_temp->obtenerPorId($id_usuario);
         $foto = $mascota_actual['foto'];
     }
