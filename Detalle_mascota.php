@@ -120,7 +120,8 @@ $mascota = $mascota_obj->obtenerMascota($id);
                         </svg>
                         Adoptar
                     </a>
-                    
+                       <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)){ ?>
+
                     <a href="editar_mascota.php?id=<?= $mascota['id_mascotas'] ?>&id_refugio=<?= $id_refugio ?>" 
                        class="btn text-white px-4" 
                        style="background-color: #85B79D; border-radius: 10px;">
@@ -129,7 +130,10 @@ $mascota = $mascota_obj->obtenerMascota($id);
                         </svg>
                         Editar
                     </a>
-                    
+                                        <?php } ?>
+
+                                           <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)){ ?>
+
                     <a href="controladores/eliminar_mascota.php?id=<?= $mascota['id_mascotas'] ?>&id_refugio=<?= $id_refugio ?>" 
                        class="btn btn-danger px-4"
                        onclick="return confirm('¿Estás seguro de eliminar esta mascota?')">
@@ -139,6 +143,8 @@ $mascota = $mascota_obj->obtenerMascota($id);
                         </svg>
                         Eliminar
                     </a>
+                                                            <?php } ?>
+
                 </div>
             </div>
             

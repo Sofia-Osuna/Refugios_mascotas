@@ -28,17 +28,22 @@ $refugio = $clase->Id($id);
     
         <div class="collapse navbar-collapse justify-content-center" id="navbarRefugio">
             <ul class="navbar-nav gap-5">
-        
+                  <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)){ ?>
+
                 <li class="nav-item">
                     <a class="nav-link fw-semibold text-dark px-3" href="editar_refugio.php?id=<?= $refugio['id_refugio'] ?>">
                         Editar Refugio
                     </a>
                 </li>
-        
+                            <?php } ?>
+                  <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)){ ?>
+
                 <li class="nav-item">
                     <a class="nav-link fw-semibold text-dark px-3" href="controladores/eliminar_refugio.php?id=<?= $refugio['id_refugio'] ?>" onclick="return confirm('¿Estás seguro de eliminar este refugio?')">
                         Eliminar Refugio
                     </a>
+                                                <?php } ?>
+
                 </li>
         
                 <li class="nav-item">

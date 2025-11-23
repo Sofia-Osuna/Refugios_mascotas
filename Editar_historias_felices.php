@@ -45,7 +45,7 @@ include('menu.php');
 <?php } ?>
         <div class="row justify-content-center"> 
 
-        Foto actual: <?= $historia['foto'] ?><br>
+                                        <br><img src="imagenes_animales/<?= $historia['foto'] ?>" width="100" style="margin: 10px 0;"><br>
         Nueva foto (opcional):<br>
                                     <label for="foto" class="form-label fw-bold">foto:</label>
                                     <input type="file" class="form-control" id="foto" name="foto" accept="image/*">

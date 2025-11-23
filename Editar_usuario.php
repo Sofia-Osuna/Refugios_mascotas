@@ -1,28 +1,19 @@
-<?php
+<?php 
 include('menu.php');
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-$id_usuario = $_GET['id'] ?? null;
-
 include('clases/Usuario.php');
-$clase = new Usuario();
-$usuario = $clase->obtenerPorId($id_usuario);
 
+$clase = new Usuario();
+$id = $_GET['id'];
+$usuario = $clase->obtenerPorId($id);
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar información del usuario</title>
-
-    <!-- Bootstrap CSS -->
+    <title>Editar cuenta</title>
     <link href="css/bootstrap.css" rel="stylesheet">
-    
-    <!-- Tu CSS personalizado -->
     <link rel="stylesheet" href="css/estilo.css">
-    
 </head>
 <body>
     <div class="container my-5">
@@ -30,7 +21,7 @@ $usuario = $clase->obtenerPorId($id_usuario);
             <div class="col-12 col-lg-8 col-xl-6">
                 <div class="card shadow-sm">
                     <div class="card-header" style="background-color: #85B79D;">
-                        <h3 class="mb-0 text-white">Editar información del usuario</h3>
+                        <h3 class="mb-0 text-white">Editar cuenta</h3>
                     </div>
                     <div class="card-body p-4">
                         <form action="controladores/actualizar_usuario.php" method="POST" enctype="multipart/form-data">
@@ -39,50 +30,66 @@ $usuario = $clase->obtenerPorId($id_usuario);
                             <div class="row">
                                 <div class="col-12 mb-3">
                                     <label for="nombre" class="form-label fw-bold">Nombre de usuario:</label>
-                                    <input type="text" class="form-control" id="nombre" name="nombre" value="<?= htmlspecialchars($usuario['nombre']) ?>" required>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" value="<?= $usuario['nombre'] ?>" required>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-12 mb-3">
                                     <label for="password" class="form-label fw-bold">Contraseña:</label>
-                                    <input type="password" class="form-control" id="password" name="password" value="<?= htmlspecialchars($usuario['password']) ?>" required>
-                                    <!-- Para implementar mostrar/ocultar contraseña con JavaScript -->
+                                    <input type="password" class="form-control" id="password" name="password" value="<?= $usuario['password'] ?>" required>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-12 mb-3">
-                                    <label for="foto" class="form-label fw-bold">Foto de perfil:</label>
+                                    <label for="foto" class="form-label fw-bold">Foto:</label>
+                                    <?php if($usuario['foto'] != 'sin_foto.jpg'){ ?>
+                                        <br><img src="img_usuarios/<?= $usuario['foto'] ?>" width="100" style="margin: 10px 0;"><br>
+                                    <?php } ?>
                                     <input type="file" class="form-control" id="foto" name="foto" accept="image/*">
+                                    <small class="text-muted">Dejar vacío para mantener la foto actual</small>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-12 mb-3">
-                                    <label for="correo" class="form-label fw-bold">Correo electrónico:</label>
-                                    <input type="text" class="form-control" id="correo" name="correo" value="<?= htmlspecialchars($usuario['correo']) ?>" required>
+                                    <label for="correo" class="form-label fw-bold">Correo electronico:</label>
+                                    <input type="text" class="form-control" id="correo" name="correo" value="<?= $usuario['correo'] ?>" required>
                                 </div>
                             </div>
+
+                            <!-- SELECTOR DE ROL - Solo visible para ADMIN -->
+                            <?php if(isset($_SESSION['fk_rol']) && $_SESSION['fk_rol'] == 1){ ?>
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <label for="rol" class="form-label fw-bold">Tipo de cuenta:</label>
+                                        <select class="form-select" id="rol" name="rol" required>
+                                            <option value="1" <?= $usuario['fk_rol'] == 1 ? 'selected' : '' ?>> Administrador</option>
+                                            <option value="2" <?= $usuario['fk_rol'] == 2 ? 'selected' : '' ?>> Usuario normal</option>
+                                            <option value="3" <?= $usuario['fk_rol'] == 3 ? 'selected' : '' ?>> Gestor de refugio</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            <?php } else { ?>
+                                <!-- Si no es admin, mantener el rol actual -->
+                                <input type="hidden" name="rol" value="<?= $usuario['fk_rol'] ?>">
+                            <?php } ?>
 
                             <div class="d-grid gap-2 mt-4">
                                 <button type="submit" class="btn btn-lg text-white" style="background-color: #FCCA46;">
-                                    Guardar cambios
+                                    Actualizar cuenta
                                 </button>
                             </div>
+
                         </form>
-                        
-                   
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Bootstrap JS -->
 </body>
 </html>
 <?php 
-include('Pie_pagina.php');
+include('Pie_pagina.php')
 ?>

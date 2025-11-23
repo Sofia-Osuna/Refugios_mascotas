@@ -1,19 +1,14 @@
 <?php 
 include('menu.php');
- ?>
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear cuenta</title>
-
-    <!-- Bootstrap CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
-    
-    <!-- Tu CSS personalizado -->
     <link rel="stylesheet" href="css/estilo.css">
-    
 </head>
 <body>
     <div class="container my-5">
@@ -53,6 +48,31 @@ include('menu.php');
                                     <input type="text" class="form-control" id="correo" name="correo" required>
                                 </div>
                             </div>
+<!-- SELECTOR DE ROL -->
+<?php if(isset($_SESSION['fk_rol']) && $_SESSION['fk_rol'] == 1){ ?>
+    <!-- Solo el ADMIN ve todas las opciones -->
+    <div class="row">
+        <div class="col-12 mb-3">
+            <label for="rol" class="form-label fw-bold">Tipo de cuenta:</label>
+            <select class="form-select" id="rol" name="rol" required>
+                <option value="1"> Administrador</option>
+                <option value="2"> Usuario normal</option>
+                <option value="3"> Gestor de refugio</option>
+            </select>
+        </div>
+    </div>
+<?php } else { ?>
+    <!-- Usuario sin cuenta puede elegir entre usuario normal o gestor -->
+    <div class="row">
+        <div class="col-12 mb-3">
+            <label for="rol" class="form-label fw-bold">Tipo de cuenta:</label>
+            <select class="form-select" id="rol" name="rol" required>
+                <option value="2"> Usuario normal</option>
+                <option value="3"> Gestor de refugio</option>
+            </select>
+        </div>
+    </div>
+<?php } ?>
 
                             <div class="d-grid gap-2 mt-4">
                                 <button type="submit" class="btn btn-lg text-white" style="background-color: #FCCA46;">
@@ -66,11 +86,8 @@ include('menu.php');
             </div>
         </div>
     </div>
-
-    <!-- Bootstrap JS -->
-
 </body>
 </html>
 <?php 
 include('Pie_pagina.php')
- ?>
+?>
