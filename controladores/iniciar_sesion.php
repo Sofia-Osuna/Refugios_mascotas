@@ -1,26 +1,35 @@
 <?php
-    $user = $_POST["user"];
-    $contra = $_POST["contra"];
+session_start();
 
+$user = $_POST["user"];
+$contra = $_POST["contra"];
 
-    include ("../clases/Usuario.php");
+// Validar que no estén vacíos
+if(empty($user) || empty($contra)){
+    header('location: ../Inicio_sesion.php?error=vacio');
+    exit;
+}
 
-    $clase = new Usuario();
+include ("../clases/Usuario.php");
 
-$resultado = $clase->login($user,$contra);
+$clase = new Usuario();
+$resultado = $clase->login($user, $contra);
 $datos = mysqli_fetch_assoc($resultado);
 
-if(mysqli_num_rows($resultado) > 0  ){ 
-    session_start();
-    //variable de sesion
-    $_SESSION['idusuario'] =$datos['id_usuario'];
+if(mysqli_num_rows($resultado) > 0){
+    // Login exitoso
+    $_SESSION['idusuario'] = $datos['id_usuario'];
     $_SESSION['username'] = $datos['nombre'];
+    $_SESSION['correo'] = $datos['correo'];
     $_SESSION['fk_rol'] = $datos['fk_rol'];
-    if($_SESSION['fk_rol'] == 2 || $_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3 ){
-    header('location: ../index.php');  
+    
+    if($_SESSION['fk_rol'] == 2){
+        header('location: ../index.php');
+    } else {
+        header('location: ../index.php');
     }
-   
-    }else{
-   echo"Usuario no encontrado";
+} else {
+    // Usuario o contraseña incorrectos
+    header('location: ../Inicio_sesion.php?error=incorrecto');
 }
 ?>

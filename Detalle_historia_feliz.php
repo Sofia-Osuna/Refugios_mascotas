@@ -129,7 +129,8 @@ $consulta_mascota = "SELECT nombre FROM mascotas WHERE id_mascotas = $mascota_id
                         Volver a historias
                     </a>
                 </div>
-                
+                                                                               <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)){ ?>
+
                 <div class="d-flex gap-2">
                     <a href="editar_historias_felices.php?id=<?= $historia['id_historia_feliz'] ?>" 
                        class="btn text-white px-4" 
@@ -139,7 +140,10 @@ $consulta_mascota = "SELECT nombre FROM mascotas WHERE id_mascotas = $mascota_id
                         </svg>
                         Editar
                     </a>
-                    
+                                                                                                    <?php } ?>
+
+                                                               <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)){ ?>
+
                     <a href="controladores/eliminar_historias_f.php?id=<?= $historia['id_historia_feliz'] ?>" 
                        class="btn btn-danger px-4"
                        onclick="return confirm('¿Estás seguro de eliminar esta historia feliz?')">
@@ -149,6 +153,8 @@ $consulta_mascota = "SELECT nombre FROM mascotas WHERE id_mascotas = $mascota_id
                         </svg>
                         Eliminar
                     </a>
+                                                                                <?php } ?>
+
                 </div>
             </div>
             

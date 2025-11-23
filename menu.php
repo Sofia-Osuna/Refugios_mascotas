@@ -13,15 +13,13 @@ session_start();
 </head>
 <body>
 
-
-
 <nav class="navbar navbar-dark navbar-custom">
     <div class="container-fluid">
         
         <!-- Logo -->
         <a class="navbar-brand d-flex align-items-center" href="index.php">
-            <img src="img_sistema/logo.png" alt="logo" style="height: 50px" class="me-2">
-            <span class="fw-bold">RefuPETS</span>
+            <img src="img_sistema/logo.png" alt="logo" class="navbar-logo me-2">
+            <span class="navbar-logo-text">RefuPETS</span>
         </a>
 
         <!-- Botón hamburguesa -->
@@ -30,7 +28,7 @@ session_start();
         </button>
         
         <!-- Menú colapsable -->
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="collapse navbar-collapse menu-mobile-container" id="navbarNav">
             <div class="row w-100 mt-3">
                 
                 <!-- Sección Usuario -->
@@ -38,20 +36,22 @@ session_start();
                     <p class="menu-section-title"> Usuario</p>
                     
                     <?php if(isset($_SESSION['username'])){ ?>
-                        <!-- Si hay sesión iniciada -->
                         <div class="user-welcome mb-3">
                             Bienvenido, <?= $_SESSION['username'] ?>
                         </div>
                         <ul class="navbar-nav">
                             <li class="nav-item"><a class="nav-link" href="Datospersonales.php"> Ver perfil</a></li>
-                            <li class="nav-item"><a class="nav-link" href="Lista_usuario.php"> Lista de usuarios</a></li>
+                            
+                            <?php if($_SESSION['fk_rol'] == 1){ ?>
+                                <li class="nav-item"><a class="nav-link" href="Lista_usuario.php"> Lista de usuarios</a></li>
+                            <?php } ?>
+                            
                             <li class="nav-item mt-2">
                                 <a class="btn-logout" href="controladores/cerrar_sesion.php"> Cerrar sesión</a>
                             </li>
                         </ul>
                     <?php } else { ?>
-                        <!-- Si NO hay sesión -->
-                        <a href="Inicio_sesion.php" class="btn btn-login w-100">
+                        <a href="Inicio_sesion.php" class="nav-link">
                              Iniciar sesión
                         </a>
                     <?php } ?>
@@ -62,8 +62,14 @@ session_start();
                     <p class="menu-section-title"> Refugios</p>
                     <ul class="navbar-nav">
                         <li class="nav-item"><a class="nav-link" href="Lista_refugio.php"> Ver refugios</a></li>
-                        <?php if(isset($_SESSION['username'])){ ?>
+                        
+                        <!-- Solo GESTOR (3) y ADMIN (1) pueden crear refugio -->
+                        <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)){ ?>
                             <li class="nav-item"><a class="nav-link" href="Formulario_refugio.php"> Crear refugio</a></li>
+                        <?php } ?>
+                        
+                        <!-- Solo GESTOR (3) puede ver "Mi refugio" -->
+                        <?php if(isset($_SESSION['fk_rol']) && $_SESSION['fk_rol'] == 3){ ?>
                             <li class="nav-item"><a class="nav-link" href="detalles_refugio.php"> Mi refugio</a></li>
                         <?php } ?>
                     </ul>
@@ -73,7 +79,11 @@ session_start();
                 <div class="col-md-4 mb-3">
                     <p class="menu-section-title"> Más opciones</p>
                     <ul class="navbar-nav">
-                        <li class="nav-item"><a class="nav-link" href="Lista_especie.php"> Ver especies</a></li>
+                        <!-- Solo ADMIN (1) puede ver especies -->
+                        <?php if(isset($_SESSION['fk_rol']) && $_SESSION['fk_rol'] == 1){ ?>
+                            <li class="nav-item"><a class="nav-link" href="Lista_especie.php"> Ver especies</a></li>
+                        <?php } ?>
+                        
                         <li class="nav-item"><a class="nav-link" href="Lista_historia_feliz.php"> Historias felices</a></li>
                         <li class="nav-item"><a class="nav-link" href="index.php"> Inicio</a></li>
                     </ul>
