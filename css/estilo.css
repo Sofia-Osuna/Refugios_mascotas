@@ -420,3 +420,25 @@ h1, h2, h3, h4, h5, h6 {
     background-color: #cc5d1a; 
     border-color: #cc5d1a;
 }
+
+/*Esto es para el formularo de adopcion, se usan en el detalle formulario*/
+.header-formulario {
+    background: linear-gradient(135deg, #85B79D 0%, #419D78 100%);
+}
+.pregunta-card {
+    border-left: 4px solid #85B79D;
+    transition: all 0.3s ease;
+}
+.pregunta-card:hover {
+    transform: translateY(-2px);
+}
+.numero-pregunta {
+    background-color: #85B79D;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}

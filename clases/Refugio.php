@@ -123,5 +123,11 @@ function Id($id_refugio){
     
     return true;
 }
+ //KKAAKKAKAKKA de aqui saco todos los datos del formulario 
+    function verificar($id_refugio){
+        $consulta = "SELECT * FROM formulario_refugio WHERE fk_refugio = $id_refugio AND estatus = 1";
+        $respuesta = $this -> conexion -> query($consulta);
+        return $respuesta;
+    }
 }
 ?>
