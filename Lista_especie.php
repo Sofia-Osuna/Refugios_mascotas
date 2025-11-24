@@ -19,6 +19,10 @@ $resultado = $clase->mostrar();
     
     <!-- Tu CSS personalizado -->
     <link rel="stylesheet" href="css/estilo.css">
+    
+    <!-- jQuery -->
+    <script src="js/jquery-3.7.1.js"></script>
+    <script src="js/buscar_especie.js"></script>
 </head>
 <body>
 
@@ -63,11 +67,11 @@ $resultado = $clase->mostrar();
                 Filtrar especies
             </h5>
             
-            <form method="GET" action="">
+            <form>
                 <div class="row g-3">
                     
                     <!-- Filtro por nombre -->
-                    <div class="col-md-10">
+                    <div class="col-12 col-md-6 col-lg-4">
                         <label for="filtro_nombre" class="form-label fw-semibold">Buscar por nombre</label>
                         <input type="text" 
                                class="form-control" 
@@ -76,19 +80,15 @@ $resultado = $clase->mostrar();
                                placeholder="Ej: Perro, Gato, etc.">
                     </div>
                     
-                    <!-- Botones -->
-                    <div class="col-md-2 d-flex align-items-end gap-2">
-                        <button type="submit" class="btn text-white flex-grow-1" style="background-color: #FE7F2D;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    <!-- Botón limpiar -->
+                    <div class="col-12 col-md-6 col-lg-5 d-flex align-items-end">
+                        <button type="button" id="btn-limpiar" class="btn btn-naranja w-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise me-1" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
                             </svg>
+                            Limpiar
                         </button>
-                        <a href="Lista_especie.php" class="btn btn-outline-secondary flex-grow-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                            </svg>
-                        </a>
                     </div>
                     
                 </div>
@@ -97,12 +97,12 @@ $resultado = $clase->mostrar();
     </div>
 
     <!-- Grid de especies -->
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="grid-especies">
         
         <?php if(count($resultado) > 0): ?>
             <?php foreach($resultado as $especie): ?>
         
-            <div class="col">
+            <div class="col especie-item">
                 <div class="card h-100 shadow-sm border-0 hover-card">
                     
                     <!-- Icono representativo de la especie -->
@@ -117,18 +117,9 @@ $resultado = $clase->mostrar();
                     <div class="card-body d-flex flex-column text-center">
                         
                         <!-- Nombre de la especie -->
-                        <h5 class="card-title fw-bold mb-3" style="color: #2c3e50;">
+                        <h5 class="card-title fw-bold mb-3 especie-nombre" style="color: #2c3e50;">
                             <?= htmlspecialchars($especie['nombre']) ?>
                         </h5>
-                        
-                        <!-- Información adicional (si estuviera disponible) -->
-                        <!--
-                        <div class="mb-3">
-                            <small class="text-muted">
-                                Información adicional aquí
-                            </small>
-                        </div>
-                        -->
                         
                         <!-- Botones de acción -->
                         <div class="d-grid gap-2 mt-auto">
@@ -161,7 +152,15 @@ $resultado = $clase->mostrar();
         
     </div>
     
-    <!-- Mensaje si no hay especies -->
+    <!-- Mensaje si no hay resultados en el filtro -->
+    <div id="mensaje-sin-resultados" class="text-center py-5" style="display: none;">
+        <img src="img_sistema/_-ezgif.com-loop-count.gif" alt="rata" class="img-fluid mb-3"
+        style="max-width: 300px; width: 100%; height: auto; border-radius: 10px;"> 
+        <h4 class="text-muted fw-bold">No se encontró ninguna especie</h4>
+        <p class="text-muted">Intenta de nuevo con otros filtros</p>
+    </div>
+    
+    <!-- Mensaje si no hay especies registradas -->
     <?php if(empty($resultado)): ?>
     <div class="text-center py-5">
         <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="#ccc" class="bi bi-tags mb-3" viewBox="0 0 16 16">
@@ -170,12 +169,17 @@ $resultado = $clase->mostrar();
         </svg>
         <h4 class="text-muted">No hay especies registradas</h4>
         <p class="text-muted">Crea la primera especie del sistema</p>
+        <a href="formulario_especie.php" class="btn text-white mt-3" style="background-color: #FCCA46;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle me-1" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+            </svg>
+            Agregar Primera Especie
+        </a>
     </div>
     <?php endif; ?>
 
 </div>
-
-<!-- Bootstrap JS -->
 
 </body>
 </html>

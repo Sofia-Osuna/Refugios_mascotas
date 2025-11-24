@@ -16,17 +16,14 @@ class Mascota{
     $respuesta = $this->conexion->query($consulta);
     return $respuesta;
 }
-  function mostrarPorRefugio($id_refugio){
-    if($id_refugio == null || $id_refugio == ''){
-        return [];
-    }
+function mostrarPorRefugio($id_refugio){
+    $consulta = "SELECT m.*, e.nombre as nombre_especie 
+                 FROM mascotas m, especie e 
+                 WHERE m.fk_especie = e.id_especie 
+                 AND m.fk_refugio = $id_refugio 
+                 AND m.estatus = 1";
     
-    $consulta = "SELECT * FROM mascotas WHERE fk_refugio = $id_refugio AND estatus = 1";
     $respuesta = $this->conexion->query($consulta);
-    
-    if(!$respuesta){
-        return [];
-    }
     
     $mascotas = [];
     while($row = $respuesta->fetch_assoc()){

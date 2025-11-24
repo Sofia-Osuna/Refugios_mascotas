@@ -15,10 +15,10 @@ $usuarios = $clase->mostrar();
     <title>Lista de Usuarios</title>
     
     <link href="css/bootstrap.css" rel="stylesheet">
-    
-   <link rel="stylesheet" href="css/estilo.css">
+    <link rel="stylesheet" href="css/estilo.css">
     
     <script src="js/jquery-3.7.1.js"></script>
+    <script src="js/buscar_usuario.js"></script>
 </head>
 <body>
 
@@ -51,6 +51,7 @@ $usuarios = $clase->mostrar();
         </div>
     <?php endif; ?>
 
+    <!-- Sección de filtros -->
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-body p-4">
             <h5 class="fw-bold mb-3">
@@ -60,10 +61,11 @@ $usuarios = $clase->mostrar();
                 Filtrar usuarios
             </h5>
             
-            <form method="GET" action="">
+            <form>
                 <div class="row g-3">
                     
-                    <div class="col-md-6">
+                    <!-- Filtro por nombre -->
+                    <div class="col-12 col-md-6 col-lg-4">
                         <label for="filtro_nombre" class="form-label fw-semibold">Buscar por nombre</label>
                         <input type="text" 
                                class="form-control" 
@@ -72,7 +74,8 @@ $usuarios = $clase->mostrar();
                                placeholder="Ej: Juan Pérez">
                     </div>
                     
-                    <div class="col-md-4">
+                    <!-- Filtro por correo -->
+                    <div class="col-12 col-md-6 col-lg-4">
                         <label for="filtro_correo" class="form-label fw-semibold">Correo electrónico</label>
                         <input type="text" 
                                class="form-control" 
@@ -81,18 +84,15 @@ $usuarios = $clase->mostrar();
                                placeholder="Ej: usuario@ejemplo.com">
                     </div>
                     
-                    <div class="col-md-2 d-flex align-items-end gap-2">
-                        <button type="submit" class="btn text-white flex-grow-1" style="background-color: #FE7F2D;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    <!-- Botón limpiar -->
+                    <div class="col-12 col-md-6 col-lg-4 d-flex align-items-end">
+                        <button type="button" id="btn-limpiar" class="btn btn-naranja w-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise me-1" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
                             </svg>
+                            Limpiar
                         </button>
-                        <a href="Lista_usuario.php" class="btn btn-outline-secondary flex-grow-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                            </svg>
-                        </a>
                     </div>
                     
                 </div>
@@ -100,12 +100,13 @@ $usuarios = $clase->mostrar();
         </div>
     </div>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <!-- Grid de usuarios -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="grid-usuarios">
         
         <?php if(count($usuarios) > 0): ?>
             <?php foreach($usuarios as $usuario): ?>
         
-            <div class="col">
+            <div class="col usuario-item">
                 <div class="card h-100 shadow-sm border-0 hover-card">
                     
                     <div style="height: 200px; overflow: hidden;">
@@ -126,12 +127,12 @@ $usuarios = $clase->mostrar();
                     
                     <div class="card-body d-flex flex-column">
                         
-                        <h5 class="card-title fw-bold mb-2" style="color: #2c3e50;">
+                        <h5 class="card-title fw-bold mb-2 usuario-nombre" style="color: #2c3e50;">
                             <?= htmlspecialchars($usuario['nombre']) ?>
                         </h5>
                         
                         <div class="mb-3">
-                            <small class="text-muted d-flex align-items-center">
+                            <small class="text-muted d-flex align-items-center usuario-correo">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FCCA46" class="bi bi-envelope-fill me-1" viewBox="0 0 16 16">
                                     <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
                                 </svg>
@@ -178,6 +179,15 @@ $usuarios = $clase->mostrar();
         
     </div>
     
+    <!-- Mensaje si no hay resultados en el filtro -->
+    <div id="mensaje-sin-resultados" class="text-center py-5" style="display: none;">
+        <img src="img_sistema/_-ezgif.com-loop-count.gif" alt="rata" class="img-fluid mb-3"
+        style="max-width: 300px; width: 100%; height: auto; border-radius: 10px;"> 
+        <h4 class="text-muted fw-bold">No se encontró ningún usuario</h4>
+        <p class="text-muted">Intenta de nuevo con otros filtros</p>
+    </div>
+    
+    <!-- Mensaje si no hay usuarios -->
     <?php if(empty($usuarios)): ?>
     <div class="text-center py-5">
         <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="#ccc" class="bi bi-people mb-3" viewBox="0 0 16 16">
@@ -185,11 +195,17 @@ $usuarios = $clase->mostrar();
         </svg>
         <h4 class="text-muted">No hay usuarios registrados</h4>
         <p class="text-muted">Crea el primer usuario del sistema</p>
+        <a href="Formulario_usuario.php" class="btn text-white mt-3" style="background-color: #FCCA46;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle me-1" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+            </svg>
+            Agregar Primer Usuario
+        </a>
     </div>
     <?php endif; ?>
 
 </div>
-
 
 </body>
 </html>
