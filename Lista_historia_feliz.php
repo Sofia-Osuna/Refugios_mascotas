@@ -30,8 +30,7 @@ $historias = $historia_obj->mostrar();
             <p class="text-muted">Conoce las hermosas historias de mascotas que encontraron un hogar</p>
         </div>
         <div class="col-auto">
-                      <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)){ ?>
-
+            <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)): ?>
             <a href="Formulario_historias_felices.php" class="btn btn-lg text-white" style="background-color: #FCCA46; border-radius: 10px;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle me-2" viewBox="0 0 16 16">
                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -39,52 +38,7 @@ $historias = $historia_obj->mostrar();
                 </svg>
                 Nueva Historia
             </a>
-            <?php } ?>
-
-        </div>
-    </div>
-
-    <!-- Sección de filtros -->
-    <div class="card shadow-sm border-0 mb-4">
-        <div class="card-body p-4">
-            <h5 class="fw-bold mb-3">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-funnel me-2" viewBox="0 0 16 16">
-                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"/>
-                </svg>
-                Filtrar historias
-            </h5>
-            
-            <form method="GET" action="">
-                <div class="row g-3">
-                    
-                    <!-- Filtro por nombre de mascota -->
-                    <div class="col-md-8">
-                        <label for="filtro_nombre" class="form-label fw-semibold">Buscar por nombre de mascota</label>
-                        <input type="text" 
-                               class="form-control" 
-                               id="filtro_nombre" 
-                               name="filtro_nombre" 
-                               placeholder="Ej: Max, Luna, etc.">
-                    </div>
-                    
-                    <!-- Botones -->
-                    <div class="col-md-4 d-flex align-items-end gap-2">
-                        <button type="submit" class="btn text-white flex-grow-1" style="background-color: #FE7F2D;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search me-1" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                            </svg>
-                            Buscar
-                        </button>
-                        <a href="Lista_historias_felices.php" class="btn btn-outline-secondary">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                            </svg>
-                        </a>
-                    </div>
-                    
-                </div>
-            </form>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -157,10 +111,8 @@ $historias = $historia_obj->mostrar();
             <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
         </svg>
         <h4 class="text-muted">No hay historias felices registradas</h4>
-   <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)){ ?>
+        <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)): ?>
         <p class="text-muted">Comparte la primera historia de adopción exitosa</p>
-                           
-
         <a href="Formulario_historias_felices.php" class="btn text-white mt-3" style="background-color: #FCCA46;">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle me-1" viewBox="0 0 16 16">
                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -168,14 +120,11 @@ $historias = $historia_obj->mostrar();
             </svg>
             Crear Primera Historia
         </a>
-                    <?php } ?>
-
+        <?php endif; ?>
     </div>
     <?php endif; ?>
 
 </div>
-
-<!-- Bootstrap JS -->
 
 </body>
 </html>
