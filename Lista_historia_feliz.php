@@ -4,6 +4,7 @@ require_once('clases/Historias_f.php');
 
 $historia_obj = new HistoriaFeliz();
 $historias = $historia_obj->mostrar();
+//aqui falta la id especifica de un refugiooo
 ?>
 
 <!DOCTYPE html>

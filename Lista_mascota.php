@@ -1,7 +1,8 @@
 <?php
 require_once('clases/Mascota.php');
-include('menu.php');
 
+include('menu.php');
+include('menu_refugio.php');
 $id_refugio = $_GET['id_refugio'];
 
 $mascota_obj_filtro = new Mascota();
