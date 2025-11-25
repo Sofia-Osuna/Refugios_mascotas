@@ -2,11 +2,19 @@
 include('menu.php');
 include('menu_refugio.php'); // Este ya tiene el id_refugio
 require_once('clases/Historias_f.php');
+require_once('clases/refugio.php'); // Asegúrate de incluir la clase refugio
 
 // Obtener el id_refugio de la URL
 $id_refugio = $_GET['id_refugio'] ?? null;
 
 $historia_obj = new HistoriaFeliz();
+$refugio_obj = new Refugio(); // Instancia de la clase refugio
+
+// Verificar si el usuario actual es dueño de este refugio
+$es_dueño = false;
+if(isset($_SESSION['usuario_id']) && $id_refugio) {
+    $es_dueño = $refugio_obj->esDelUsuario($id_refugio, $_SESSION['usuario_id']);
+}
 
 // Si hay id_refugio, mostrar solo historias de ESE refugio
 // Si no hay id_refugio, mostrar TODAS las historias
@@ -39,14 +47,36 @@ $historias = $historia_obj->mostrar($id_refugio);
             <p class="text-muted">Conoce las hermosas historias de mascotas que encontraron un hogar</p>
         </div>
         <div class="col-auto">
-            <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)): ?>
-    <a href="Formulario_historias_felices.php?id_refugio=<?= $id_refugio ?>" class="btn btn-lg text-white" style="background-color: #FCCA46; border-radius: 10px;">
+            <?php 
+            // Mostrar botón SOLO si:
+            // 1. El usuario está logueado Y es administrador (rol 1) O dueño del refugio
+            // 2. Si hay id_refugio, solo el dueño puede crear historias para ese refugio
+            if(isset($_SESSION['fk_rol'])): 
+                $mostrar_boton = false;
+                
+                if($_SESSION['fk_rol'] == 1) {
+                    // Administrador puede crear historias en cualquier refugio
+                    $mostrar_boton = true;
+                } elseif($id_refugio && $es_dueño) {
+                    // Dueño del refugio específico
+                    $mostrar_boton = true;
+                } elseif(!$id_refugio && $_SESSION['fk_rol'] == 3) {
+                    // Rol 3 sin refugio específico (mostrar selector de refugio?)
+                    $mostrar_boton = true;
+                }
+                
+                if($mostrar_boton):
+            ?>
+            <a href="Formulario_historias_felices.php?id_refugio=<?= $id_refugio ?>" 
+               class="btn btn-lg text-white" 
+               style="background-color: #FCCA46; border-radius: 10px;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle me-2" viewBox="0 0 16 16">
                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                 </svg>
                 Nueva Historia
             </a>
+            <?php endif; ?>
             <?php endif; ?>
         </div>
     </div>
@@ -92,9 +122,22 @@ $historias = $historia_obj->mostrar($id_refugio);
                             ?>
                         </p>
                         
+                        <!-- Información del refugio (si estamos viendo todas las historias) -->
+                        <?php if(!$id_refugio && !empty($historia['nombre_refugio'])): ?>
+                        <div class="mb-3">
+                            <small class="text-muted">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-house me-1" viewBox="0 0 16 16">
+                                    <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
+                                </svg>
+                                Refugio: <?= htmlspecialchars($historia['nombre_refugio']) ?>
+                            </small>
+                        </div>
+                        <?php endif; ?>
+                        
                         <!-- Botón ver más información -->
                         <div class="d-grid gap-2 mt-auto">
-<a href="Detalle_historia_feliz.php?id=<?= $historia['id_historia_feliz'] ?>&id_refugio=<?= $id_refugio ?>"                                class="btn text-white" 
+                            <a href="Detalle_historia_feliz.php?id=<?= $historia['id_historia_feliz'] ?>&id_refugio=<?= $id_refugio ?>" 
+                               class="btn text-white" 
                                style="background-color: #85B79D; border-radius: 8px;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book me-1" viewBox="0 0 16 16">
                                     <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
@@ -119,15 +162,32 @@ $historias = $historia_obj->mostrar($id_refugio);
             <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
         </svg>
         <h4 class="text-muted">No hay historias felices registradas</h4>
-        <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)): ?>
+        <?php 
+        // Mostrar botón de crear primera historia con la misma lógica
+        if(isset($_SESSION['fk_rol'])): 
+            $mostrar_boton_vacio = false;
+            
+            if($_SESSION['fk_rol'] == 1) {
+                $mostrar_boton_vacio = true;
+            } elseif($id_refugio && $es_dueño) {
+                $mostrar_boton_vacio = true;
+            } elseif(!$id_refugio && $_SESSION['fk_rol'] == 3) {
+                $mostrar_boton_vacio = true;
+            }
+            
+            if($mostrar_boton_vacio):
+        ?>
         <p class="text-muted">Comparte la primera historia de adopción exitosa</p>
-         <a href="Formulario_historias_felices.php?id_refugio=<?= $id_refugio ?>" class="btn text-white mt-3" style="background-color: #FCCA46;">
+        <a href="Formulario_historias_felices.php?id_refugio=<?= $id_refugio ?>" 
+           class="btn text-white mt-3" 
+           style="background-color: #FCCA46;">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle me-1" viewBox="0 0 16 16">
                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                 <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
             </svg>
             Crear Primera Historia
         </a>
+        <?php endif; ?>
         <?php endif; ?>
     </div>
     <?php endif; ?>

@@ -143,7 +143,8 @@ echo "<!-- DEBUG: id_refugio = $id_refugio -->";
             </a>
         <?php endif; ?>
     </div>
-                
+     </div>
+           
                 <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)): ?>
                 <div class="d-flex gap-2">
                     <!-- Botón Editar CORREGIDO -->
