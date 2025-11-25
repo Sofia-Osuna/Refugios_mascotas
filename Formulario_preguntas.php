@@ -6,12 +6,11 @@ include('clases/Preguntas_form.php');
 $clase_preguntas = new Preguntas();
 
 $id_formulario = $_GET['id_formulario'];
+$id_refugio = $_GET['id_refugio'];
 
 $total_preguntas = $clase_preguntas->contar($id_formulario);
 
 $numero_siguiente = $total_preguntas + 1;
-
-$limite_alcanzado = ($total_preguntas >= 5);
 
 $preguntas_existentes = [];
 if($total_preguntas > 0) {
@@ -35,39 +34,65 @@ if($total_preguntas > 0) {
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10">
             
-
+            <!-- Card principal -->
             <div class="card shadow-sm">
                 <div class="card-header header-formulario text-white p-4">
-                    <h3 class="mb-2">Crear Preguntas del Formulario</h3>
-                    <p class="mb-0 opacity-75">Pregunta <?= $numero_siguiente ?> de 5</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3 class="mb-1">Crear Preguntas del Formulario</h3>
+                            <p class="mb-0 opacity-75">Total de preguntas: <?= $total_preguntas ?></p>
+                        </div>
+                        <?php if($total_preguntas >= 3): ?>
+                        <a href="Detalle_formulario.php?id_refugio=<?= $refugio['id_refugio'] ?>" 
+                           class="btn btn-naranja">
+                            <i class="bi bi-check-circle me-1"></i>
+                            Finalizar
+                        </a>
+                        <?php endif; ?>
+                    </div>
                 </div>
                 
                 <div class="card-body p-4">
-                    <div class="mb-4">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="fw-bold" style="color: #283D3B;">Progreso</span>
-                            <span class="text-muted"><?= $total_preguntas ?> de 5 completadas</span>
-                        </div>
-                        <div class="progress" style="height: 25px;">
-                            <div class="progress-bar" 
-                                 style="width: <?= ($total_preguntas / 5) * 100 ?>%; background-color: #419D78;"
-                                 role="progressbar">
-                                <?= round(($total_preguntas / 5) * 100) ?>%
+                    
+                    <!-- Info mínimo de preguntas -->
+                    <?php if($total_preguntas < 3): ?>
+                    <div class="alert border-0 mb-4" style="background-color: #FFF9E6;">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-info-circle-fill me-3 fs-5" style="color: #FE7F2D;"></i>
+                            <div>
+                                <strong style="color: #283D3B;">Mínimo de preguntas</strong>
+                                <p class="mb-0 small text-muted mt-1">
+                                    Necesitas al menos <strong>3 preguntas</strong> para activar el formulario. 
+                                    Te faltan <?= 3 - $total_preguntas ?>.
+                                </p>
                             </div>
                         </div>
                     </div>
+                    <?php else: ?>
+                    <div class="alert alert-success border-0 mb-4">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-check-circle-fill me-3 fs-5"></i>
+                            <div>
+                                <strong>¡Formulario listo!</strong>
+                                <p class="mb-0 small mt-1">
+                                    Ya tienes el mínimo de 3 preguntas. Puedes finalizar o agregar más.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endif; ?>
                     
-                    <?php if(!$limite_alcanzado): ?>
-
+                    <!-- Formulario para agregar pregunta -->
                     <form action="controladores/Insertar_preguntas.php" method="POST">
                         <input type="hidden" name="fk_formulario" value="<?= $id_formulario ?>">
                         <input type="hidden" name="numero_pregunta" value="<?= $numero_siguiente ?>">
+                        <input type="hidden" name="id_refugio" id="id_refugio" value="<?= $id_refugio?>">
+                        <input type="hidden" name="redireccion" value="preguntas"> 
                         
                         <div class="mb-4">
                             <label class="form-label fw-bold" style="color: #283D3B; font-size: 1.1rem;">
                                 <span class="numero-pregunta text-white me-2"><?= $numero_siguiente ?></span>
-                                Escribe tu pregunta
-                                
+                                Nueva pregunta
                             </label>
                             <textarea name="pregunta" 
                                       class="form-control" 
@@ -76,47 +101,18 @@ if($total_preguntas > 0) {
                                       required
                                       style="font-size: 1rem;"></textarea>
                             <small class="text-muted">
-                                Esta pregunta aparecerá en el formulario de adopción
+                                <i class="bi bi-lightbulb me-1"></i>
+                                Esta pregunta aparecerá en el formulario de adopción.
                             </small>
                         </div>
                         
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
-                            <?php if($total_preguntas >= 3): ?>
-                            <a href="Detalle_formulario.php?id_refugio=<?= $refugio['id_refugio'] ?>" 
-                               class="btn btn-lg btn-naranja ">
-                                <i class="bi bi-check-all me-1"></i>
-                                Finalizar (Mínimo 3 preguntas listas)
-                            </a>
-                            <?php else: ?>
-                            <div></div>
-                            <?php endif; ?>
-                            
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button type="submit" name="guardar" class="btn btn-lg text-white" style="background-color: #419D78;">
-                                <i class="bi bi-plus-circle me-1"></i>
-                                Guardar y <?= $numero_siguiente < 5 ? 'agregar otra' : 'finalizar' ?>
+                                <i class="bi bi-plus-circle me-2"></i>
+                                Agregar pregunta
                             </button>
                         </div>
                     </form>
-                    
-                    <?php else: ?>
-                    <!-- Ya llegó al límite de 5 preguntas -->
-                    <div class="alert alert-success border-0 d-flex align-items-center">
-                        <i class="bi bi-check-circle-fill me-3 fs-3"></i>
-                        <div>
-                            <h5 class="mb-1">¡Formulario completo!</h5>
-                            <p class="mb-0">Ya agregaste las 5 preguntas máximas permitidas.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="d-grid">
-                        <a href="Detalle_formulario.php?id_refugio=<?= $refugio['id_refugio'] ?>" 
-                           class="btn btn-lg text-white" 
-                           style="background-color: #FCCA46;">
-                            <i class="bi bi-eye me-2"></i>
-                            Ver mi formulario completo
-                        </a>
-                    </div>
-                    <?php endif; ?>
                     
                 </div>
             </div>
@@ -124,13 +120,16 @@ if($total_preguntas > 0) {
             <!-- Preguntas ya agregadas -->
             <?php if($total_preguntas > 0): ?>
             <div class="card border-0 shadow-sm mt-4">
-                <div class="card-header" style="background-color: #f8f9fa;">
+                <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #f8f9fa;">
                     <h5 class="mb-0 fw-bold" style="color: #283D3B;">
                         <i class="bi bi-list-check me-2"></i>
-                        Preguntas agregadas (<?= $total_preguntas ?>)
+                        Preguntas agregadas
                     </h5>
+                    <span class="badge" style="background-color: #85B79D; font-size: 0.9rem;">
+                        <?= $total_preguntas ?> pregunta<?= $total_preguntas != 1 ? 's' : '' ?>
+                    </span>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-3">
                     <?php foreach($preguntas_existentes as $p): ?>
                     <div class="pregunta-card bg-light p-3 mb-2 rounded">
                         <div class="d-flex align-items-start justify-content-between">
@@ -138,14 +137,20 @@ if($total_preguntas > 0) {
                                 <span class="numero-pregunta text-white me-3 flex-shrink-0">
                                     <?= $p['numero_pregunta'] ?>
                                 </span>
-                                <div>
-                                    <p class="mb-1 fw-semibold" style="color: #283D3B;">
+                                <div class="flex-grow-1">
+                                    <p class="mb-0 fw-semibold" style="color: #283D3B;">
                                         <?= htmlspecialchars($p['pregunta']) ?>
                                     </p>
-                                    
                                 </div>
                             </div>
-                            
+                           <div class="d-flex gap-2 ms-3">
+                                <a class="btn btn-sm btn-outline-danger" 
+                                    href="controladores/eliminar_pregunta.php?id_pregunta=<?=$p['id_pregunta']?>&id_refugio=<?= $id_refugio ?>&id_formulario=<?= $id_formulario ?>&redireccion=preguntas"
+                                    onclick="return confirm('¿Eliminar esta pregunta?')"
+                                    title="Eliminar pregunta">
+                                    <i class="bi bi-trash3"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                     <?php endforeach; ?>

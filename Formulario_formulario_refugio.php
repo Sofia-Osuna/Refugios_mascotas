@@ -98,7 +98,7 @@
                         <div>
                            <strong style="color: #283D3B;">Siguiente paso:</strong>
                            <p class="mb-0 small text-muted mt-1">
-                              Después de guardar, podrás agregar las 5 preguntas que los usuarios responderán.
+                              Después de guardar, podrás agregar las  preguntas que los usuarios responderán.
                            </p>
                         </div>
                      </div>
@@ -107,7 +107,7 @@
                   <!-- Botones -->
                   <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
                      <a href="Detalle_formulario.php?id_refugio=<?= $id_refugio ?>" 
-                        class="btn btn-lg btn-secondary">
+                        class="btn btn-lg btn-naranja">
                         <i class="bi bi-x-circle me-1"></i>
                         Cancelar
                      </a>

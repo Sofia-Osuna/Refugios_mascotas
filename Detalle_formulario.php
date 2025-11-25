@@ -112,6 +112,13 @@ if($datos && isset($datos['id_formulario_refugio']) && !empty($datos['id_formula
                             No hay preguntas en este formulario.
                         </div>
                     <?php endif; ?>
+                    <div class="modal-footer border-0 justify-content-center">
+                        <a href="Formulario_preguntas.php?id_formulario=<?= $datos['id_formulario_refugio'] ?>&id_refugio=<?= $id_refugio ?>" 
+                            class="btn text-white fw-bold" 
+                            style="background-color: #85B79D; border-color: #85B79D; padding: 10px 30px;">
+                            <i class="bi bi-plus-circle me-2"></i>Agregar preguntas
+                        </a>
+                    </div>
                     
                 </div> <!-- cierra card-body -->
             </div> <!-- cierra card -->
