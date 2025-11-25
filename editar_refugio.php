@@ -1,10 +1,24 @@
     <?php
-    include('menu.php');
+       include('menu.php');
     include('clases/Refugio.php');
 
     $clase = new Refugio();
-    $id = $_GET['id'];
+    
+    // Aceptar tanto 'id' como 'id_refugio'
+    $id = $_GET['id'] ?? $_GET['id_refugio'] ?? null;
+    
+    if (!$id) {
+        echo "<script>alert('Error: No se proporcionó un ID válido'); window.location.href='mis_refugios.php';</script>";
+        exit;
+    }
+    
     $refugio = $clase->Id($id);
+    
+    if (!$refugio) {
+        echo "<script>alert('Error: No se encontró el refugio'); window.location.href='mis_refugios.php';</script>";
+        exit;
+    }
+
 
     // Ejecutar la consulta de estados
     $mysqli = new Conexion();

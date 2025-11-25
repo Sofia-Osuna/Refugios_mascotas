@@ -19,7 +19,8 @@
             $id = mysqli_insert_id($this->conexion);
             return $id;
         }
-        //stmt significa statement en ingles xdxd, se usa más como nombre de variable porque pues es ingles xdxd
+        //stmt significa statement en ingles xdxd, se usa más como nombre de variable porque pues es ingles xdxd.
+        //como el elote preparado.
         function mostrar(){
             $consulta ="SELECT id_formulario FROM formulario_refugio WHERE fk_refugio=$fk_refugio AND estatus = 1";
             $respuesta = $this -> conexion -> query($consulta);

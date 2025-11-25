@@ -1,10 +1,30 @@
 <?php
-    error_reporting(E_ALL); //esto es para que me muestre los errores
-    ini_set('display_errors', 1);
-    $id_refugio = $_POST["id_refugio"];
+    error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-    $nombre = $_POST["nombre"];
-    $descripcion = $_POST["descripcion"];
+session_start();
+
+// Verificar que esté logueado
+if(!isset($_SESSION['idusuario'])){
+    header('location: ../Inicio_sesion.php');
+    exit;
+}
+
+$id_refugio = $_POST["id_refugio"];
+
+require_once('../clases/Refugio.php');
+$clase_validar = new Refugio();
+
+// Verificar que el refugio le pertenezca (excepto si es admin)
+if($_SESSION['fk_rol'] != 1){ // Si NO es admin
+    if(!$clase_validar->esDelUsuario($id_refugio, $_SESSION['idusuario'])){
+        die(" No tienes permiso para actualizar este refugio. <a href='../mis_refugios.php'>Volver a mis refugios</a>");
+    }
+}
+
+// Si pasa la validación, continuar con la actualización
+$nombre = $_POST["nombre"];
+$descripcion = $_POST["descripcion"];
 
     $colonia = $_POST['cbx_colonia'];//checar esto temprano por que no se si funciones
     $nombre_calle = $_POST["nombre_calle"];
@@ -48,7 +68,7 @@ $foto = $_FILES["foto"]["name"];
     $resultado = $clase ->actualizar($id_refugio,$nombre,  $descripcion, $colonia, $nombre_calle,  $numero_exterior, $numero_interior, $telefono, $correo,$foto);
 
     if($resultado){
-        header('location: ../Lista_refugio.php');
+        header('location: ../mis_refugios.php');
        
     }else{
         echo"Error";
