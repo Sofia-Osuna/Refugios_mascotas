@@ -7,21 +7,22 @@ if($_POST){
     $fk_mascota = $_POST['fk_mascota'];
     $fk_refugio = $_POST['fk_refugio'];
     
-
-    
     $fecha = date('Y-m-d');
     $hora = date('H:i:s');
     
-    // Procesar la foto
-    $foto = "";
-    if(isset($_FILES['foto']) && $_FILES['foto']['error'] == 0){
-        $foto = $_FILES['foto']['name'];
-        move_uploaded_file($_FILES['foto']['tmp_name'], "../imagenes_animales/" . $foto);
+    // Procesar la foto - MISMITO que en actualizar
+    $foto = $_FILES["Foto"]["name"];
+    $tmp = $_FILES["Foto"]["tmp_name"];
+    
+    if($foto != ""){
+        $ruta = "../imagenes_animales/" . $foto;
+        move_uploaded_file($tmp, $ruta);
+    } else {
+        $foto = "sin_imagen.jpg";
     }
     
     $historia_obj = new HistoriaFeliz();
     
-    // Llamar al método guardar con fecha y hora automáticas
     $resultado = $historia_obj->guardar($descripcion, $fecha, $hora, $foto, $fk_mascota, $fk_refugio);
     
     if($resultado){

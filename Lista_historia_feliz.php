@@ -1,23 +1,21 @@
 <?php
 include('menu.php');
-include('menu_refugio.php'); // Este ya tiene el id_refugio
+include('menu_refugio.php');
 require_once('clases/Historias_f.php');
-require_once('clases/refugio.php'); // Asegúrate de incluir la clase refugio
+require_once('clases/refugio.php');
 
 // Obtener el id_refugio de la URL
 $id_refugio = $_GET['id_refugio'] ?? null;
 
 $historia_obj = new HistoriaFeliz();
-$refugio_obj = new Refugio(); // Instancia de la clase refugio
+$refugio_obj = new Refugio();
 
 // Verificar si el usuario actual es dueño de este refugio
 $es_dueño = false;
-if(isset($_SESSION['usuario_id']) && $id_refugio) {
-    $es_dueño = $refugio_obj->esDelUsuario($id_refugio, $_SESSION['usuario_id']);
+if(isset($_SESSION['idusuario']) && $id_refugio) {
+    $es_dueño = $refugio_obj->esDelUsuario($id_refugio, $_SESSION['idusuario']);
 }
 
-// Si hay id_refugio, mostrar solo historias de ESE refugio
-// Si no hay id_refugio, mostrar TODAS las historias
 $historias = $historia_obj->mostrar($id_refugio);
 ?>
 
@@ -49,23 +47,20 @@ $historias = $historia_obj->mostrar($id_refugio);
         <div class="col-auto">
             <?php 
             // Mostrar botón SOLO si:
-            // 1. El usuario está logueado Y es administrador (rol 1) O dueño del refugio
-            // 2. Si hay id_refugio, solo el dueño puede crear historias para ese refugio
-            if(isset($_SESSION['fk_rol'])): 
-                $mostrar_boton = false;
-                
+            // 1. Es administrador (rol 1) O dueño del refugio
+            $mostrar_boton = false;
+            
+            if(isset($_SESSION['fk_rol'])) {
                 if($_SESSION['fk_rol'] == 1) {
                     // Administrador puede crear historias en cualquier refugio
                     $mostrar_boton = true;
                 } elseif($id_refugio && $es_dueño) {
                     // Dueño del refugio específico
                     $mostrar_boton = true;
-                } elseif(!$id_refugio && $_SESSION['fk_rol'] == 3) {
-                    // Rol 3 sin refugio específico (mostrar selector de refugio?)
-                    $mostrar_boton = true;
                 }
-                
-                if($mostrar_boton):
+            }
+            
+            if($mostrar_boton):
             ?>
             <a href="Formulario_historias_felices.php?id_refugio=<?= $id_refugio ?>" 
                class="btn btn-lg text-white" 
@@ -76,7 +71,6 @@ $historias = $historia_obj->mostrar($id_refugio);
                 </svg>
                 Nueva Historia
             </a>
-            <?php endif; ?>
             <?php endif; ?>
         </div>
     </div>
@@ -164,18 +158,17 @@ $historias = $historia_obj->mostrar($id_refugio);
         <h4 class="text-muted">No hay historias felices registradas</h4>
         <?php 
         // Mostrar botón de crear primera historia con la misma lógica
-        if(isset($_SESSION['fk_rol'])): 
-            $mostrar_boton_vacio = false;
-            
+        $mostrar_boton_vacio = false;
+        
+        if(isset($_SESSION['fk_rol'])) {
             if($_SESSION['fk_rol'] == 1) {
                 $mostrar_boton_vacio = true;
             } elseif($id_refugio && $es_dueño) {
                 $mostrar_boton_vacio = true;
-            } elseif(!$id_refugio && $_SESSION['fk_rol'] == 3) {
-                $mostrar_boton_vacio = true;
             }
-            
-            if($mostrar_boton_vacio):
+        }
+        
+        if($mostrar_boton_vacio):
         ?>
         <p class="text-muted">Comparte la primera historia de adopción exitosa</p>
         <a href="Formulario_historias_felices.php?id_refugio=<?= $id_refugio ?>" 
@@ -187,7 +180,6 @@ $historias = $historia_obj->mostrar($id_refugio);
             </svg>
             Crear Primera Historia
         </a>
-        <?php endif; ?>
         <?php endif; ?>
     </div>
     <?php endif; ?>

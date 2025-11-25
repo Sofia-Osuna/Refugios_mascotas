@@ -1,13 +1,28 @@
-<!-- Aqui se pueden ver TODA la informacion de una mascota, incluido el boton de adoptar, o editar -->
 <?php
 include('menu.php');
+include('menu_refugio.php');
+
 require_once('clases/Mascota.php');
+require_once('clases/refugio.php'); // Incluir la clase refugio para verificar propiedad
 
 $id = $_GET['id'];
-$id_refugio = $_GET['id_refugio'];
+$id_refugio = $_GET['id_refugio'] ?? null;
+$origen = $_GET['origen'] ?? 'lista'; // 'lista' o 'todas'
 
 $mascota_obj = new Mascota();
+$refugio_obj = new Refugio(); // Instancia de la clase refugio
 $mascota = $mascota_obj->obtenerMascota($id);
+
+// Si no viene por URL, obtenerlo de la mascota misma
+if(empty($id_refugio)) {
+    $id_refugio = $mascota['fk_refugio'] ?? null;
+}
+
+// VERIFICAR SI EL USUARIO ES DUEÑO DEL REFUGIO
+$es_dueño = false;
+if(isset($_SESSION['idusuario']) && $id_refugio) {
+    $es_dueño = $refugio_obj->esDelUsuario($id_refugio, $_SESSION['idusuario']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -98,16 +113,28 @@ $mascota = $mascota_obj->obtenerMascota($id);
                 
             </div>
             
-            <!-- Botones de acción -->
+            <!-- Botones de acción - Mismo estilo que historias felices -->
             <div class="d-flex justify-content-between mt-4">
                 <div>
-                    <a href="Lista_mascota.php?id_refugio=<?= $id_refugio ?>" 
-                       class="btn btn-outline-secondary px-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-                        </svg>
-                        Volver a mascotas
-                    </a>
+                    <?php if($origen == 'todas'): ?>
+                        <!-- Volver a Todas las Mascotas -->
+                        <a href="Todas_mascotas.php" 
+                           class="btn btn-outline-secondary px-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                            </svg>
+                            Volver a todas las mascotas
+                        </a>
+                    <?php else: ?>
+                        <!-- Volver a Lista del Refugio -->
+                        <a href="Lista_mascota.php?id_refugio=<?= $id_refugio ?>" 
+                           class="btn btn-outline-secondary px-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                            </svg>
+                            Volver a mascotas del refugio
+                        </a>
+                    <?php endif; ?>
                 </div>
                 
                 <div class="d-flex gap-2">
@@ -120,20 +147,36 @@ $mascota = $mascota_obj->obtenerMascota($id);
                         </svg>
                         Adoptar
                     </a>
-                       <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)){ ?>
-
+                    
+                    <!-- BOTONES DE EDITAR Y ELIMINAR SOLO PARA EL DUEÑO O ADMINISTRADOR -->
+                    <?php 
+                    // Mostrar botones SOLO si:
+                    // 1. El usuario está logueado Y es administrador (rol 1) O dueño del refugio
+                    if(isset($_SESSION['fk_rol'])): 
+                        $mostrar_botones = false;
+                        
+                        if($_SESSION['fk_rol'] == 1) {
+                            // Administrador puede editar/eliminar cualquier mascota
+                            $mostrar_botones = true;
+                        } elseif($id_refugio && $es_dueño) {
+                            // Dueño del refugio específico
+                            $mostrar_botones = true;
+                        }
+                        
+                        if($mostrar_botones):
+                    ?>
+                    
+                    <!-- Botón Editar -->
                     <a href="editar_mascota.php?id=<?= $mascota['id_mascotas'] ?>&id_refugio=<?= $id_refugio ?>" 
                        class="btn text-white px-4" 
-                       style="background-color: #85B79D; border-radius: 10px;">
+                       style="background-color: #FCCA46; border-radius: 10px;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil me-2" viewBox="0 0 16 16">
                             <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
                         </svg>
                         Editar
                     </a>
-                                        <?php } ?>
-
-                                           <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)){ ?>
-
+                    
+                    <!-- Botón Eliminar -->
                     <a href="controladores/eliminar_mascota.php?id=<?= $mascota['id_mascotas'] ?>&id_refugio=<?= $id_refugio ?>" 
                        class="btn btn-danger px-4"
                        onclick="return confirm('¿Estás seguro de eliminar esta mascota?')">
@@ -143,16 +186,15 @@ $mascota = $mascota_obj->obtenerMascota($id);
                         </svg>
                         Eliminar
                     </a>
-                                                            <?php } ?>
-
+                    
+                    <?php endif; ?>
+                    <?php endif; ?>
                 </div>
             </div>
             
         </div>
     </div>
 </div>
-
-
 
 </body>
 </html>

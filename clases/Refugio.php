@@ -164,18 +164,31 @@ function Id($id_refugio){
     }
     return $refugios;
 }
-function esDelUsuario($id_refugio, $id_usuario){
+public function esDelUsuario($id_refugio, $id_usuario){
+    // DEBUG: Mostrar los parámetros que llegan
+    error_log("DEBUG esDelUsuario: id_refugio=$id_refugio, id_usuario=$id_usuario");
+    
     // SI EL ID_REFUGIO ES NULL, DEVOLVER FALSE DIRECTAMENTE
     if($id_refugio === NULL || empty($id_refugio)) {
+        error_log("DEBUG esDelUsuario: id_refugio es NULL o vacío");
         return false;
     }
     
+    // CORREGIR: Usar prepared statements para evitar SQL injection
     $consulta = "SELECT * FROM usuario_refugio 
-                 WHERE fk_refugio = $id_refugio 
-                 AND fk_usuario = $id_usuario 
+                 WHERE fk_refugio = ? 
+                 AND fk_usuario = ? 
                  AND estatus = 1";
-    $respuesta = $this->conexion->query($consulta);
-    return $respuesta->num_rows > 0;
+    
+    $stmt = $this->conexion->prepare($consulta);
+    $stmt->bind_param("ii", $id_refugio, $id_usuario);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    
+    $es_dueño = $resultado->num_rows > 0;
+    error_log("DEBUG esDelUsuario: resultado = " . ($es_dueño ? 'TRUE' : 'FALSE'));
+    
+    return $es_dueño;
 }
 }
 ?>

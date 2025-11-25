@@ -94,7 +94,8 @@ if (!$refugio) {
                         Historias Felices
                     </a>
                 </li>
-                   
+                   <?php if($es_suyo){ ?>
+
                 <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)): ?>
                 <li class="nav-item">
                     <a class="nav-link fw-semibold text-dark px-3" href="Detalle_formulario.php?id_refugio=<?= $refugio['id_refugio'] ?>">
@@ -102,6 +103,8 @@ if (!$refugio) {
                     </a>
                 </li>
                 <?php endif; ?>
+                <?php } ?>
+
             </ul>
         </div>
     </div>
