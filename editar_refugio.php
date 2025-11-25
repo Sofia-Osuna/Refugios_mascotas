@@ -1,7 +1,6 @@
     <?php
-       include('menu.php');
-    include('clases/Refugio.php');
-
+require_once('clases/refugio.php');
+include_once('menu.php');
     $clase = new Refugio();
     
     // Aceptar tanto 'id' como 'id_refugio'

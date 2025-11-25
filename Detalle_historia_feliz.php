@@ -1,12 +1,15 @@
 <?php
 include('menu.php');
 require_once('clases/Historias_f.php');
+require_once('clases/refugio.php'); // Incluir la clase refugio para verificar propiedad
+
 $id = $_GET['id'];
 
 // OBTENER EL ID_REFUGIO DE LA URL
 $id_refugio = $_GET['id_refugio'] ?? null;
 
 $historia_obj = new HistoriaFeliz();
+$refugio_obj = new Refugio(); // Instancia de la clase refugio
 $historia = $historia_obj->obtenerHistoria($id);
 
 $origen = $_GET['origen'] ?? 'lista'; // 'lista' o 'todas'
@@ -21,8 +24,15 @@ if(empty($id_refugio)) {
     $id_refugio = 1; // Cambia por un ID que exista
 }
 
+// VERIFICAR SI EL USUARIO ES DUEÑO DEL REFUGIO
+$es_dueño = false;
+if(isset($_SESSION['idusuario']) && $id_refugio) {
+    $es_dueño = $refugio_obj->esDelUsuario($id_refugio, $_SESSION['idusuario']);
+}
+
 // DEBUG TEMPORAL
 echo "<!-- DEBUG: id_refugio = $id_refugio -->";
+echo "<!-- DEBUG: es_dueño = " . ($es_dueño ? 'true' : 'false') . " -->";
 ?>
 
 <!DOCTYPE html>
@@ -121,33 +131,48 @@ echo "<!-- DEBUG: id_refugio = $id_refugio -->";
             </div>
             
             <!-- Botones de acción -->
-          <div class="d-flex justify-content-between mt-4">
-    <div>
-        <?php if($origen == 'todas'): ?>
-            <!-- Volver a Todas las Historias -->
-            <a href="Todas_historias_felices.php" 
-               class="btn btn-outline-secondary px-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-                </svg>
-                Volver a todas las historias
-            </a>
-        <?php else: ?>
-            <!-- Volver a Lista del Refugio -->
-            <a href="Lista_historia_feliz.php?id_refugio=<?= $id_refugio ?>" 
-               class="btn btn-outline-secondary px-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-                </svg>
-                Volver a historias del refugio
-            </a>
-        <?php endif; ?>
-    </div>
-     </div>
-           
-                <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)): ?>
+            <div class="d-flex justify-content-between mt-4">
+                <div>
+                    <?php if($origen == 'todas'): ?>
+                        <!-- Volver a Todas las Historias -->
+                        <a href="Todas_historias_felices.php" 
+                           class="btn btn-outline-secondary px-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                            </svg>
+                            Volver a todas las historias
+                        </a>
+                    <?php else: ?>
+                        <!-- Volver a Lista del Refugio -->
+                        <a href="Lista_historia_feliz.php?id_refugio=<?= $id_refugio ?>" 
+                           class="btn btn-outline-secondary px-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                            </svg>
+                            Volver a historias del refugio
+                        </a>
+                    <?php endif; ?>
+                </div>
+                
+                <!-- BOTONES DE EDITAR Y ELIMINAR SOLO PARA EL DUEÑO O ADMINISTRADOR -->
+                <?php 
+                // Mostrar botones SOLO si:
+                // 1. El usuario está logueado Y es administrador (rol 1) O dueño del refugio
+                if(isset($_SESSION['fk_rol'])): 
+                    $mostrar_botones = false;
+                    
+                    if($_SESSION['fk_rol'] == 1) {
+                        // Administrador puede editar/eliminar cualquier historia
+                        $mostrar_botones = true;
+                    } elseif($id_refugio && $es_dueño) {
+                        // Dueño del refugio específico
+                        $mostrar_botones = true;
+                    }
+                    
+                    if($mostrar_botones):
+                ?>
                 <div class="d-flex gap-2">
-                    <!-- Botón Editar CORREGIDO -->
+                    <!-- Botón Editar -->
                     <a href="Editar_historias_felices.php?id=<?= $historia['id_historia_feliz'] ?>&id_refugio=<?= $id_refugio ?>" 
                        class="btn text-white px-4" 
                        style="background-color: #FCCA46; border-radius: 10px;">
@@ -157,7 +182,7 @@ echo "<!-- DEBUG: id_refugio = $id_refugio -->";
                         Editar
                     </a>
                     
-                    <!-- Botón Eliminar CORREGIDO -->
+                    <!-- Botón Eliminar -->
                     <a href="controladores/eliminar_historias_f.php?id=<?= $historia['id_historia_feliz'] ?>&fk_refugio=<?= $id_refugio ?>" 
                        class="btn btn-danger px-4"
                        onclick="return confirm('¿Estás seguro de eliminar esta historia feliz?')">
@@ -169,11 +194,15 @@ echo "<!-- DEBUG: id_refugio = $id_refugio -->";
                     </a>
                 </div>
                 <?php endif; ?>
+                <?php endif; ?>
             </div>
             
         </div>
     </div>
 </div>
+    </div>
+
+
 
 </body>
 </html>

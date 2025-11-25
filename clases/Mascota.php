@@ -60,5 +60,22 @@ function actualizar($id_mascota, $nombre, $descripcion, $foto, $fk_especie){
                  foto = '$foto', fk_especie = '$fk_especie' WHERE id_mascotas = $id_mascota";
     return $this->conexion->query($consulta);
 }
+public function mostrarTodas() {
+    // Primero, verifiquemos qué columnas tienes realmente en tu tabla
+    $consulta = "SELECT m.*, e.nombre as nombre_especie, r.nombre as nombre_refugio
+                 FROM mascotas m
+                 LEFT JOIN especie e ON m.fk_especie = e.id_especie
+                 LEFT JOIN refugio r ON m.fk_refugio = r.id_refugio
+                 WHERE m.estatus = 1
+                 ORDER BY m.id_mascotas DESC"; // Cambiar por una columna que sí exista
+    
+    $resultado = $this->conexion->query($consulta);
+    
+    $mascotas = [];
+    while ($fila = $resultado->fetch_assoc()) {
+        $mascotas[] = $fila;
+    }
+    return $mascotas;
+}   
 }
 ?>

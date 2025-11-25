@@ -80,6 +80,7 @@ session_start();
                         <?php } ?>
                         
                         <li class="nav-item"><a class="nav-link" href="Todas_historias_felices.php"> Historias felices</a></li>
+                        <li class="nav-item"><a class="nav-link" href="Todas_mascotas.php"> Mascotas</a></li>
                         <li class="nav-item"><a class="nav-link" href="index.php"> Inicio</a></li>
                     </ul>
                 </div>
