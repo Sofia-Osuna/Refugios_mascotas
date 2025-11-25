@@ -1,15 +1,23 @@
 <?php
+
 require_once('clases/Mascota.php');
 
 include('menu.php');
-include('menu_refugio.php');
+include('menu_refugio.php'); // Este ya incluye Refugio.php y crea $clase
 $id_refugio = $_GET['id_refugio'];
 
 $mascota_obj_filtro = new Mascota();
 $especies_filtro = $mascota_obj_filtro->obtenerEspecies();
 
-$clase = new Mascota();
-$mascotas = $clase->mostrarPorRefugio($id_refugio);
+$clase_mascota = new Mascota();
+$mascotas = $clase_mascota->mostrarPorRefugio($id_refugio);
+
+// VERIFICAR SI ES DUEÑO DEL REFUGIO - usando la función esDelUsuario que ya existe
+$es_dueno = false;
+if(isset($_SESSION['idusuario']) && isset($clase)) {
+    $es_dueno = $clase->esDelUsuario($id_refugio, $_SESSION['idusuario']) || $_SESSION['fk_rol'] == 1;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -18,37 +26,13 @@ $mascotas = $clase->mostrarPorRefugio($id_refugio);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Mascotas</title>
-
     <script src="js/jquery-3.7.1.js"></script>
     <script src="js/buscar_mascota.js"></script>
     <link href="css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
- <script language="javascript">
-$(document).ready(function(){
-    $("#cbx_estado").change(function(){
-        const estadoSeleccionado = $(this).val();
-        
-        if(estadoSeleccionado && estadoSeleccionado !== '') {
-            const idEstado = $("#cbx_estado option:selected").data('id');
-            
-            $("#fk_especie").html('<option value="">Cargando...</option>');
-            $("#fk_especie").prop('disabled', true); // Deshabilitar mientras carga
-            
-            $.post("includes/getespecieFiltro.php", {id_especie}, function(data){
-                $("#fk_especie").html('<option value="">Todos los municipios</option>' + data);
-                $("#fk_especie").prop('disabled', false); // Habilitar después de cargar
-                
-            });
-        } else {
-            $("#fk_especie").html('<option value="">Todos los municipios</option>');
-            $("#fk_especie").prop('disabled', false);
-        }
-    });
-});
 
-    </script>
 <div class="container my-5">
     
     <!-- Header con título y botón -->
@@ -58,7 +42,7 @@ $(document).ready(function(){
             <p class="text-muted">Gestiona las mascotas de este refugio</p>
         </div>
         <div class="col-auto">
-            <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)){ ?>
+            <?php if($es_dueno): ?>
                 <a href="Formulario_mascota.php?id_refugio=<?= $id_refugio ?>" class="btn btn-lg text-white" style="background-color: #FCCA46; border-radius: 10px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle me-2" viewBox="0 0 16 16">
                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -66,10 +50,11 @@ $(document).ready(function(){
                     </svg>
                     Nueva Mascota
                 </a>
-            <?php } ?>
+            <?php endif; ?>
         </div>
     </div>
 
+    <!-- Resto del código se mantiene igual... -->
     <!-- Sección de filtros -->
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-body p-4">
@@ -202,24 +187,29 @@ $(document).ready(function(){
     </div>
     
     <!-- Mensaje si no hay mascotas registradas -->
-    <?php if(empty($mascotas)): ?>
-    <div class="text-center py-5">
-        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="#ccc" class="bi bi-heart mb-3" viewBox="0 0 16 16">
-            <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-        </svg>
-        <h4 class="text-muted">No hay mascotas registradas</h4>
-        <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)){ ?>
-            <p class="text-muted">Agrega la primera mascota a este refugio</p>
-            <a href="Formulario_mascota.php?id_refugio=<?= $id_refugio ?>" class="btn text-white mt-3" style="background-color: #FCCA46;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle me-1" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                </svg>
-                Agregar Primera Mascota
-            </a>
-        <?php } ?>
-    </div>
+   <!-- Mensaje si no hay mascotas registradas -->
+<?php if(empty($mascotas)): ?>
+<div class="text-center py-5">
+    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="#ccc" class="bi bi-heart mb-3" viewBox="0 0 16 16">
+        <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+    </svg>
+    <h4 class="text-muted">No hay mascotas registradas</h4>
+    <?php if($es_dueno): ?>
+        <!-- SOLO MUESTRA ESTE MENSAJE SI ES DUEÑO -->
+        <p class="text-muted">Agrega la primera mascota a este refugio</p>
+        <a href="Formulario_mascota.php?id_refugio=<?= $id_refugio ?>" class="btn text-white mt-3" style="background-color: #FCCA46;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle me-1" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+            </svg>
+            Agregar Primera Mascota
+        </a>
+    <?php else: ?>
+        <!-- MENSAJE PARA USUARIOS QUE NO SON DUEÑOS -->
+        <p class="text-muted">Este refugio aún no tiene mascotas registradas</p>
     <?php endif; ?>
+</div>
+<?php endif; ?>
 
 </div>
 

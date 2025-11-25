@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,22 +17,18 @@ session_start();
 <nav class="navbar navbar-dark navbar-custom">
     <div class="container-fluid">
         
-        <!-- Logo -->
         <a class="navbar-brand d-flex align-items-center" href="index.php">
             <img src="img_sistema/logo.png" alt="logo" class="navbar-logo me-2">
             <span class="navbar-logo-text">RefuPETS</span>
         </a>
 
-        <!-- Botón hamburguesa -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         
-        <!-- Menú colapsable -->
         <div class="collapse navbar-collapse menu-mobile-container" id="navbarNav">
             <div class="row w-100 mt-3">
                 
-                <!-- Sección Usuario -->
                 <div class="col-md-4 mb-3">
                     <p class="menu-section-title"> Usuario</p>
                     
@@ -57,7 +54,6 @@ session_start();
                     <?php } ?>
                 </div>
 
-                <!-- Sección Refugios -->
                 <div class="col-md-4 mb-3">
                     <p class="menu-section-title"> Refugios</p>
                     <ul class="navbar-nav">
@@ -68,9 +64,8 @@ session_start();
                             <li class="nav-item"><a class="nav-link" href="Formulario_refugio.php"> Crear refugio</a></li>
                         <?php } ?>
                         
-                        <!-- Solo GESTOR (3) puede ver "Mi refugio" -->
-                        <?php if(isset($_SESSION['fk_rol']) && $_SESSION['fk_rol'] == 3){ ?>
-                            <li class="nav-item"><a class="nav-link" href="detalles_refugio.php"> Mi refugio</a></li>
+                        <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)){ ?>
+                            <li class="nav-item"><a class="nav-link" href="mis_refugios.php"> Mis refugio</a></li>
                         <?php } ?>
                     </ul>
                 </div>
@@ -84,7 +79,7 @@ session_start();
                             <li class="nav-item"><a class="nav-link" href="Lista_especie.php"> Ver especies</a></li>
                         <?php } ?>
                         
-                        <li class="nav-item"><a class="nav-link" href="Lista_historia_feliz.php"> Historias felices</a></li>
+                        <li class="nav-item"><a class="nav-link" href="Todas_historias_felices.php"> Historias felices</a></li>
                         <li class="nav-item"><a class="nav-link" href="index.php"> Inicio</a></li>
                     </ul>
                 </div>

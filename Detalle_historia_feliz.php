@@ -1,16 +1,28 @@
-<!-- Aqui se ve todaaaaa la información de una historia feliz, incluye el boton que lleva a la pagina de editar -->
 <?php
 include('menu.php');
 require_once('clases/Historias_f.php');
 $id = $_GET['id'];
 
+// OBTENER EL ID_REFUGIO DE LA URL
+$id_refugio = $_GET['id_refugio'] ?? null;
+
 $historia_obj = new HistoriaFeliz();
 $historia = $historia_obj->obtenerHistoria($id);
 
-// Obtener nombre de la mascota
-$mascota_id = $historia['fk_mascota'];
-$consulta_mascota = "SELECT nombre FROM mascotas WHERE id_mascotas = $mascota_id";
-// Aquí necesitarías obtener el nombre, lo agrego en el método
+$origen = $_GET['origen'] ?? 'lista'; // 'lista' o 'todas'
+
+// Si no viene por URL, obtenerlo de la historia misma
+if(empty($id_refugio)) {
+    $id_refugio = $historia['fk_refugio'] ?? null;
+}
+
+// Si sigue vacío, usar un valor por defecto
+if(empty($id_refugio)) {
+    $id_refugio = 1; // Cambia por un ID que exista
+}
+
+// DEBUG TEMPORAL
+echo "<!-- DEBUG: id_refugio = $id_refugio -->";
 ?>
 
 <!DOCTYPE html>
@@ -19,11 +31,7 @@ $consulta_mascota = "SELECT nombre FROM mascotas WHERE id_mascotas = $mascota_id
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Detalle Historia Feliz - <?= htmlspecialchars($historia['nombre_mascota'] ?? 'Historia Feliz') ?></title>
-    
-    <!-- Bootstrap CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
-    
-    <!-- Tu CSS personalizado -->
     <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
@@ -32,12 +40,11 @@ $consulta_mascota = "SELECT nombre FROM mascotas WHERE id_mascotas = $mascota_id
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10">
             
-            <!-- Card principal de la historia feliz -->
+            <!-- Card principal -->
             <div class="card shadow-lg border-0 overflow-hidden">
                 
-                <!-- Imagen y contenido -->
                 <div class="row g-0">
-                    <!-- Imagen de la mascota -->
+                    <!-- Imagen -->
                     <div class="col-md-5">
                         <?php if(!empty($historia['foto'])): ?>
                             <img src="imagenes_animales/<?= htmlspecialchars($historia['foto']) ?>" 
@@ -57,11 +64,10 @@ $consulta_mascota = "SELECT nombre FROM mascotas WHERE id_mascotas = $mascota_id
                         <?php endif; ?>
                     </div>
                     
-                    <!-- Información de la historia -->
+                    <!-- Información -->
                     <div class="col-md-7">
                         <div class="card-body p-4 p-lg-5">
                             
-                            <!-- Título principal -->
                             <h1 class="display-5 fw-bold mb-3" style="color: #85B79D;">
                                 Historia Feliz de <?= htmlspecialchars($historia['nombre_mascota'] ?? 'Mascota') ?>
                             </h1>
@@ -79,9 +85,7 @@ $consulta_mascota = "SELECT nombre FROM mascotas WHERE id_mascotas = $mascota_id
                                             </div>
                                             <div>
                                                 <h6 class="fw-bold mb-1">Fecha</h6>
-                                                <p class="mb-0 text-muted">
-                                                    <?= htmlspecialchars($historia['fecha']) ?>
-                                                </p>
+                                                <p class="mb-0 text-muted"><?= htmlspecialchars($historia['fecha']) ?></p>
                                             </div>
                                         </div>
                                     </div>
@@ -90,14 +94,12 @@ $consulta_mascota = "SELECT nombre FROM mascotas WHERE id_mascotas = $mascota_id
                                             <div class="me-3" style="color: #FCCA46;">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
                                                     <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
-                                                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                                                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
                                                 </svg>
                                             </div>
                                             <div>
                                                 <h6 class="fw-bold mb-1">Hora</h6>
-                                                <p class="mb-0 text-muted">
-                                                    <?= htmlspecialchars($historia['hora']) ?>
-                                                </p>
+                                                <p class="mb-0 text-muted"><?= htmlspecialchars($historia['hora']) ?></p>
                                             </div>
                                         </div>
                                     </div>
@@ -119,20 +121,33 @@ $consulta_mascota = "SELECT nombre FROM mascotas WHERE id_mascotas = $mascota_id
             </div>
             
             <!-- Botones de acción -->
-            <div class="d-flex justify-content-between mt-4">
-                <div>
-                    <a href="Lista_historia_feliz.php" 
-                       class="btn btn-outline-secondary px-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-                        </svg>
-                        Volver a historias
-                    </a>
-                </div>
-                                                                               <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)){ ?>
-
+          <div class="d-flex justify-content-between mt-4">
+    <div>
+        <?php if($origen == 'todas'): ?>
+            <!-- Volver a Todas las Historias -->
+            <a href="Todas_historias_felices.php" 
+               class="btn btn-outline-secondary px-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                </svg>
+                Volver a todas las historias
+            </a>
+        <?php else: ?>
+            <!-- Volver a Lista del Refugio -->
+            <a href="Lista_historia_feliz.php?id_refugio=<?= $id_refugio ?>" 
+               class="btn btn-outline-secondary px-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                </svg>
+                Volver a historias del refugio
+            </a>
+        <?php endif; ?>
+    </div>
+                
+                <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)): ?>
                 <div class="d-flex gap-2">
-                    <a href="editar_historias_felices.php?id=<?= $historia['id_historia_feliz'] ?>" 
+                    <!-- Botón Editar CORREGIDO -->
+                    <a href="Editar_historias_felices.php?id=<?= $historia['id_historia_feliz'] ?>&id_refugio=<?= $id_refugio ?>" 
                        class="btn text-white px-4" 
                        style="background-color: #FCCA46; border-radius: 10px;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil me-2" viewBox="0 0 16 16">
@@ -140,11 +155,9 @@ $consulta_mascota = "SELECT nombre FROM mascotas WHERE id_mascotas = $mascota_id
                         </svg>
                         Editar
                     </a>
-                                                                                                    <?php } ?>
-
-                                                               <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)){ ?>
-
-                    <a href="controladores/eliminar_historias_f.php?id=<?= $historia['id_historia_feliz'] ?>" 
+                    
+                    <!-- Botón Eliminar CORREGIDO -->
+                    <a href="controladores/eliminar_historias_f.php?id=<?= $historia['id_historia_feliz'] ?>&fk_refugio=<?= $id_refugio ?>" 
                        class="btn btn-danger px-4"
                        onclick="return confirm('¿Estás seguro de eliminar esta historia feliz?')">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash me-2" viewBox="0 0 16 16">
@@ -153,16 +166,13 @@ $consulta_mascota = "SELECT nombre FROM mascotas WHERE id_mascotas = $mascota_id
                         </svg>
                         Eliminar
                     </a>
-                                                                                <?php } ?>
-
                 </div>
+                <?php endif; ?>
             </div>
             
         </div>
     </div>
 </div>
-
-
 
 </body>
 </html>

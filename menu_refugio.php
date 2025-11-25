@@ -9,6 +9,14 @@ $clase = new Refugio();
 // Intentar obtener el ID del refugio de varias fuentes
 $id = $_GET['id_refugio'] ?? $_GET['id'] ?? null;
 
+$refugio = $clase->id($id);
+
+// Verificar si el refugio es del usuario
+$es_suyo = false;
+if(isset($_SESSION['idusuario'])){
+    $es_suyo = $clase->esDelUsuario($id, $_SESSION['idusuario']) || $_SESSION['fk_rol'] == 1;
+}
+
 // Si viene id_formulario, buscar el refugio
 if (!$id && isset($_GET['id_formulario'])) {
     $conexion = new Conexion(); // O como tengas tu conexión
@@ -61,7 +69,7 @@ if (!$refugio) {
                     </a>
                 </li>
 
-                <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)): ?>
+<?php if($es_suyo){ ?>
                 <li class="nav-item">
                     <a class="nav-link fw-semibold text-dark px-3" href="editar_refugio.php?id_refugio=<?= $refugio['id_refugio'] ?>">
                         Editar Refugio
@@ -73,7 +81,7 @@ if (!$refugio) {
                         Eliminar Refugio
                     </a>
                 </li>
-                <?php endif; ?>
+<?php } ?>
         
                 <li class="nav-item">
                     <a class="nav-link fw-semibold text-dark px-3" href="Lista_mascota.php?id_refugio=<?= $refugio['id_refugio'] ?>">

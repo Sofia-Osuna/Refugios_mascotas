@@ -15,7 +15,7 @@
     return $this->conexion;
 }
 
-        function guardar($nombre,  $descripcion, $colonia, $nombre_calle,  $numero_exterior, $numero_interior, $telefono, $correo,$foto){
+        function guardar($nombre,  $descripcion, $colonia, $nombre_calle,  $numero_exterior, $numero_interior, $telefono, $correo,$foto,$id_usuario){
             $consulta = "INSERT INTO direccion (id_direccion, nombre_calle, numero_exterior, numero_interior, fk_colonia) VALUES (null, '{$nombre_calle}', '{$numero_exterior}', '{$numero_interior}', '{$colonia}' );";
             $respuesta = $this -> conexion -> query($consulta);
             $id = mysqli_insert_id($this->conexion);
@@ -32,6 +32,9 @@
 
             $consulta = "INSERT INTO refugio_direcciones (id_refugio_direcciones, fk_refugio, fk_direccion, estatus) VALUES (null, '{$id2}','{$id}', 1);";
             $respuesta = $this -> conexion -> query($consulta);
+
+            $consulta = "INSERT INTO usuario_refugio (id_usuario_refugio, fk_usuario, fk_refugio, estatus) VALUES (null, '{$id_usuario}', '{$id2}', 1);";
+            $respuesta = $this->conexion->query($consulta);
             return $respuesta;
         }
 
@@ -56,25 +59,34 @@
 
 //esto es pa obtener el id del refugio xd
 function Id($id_refugio){
+    if (!$id_refugio) {
+        return null;
+    }
+    
     $consulta = "SELECT 
-    r.*, d.*, t.telefono, cr.correo, 
-    c.nombre as localidad, c.codigo_postal, c.tipo, c.id_colonia, c.fk_municipio,
-    m.nombre as municipio, m.id_municipio, m.fk_estado,
-    e.nombre as estado, e.id_estado
-    FROM refugio r 
-    INNER JOIN telefono_refugio t ON t.fk_refugio=r.id_refugio
-    INNER JOIN correo_refugio cr ON cr.fk_refugio=r.id_refugio
-    INNER JOIN refugio_direcciones rd ON r.id_refugio = rd.fk_refugio
-    INNER JOIN direccion d ON rd.fk_direccion = d.id_direccion 
-    INNER JOIN colonia c ON d.fk_colonia = c.id_colonia
-    INNER JOIN municipio m ON c.fk_municipio = m.id_municipio
-    INNER JOIN estado e ON m.fk_estado = e.id_estado 
-    WHERE r.id_refugio = $id_refugio
-    AND r.estatus = 1
-    AND rd.estatus = 1
-    LIMIT 1;";
-    $respuesta = $this->conexion->query($consulta);
-    return $respuesta->fetch_assoc();
+        r.*, d.*, t.telefono, cr.correo, 
+        c.nombre as localidad, c.codigo_postal, c.tipo, c.id_colonia, c.fk_municipio,
+        m.nombre as municipio, m.id_municipio, m.fk_estado,
+        e.nombre as estado, e.id_estado
+        FROM refugio r 
+        INNER JOIN telefono_refugio t ON t.fk_refugio = r.id_refugio
+        INNER JOIN correo_refugio cr ON cr.fk_refugio = r.id_refugio
+        INNER JOIN refugio_direcciones rd ON r.id_refugio = rd.fk_refugio
+        INNER JOIN direccion d ON rd.fk_direccion = d.id_direccion 
+        INNER JOIN colonia c ON d.fk_colonia = c.id_colonia
+        INNER JOIN municipio m ON c.fk_municipio = m.id_municipio
+        INNER JOIN estado e ON m.fk_estado = e.id_estado 
+        WHERE r.id_refugio = ?
+        AND r.estatus = 1
+        AND rd.estatus = 1
+        LIMIT 1";
+    
+    $stmt = $this->conexion->prepare($consulta);
+    $stmt->bind_param("i", $id_refugio);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    
+    return $resultado->fetch_assoc();
 }
 
     function eliminar($id_refugio){
@@ -129,5 +141,41 @@ function Id($id_refugio){
         $respuesta = $this -> conexion -> query($consulta);
         return $respuesta;
     }
+    
+  function mostrarPorUsuario($id_usuario){
+    $consulta = "SELECT r.*, e.nombre as estado, m.nombre as municipio
+                 FROM refugio r
+                 INNER JOIN usuario_refugio ur ON r.id_refugio = ur.fk_refugio
+                 INNER JOIN refugio_direcciones rd ON r.id_refugio = rd.fk_refugio
+                 INNER JOIN direccion d ON rd.fk_direccion = d.id_direccion
+                 INNER JOIN colonia c ON d.fk_colonia = c.id_colonia
+                 INNER JOIN municipio m ON c.fk_municipio = m.id_municipio
+                 INNER JOIN estado e ON m.fk_estado = e.id_estado
+                 WHERE ur.fk_usuario = $id_usuario
+                 AND r.estatus = 1
+                 AND ur.estatus = 1
+                 ORDER BY r.nombre";
+    
+    $respuesta = $this->conexion->query($consulta);
+    
+    $refugios = [];
+    while($row = $respuesta->fetch_assoc()){
+        $refugios[] = $row;
+    }
+    return $refugios;
+}
+function esDelUsuario($id_refugio, $id_usuario){
+    // SI EL ID_REFUGIO ES NULL, DEVOLVER FALSE DIRECTAMENTE
+    if($id_refugio === NULL || empty($id_refugio)) {
+        return false;
+    }
+    
+    $consulta = "SELECT * FROM usuario_refugio 
+                 WHERE fk_refugio = $id_refugio 
+                 AND fk_usuario = $id_usuario 
+                 AND estatus = 1";
+    $respuesta = $this->conexion->query($consulta);
+    return $respuesta->num_rows > 0;
+}
 }
 ?>

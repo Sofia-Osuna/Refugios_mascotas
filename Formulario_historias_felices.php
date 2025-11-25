@@ -1,19 +1,24 @@
-<!-- Formulario para crear una historia feliz uwu -->
-<!-- Formulario para crear una historia feliz uwu -->
 <?php 
 include('menu.php');
- ?>
+// Obtener el id_refugio de la URL
+$id_refugio = $_GET['id_refugio'] ?? null;
+
+if(empty($id_refugio)) {
+    die("Error: No se recibió el ID del refugio");
+}
+
+require_once('clases/Historias_f.php');
+$historia_obj = new HistoriaFeliz();
+// SOLO MASCOTAS DE ESTE REFUGIO
+$mascotas = $historia_obj->obtenerMascotas($id_refugio);
+?>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Formulario de historias felices</title>
-    
-    <!-- Bootstrap CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
-    
-    <!-- Tu CSS personalizado -->
     <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
@@ -27,6 +32,9 @@ include('menu.php');
                     <div class="card-body p-4">
                         <form action="controladores/Insertar_historias_f.php" method="POST" enctype="multipart/form-data">
 
+                            <!-- Campo hidden para el refugio -->
+<input type="hidden" name="fk_refugio" value="<?= $id_refugio ?>">
+
                             <!-- Descripción -->
                             <div class="row justify-content-center">
                                 <div class="col-12 mb-4">
@@ -34,6 +42,8 @@ include('menu.php');
                                     <textarea class="form-control" name="descripcion" rows="4" required></textarea>
                                 </div>
                             </div>
+
+                            <!-- El resto del formulario igual... -->
 
                             <!-- Foto -->
                             <div class="row justify-content-center">
@@ -44,27 +54,27 @@ include('menu.php');
                             </div>
 
                             <!-- Select Mascota -->
-                            <div class="row justify-content-center">
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label fw-bold">Mascota:</label>
-                                    <select name="fk_mascota" required class="form-select">
-                                    <option value="">Selecciona una mascota</option>
-                                    <?php
-                                        require_once('clases/Historias_f.php');
-                                        $historia_obj = new HistoriaFeliz();
-                                        $mascotas = $historia_obj->obtenerMascotas();
-                                
-                                        foreach($mascotas as $mascota){
-                                    ?>
-                                        <option value="<?= $mascota['id_mascotas'] ?>">
-                                        <?= $mascota['nombre'] ?>
-                                        </option>
-                                    <?php 
-                                        } 
-                                    ?>
-                                    </select>
-                                </div>
-                            </div>
+                                  <div class="row justify-content-center">
+    <div class="col-md-4 mb-3">
+        <label class="form-label fw-bold">Mascota:</label>
+        <select name="fk_mascota" required class="form-select">
+            <option value="">Selecciona una mascota</option>
+            <?php if(count($mascotas) > 0): ?>
+                <?php foreach($mascotas as $mascota): ?>
+                    <option value="<?= $mascota['id_mascotas'] ?>" 
+                        <?= (isset($historia) && $mascota['id_mascotas'] == $historia['fk_mascota']) ? 'selected' : '' ?>>
+                        <?= $mascota['nombre'] ?>
+                    </option>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <option value="" disabled>No hay mascotas en este refugio</option>
+            <?php endif; ?>
+        </select>
+        <?php if(count($mascotas) == 0): ?>
+            <small class="text-danger">Primero debes agregar mascotas a este refugio</small>
+        <?php endif; ?>
+    </div>
+</div>
 
                             <!-- Botón -->
                             <div class="d-grid gap-2 mt-4">
