@@ -42,7 +42,7 @@
     $clase = new Refugio();
     
     // Pasar el id_usuario al método guardar
-    $resultado = $clase->guardar($nombre, $descripcion, $colonia,$foto, $nombre_calle, $numero_exterior, $numero_interior, $telefono, $correo, $id_usuario);
+    $resultado = $clase->guardar($nombre, $descripcion, $colonia, $nombre_calle, $numero_exterior, $numero_interior, $telefono, $correo,$foto, $id_usuario);
 
     if($resultado){
         header('location: ../mis_refugios.php');
