@@ -5,6 +5,7 @@
     $pregunta = $_POST["pregunta"];
     $fk_formulario = $_POST["fk_formulario"];
     $numero_pregunta = $_POST["numero_pregunta"];
+    $id_refugio = $_POST["id_refugio"];
 
     include('../clases/Preguntas_form.php');
     $clase = new Preguntas();
@@ -14,7 +15,7 @@
     
 
     if($resultado){
-        header('location: ../Formulario_preguntas.php?id_formulario=' . $fk_formulario);
+        header('location: ../Formulario_preguntas.php?id_formulario=' . $fk_formulario.'&id_refugio=' . $id_refugio);
     }else{
         echo "Error";
     }
