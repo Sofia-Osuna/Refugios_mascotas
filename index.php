@@ -92,6 +92,30 @@ $imagenes_carrusel = array_slice($imagenes, 0, $numero_imagenes_aleatorias);
     </div>
 </section>
     <!-- Fin del carusel -->
+
+    <?php
+
+$conexion = new mysqli("localhost", "root", "", "refugios_mascotas");
+
+
+if ($conexion->connect_error) {
+    
+    $mascotas = [];
+    $refugios = [];
+} else {
+    
+    $query_mascotas = "SELECT * FROM mascotas WHERE estatus = 'disponible' ORDER BY RAND() LIMIT 3";
+    $result_mascotas = $conexion->query($query_mascotas);
+    $mascotas = $result_mascotas ? $result_mascotas->fetch_all(MYSQLI_ASSOC) : [];
+
+     
+    $query_refugios = "SELECT * FROM refugio WHERE estatus = 1 ORDER BY RAND() LIMIT 3";
+    $result_refugios = $conexion->query($query_refugios);
+    $refugios = $result_refugios ? $result_refugios->fetch_all(MYSQLI_ASSOC) : [];
+
+    $conexion->close();
+}
+?>
      
     <!-- Cómo Funciona -->
     <section class="py-5 bg-light">
@@ -110,94 +134,101 @@ $imagenes_carrusel = array_slice($imagenes, 0, $numero_imagenes_aleatorias);
     </section>
 
     <!-- Mascotas Disponibles -->
-    <section class="py-5">
-        <div class="container">
-            <h2 class="text-center mb-5 fw-bold">Estos amigos necesitan un hogar</h2>
-            
-            <div class="row g-4">
-                <!-- Card Mascota 1 -->
+    <!-- Mascotas Disponibles DINÁMICAS -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5 fw-bold">Estos amigos necesitan un hogar</h2>
+        
+        <div class="row g-4">
+            <?php if (!empty($mascotas)): ?>
+                <?php foreach ($mascotas as $mascota): ?>
                 <div class="col-md-6 col-lg-4">
                     <div class="card h-100 shadow-sm hover-card">
-                        <img src="Imagenes_animales/placeholder.jpg" class="card-img-top" alt="Mascota" style="height: 250px; object-fit: cover;">
+                        <img src="Imagenes_animales/<?php echo $mascota['foto'] ?? 'placeholder.jpg'; ?>" 
+                             class="card-img-top" 
+                             alt="<?php echo htmlspecialchars($mascota['nombre']); ?>" 
+                             style="height: 250px; object-fit: cover;">
                         <div class="card-body d-flex flex-column">
-                            <h5 class="card-title fw-bold">Nombre</h5>
-                            <p class="card-text flex-grow-1">Descripción de la mascota...</p>
-                            <a href="#" class="btn text-white mt-auto" style="background-color: #85B79D;">Ver más información</a>
+                            <h5 class="card-title fw-bold"><?php echo htmlspecialchars($mascota['nombre']); ?></h5>
+                            <p class="card-text flex-grow-1">
+                                <?php 
+                                $descripcion = $mascota['descripcion'] ?? 'Descripción no disponible';
+                                if (strlen($descripcion) > 100) {
+                                    echo substr(htmlspecialchars($descripcion), 0, 100) . '...';
+                                } else {
+                                    echo htmlspecialchars($descripcion);
+                                }
+                                ?>
+                            </p>
+                            <a href="Detalle_mascota.php?id=<?php echo $mascota['id_mascotas']; ?>&id_refugio=<?php echo $mascota['fk_refugio']; ?>" 
+                               class="btn text-white mt-auto" 
+                               style="background-color: #85B79D;">
+                                Ver más información
+                            </a>
                         </div>
                     </div>
                 </div>
-
-                <!-- Card Mascota 2 - Max -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 shadow-sm hover-card">
-                        <img src="Imagenes_animales/max.jpg" class="card-img-top" alt="Max" style="height: 250px; object-fit: cover;">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title fw-bold">Max</h5>
-                            <p class="card-text flex-grow-1">Perrito recién rescatado, 4-5 meses de edad, bastante juguetón y amigable</p>
-                            <a href="#" class="btn text-white mt-auto" style="background-color: #85B79D;">Ver más información</a>
-                        </div>
-                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="col-12 text-center">
+                    <p class="text-muted">No hay mascotas disponibles en este momento.</p>
                 </div>
-
-                <!-- Card Mascota 3 - Güera -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 shadow-sm hover-card">
-                        <img src="Imagenes_animales/guera.jpg" class="card-img-top" alt="Güera" style="height: 250px; object-fit: cover;">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title fw-bold">Güera</h5>
-                            <p class="card-text flex-grow-1">Perrita de 1-2 años de edad, bastante inteligente, amigable, sabe dar la pata y aprende trucos con facilidad</p>
-                            <a href="#" class="btn text-white mt-auto" style="background-color: #85B79D;">Ver más información</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php endif; ?>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- Refugios Disponibles -->
-    <section class="py-5 bg-light">
-        <div class="container">
-            <h2 class="text-center mb-5 fw-bold">Explora los refugios disponibles</h2>
-            
-            <div class="row g-4">
-                <!-- Card Refugio 1 -->
+    <!-- Refugios Disponibles DINÁMICOS -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5 fw-bold">Explora los refugios disponibles</h2>
+        
+        <div class="row g-4">
+            <?php if (!empty($refugios)): ?>
+                <?php foreach ($refugios as $refugio): ?>
                 <div class="col-md-6 col-lg-4">
                     <div class="card h-100 shadow-sm hover-card">
-                        <img src="Imagenes_animales/refugio-placeholder.jpg" class="card-img-top" alt="Refugio" style="height: 250px; object-fit: cover;">
+                        <?php if(!empty($refugio['foto'])): ?>
+                            <img src="img_refugio/<?php echo htmlspecialchars($refugio['foto']); ?>" 
+                                 class="card-img-top" 
+                                 alt="<?php echo htmlspecialchars($refugio['nombre']); ?>" 
+                                 style="height: 250px; object-fit: cover;">
+                        <?php else: ?>
+                            <div class="card-img-top d-flex align-items-center justify-content-center bg-light" 
+                                 style="height: 250px;">
+                                <span class="text-muted">Sin imagen</span>
+                            </div>
+                        <?php endif; ?>
                         <div class="card-body d-flex flex-column">
-                            <h5 class="card-title fw-bold">Nombre del Refugio</h5>
-                            <p class="card-text flex-grow-1">Descripción del refugio...</p>
-                            <a href="#" class="btn text-white mt-auto" style="background-color: #FCCA46;">Ver más información</a>
+                            <h5 class="card-title fw-bold"><?php echo htmlspecialchars($refugio['nombre']); ?></h5>
+                            <p class="card-text flex-grow-1">
+                                <?php 
+                                $descripcion = $refugio['description'] ?? 'Descripción no disponible';
+                                if (strlen($descripcion) > 120) {
+                                    echo substr(htmlspecialchars($descripcion), 0, 120) . '...';
+                                } else {
+                                    echo htmlspecialchars($descripcion);
+                                }
+                                ?>
+                            </p>
+                            <a href="detalles_refugio.php?id=<?php echo $refugio['id_refugio']; ?>" 
+                               class="btn text-white mt-auto" 
+                               style="background-color: #FCCA46;">
+                                Ver más información
+                            </a>
                         </div>
                     </div>
                 </div>
-
-                <!-- Card Refugio 2 - La Lomita -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 shadow-sm hover-card">
-                        <img src="Imagenes_animales/lomita.jpg" class="card-img-top" alt="Refugio la lomita" style="height: 250px; object-fit: cover;">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title fw-bold">Refugio La Lomita</h5>
-                            <p class="card-text flex-grow-1">Ubicado en el corazón de la ciudad, dedicado al rescate y cuidado de mascotas abandonadas.</p>
-                            <a href="#" class="btn text-white mt-auto" style="background-color: #FCCA46;">Ver más información</a>
-                        </div>
-                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="col-12 text-center">
+                    <p class="text-muted">No hay refugios disponibles en este momento.</p>
                 </div>
-
-                <!-- Card Refugio 3 - Girasol -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 shadow-sm hover-card">
-                        <img src="Imagenes_animales/girasol.jpg" class="card-img-top" alt="Refugio girasol" style="height: 250px; object-fit: cover;">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title fw-bold">Refugio Girasol</h5>
-                            <p class="card-text flex-grow-1">Espacio amplio y seguro para nuestros amigos peludos, con atención veterinaria profesional.</p>
-                            <a href="#" class="btn text-white mt-auto" style="background-color: #FCCA46;">Ver más información</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php endif; ?>
         </div>
-    </section>
+    </div>
+</section>
 
     
 
