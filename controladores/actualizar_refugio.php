@@ -12,7 +12,7 @@ if(!isset($_SESSION['idusuario'])){
 
 $id_refugio = $_POST["id_refugio"];
 
-require_once('../clases/Refugio.php');
+include('../clases/Refugio.php');
 $clase_validar = new Refugio();
 
 // Verificar que el refugio le pertenezca (excepto si es admin)
@@ -63,9 +63,7 @@ $foto = $_FILES["foto"]["name"];
         $foto = "sin_foto.jpg";
     }
 
-    include ('../clases/Refugio.php');
-    $clase = new Refugio();
-    $resultado = $clase ->actualizar($id_refugio,$nombre,  $descripcion, $colonia, $nombre_calle,  $numero_exterior, $numero_interior, $telefono, $correo,$foto);
+    $resultado = $clase_validar ->actualizar($id_refugio,$nombre,  $descripcion, $colonia, $nombre_calle,  $numero_exterior, $numero_interior, $telefono, $correo,$foto);
 
     if($resultado){
         header('location: ../mis_refugios.php');
