@@ -66,7 +66,7 @@ public function mostrarTodas() {
                  FROM mascotas m
                  LEFT JOIN especie e ON m.fk_especie = e.id_especie
                  LEFT JOIN refugio r ON m.fk_refugio = r.id_refugio
-                 WHERE m.estatus = 1
+                 WHERE m.estatus = 1 AND r.estatus = 1
                  ORDER BY m.id_mascotas DESC"; // Cambiar por una columna que sí exista
     
     $resultado = $this->conexion->query($consulta);
