@@ -17,21 +17,25 @@ function guardar($descripcion, $fecha, $hora, $foto, $fk_mascota, $fk_refugio){
 
 // En Historias_f.php - CORREGIDO
 // En Historias_f.php - NOMBRES EXACTOS
-public function mostrar($id_refugio = null) {
-    if ($id_refugio) {
-        $sql = "SELECT hf.*, m.nombre as nombre_mascota 
-                FROM historia_feliz hf 
-                LEFT JOIN mascotas m ON hf.fk_mascota = m.id_mascotas 
-                WHERE hf.fk_refugio = $id_refugio 
-                AND hf.estatus = 1 
-                ORDER BY hf.fecha DESC, hf.hora DESC";
-    } else {
-        $sql = "SELECT hf.*, m.nombre as nombre_mascota 
-                FROM historia_feliz hf 
-                LEFT JOIN mascotas m ON hf.fk_mascota = m.id_mascotas 
-                WHERE hf.estatus = 1 
-                ORDER BY hf.fecha DESC, hf.hora DESC";
-    }
+    public function mostrar($id_refugio = null) {
+        if ($id_refugio) {
+            $sql = "SELECT hf.*, m.nombre as nombre_mascota 
+                    FROM historia_feliz hf 
+                    LEFT JOIN mascotas m ON hf.fk_mascota = m.id_mascotas 
+                    LEFT JOIN refugio r ON hf.fk_refugio = r.id_refugio
+                    WHERE hf.fk_refugio = $id_refugio 
+                    AND hf.estatus = 1 
+                    AND r.estatus = 1  -- Solo refugios activos
+                    ORDER BY hf.fecha DESC, hf.hora DESC";
+        } else {
+            $sql = "SELECT hf.*, m.nombre as nombre_mascota 
+                    FROM historia_feliz hf 
+                    LEFT JOIN mascotas m ON hf.fk_mascota = m.id_mascotas 
+                    LEFT JOIN refugio r ON hf.fk_refugio = r.id_refugio
+                    WHERE hf.estatus = 1 
+                    AND r.estatus = 1  -- Solo refugios activos
+                    ORDER BY hf.fecha DESC, hf.hora DESC";
+        }
     
     $resultado = $this->conexion->query($sql);
     return $resultado->fetch_all(MYSQLI_ASSOC);
