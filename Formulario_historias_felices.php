@@ -20,6 +20,7 @@ $mascotas = $historia_obj->obtenerMascotas($id_refugio);
     <title>Formulario de historias felices</title>
     <link href="css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="css/estilo.css">
+    
 </head>
 <body>
     <div class="container my-5">

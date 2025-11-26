@@ -9,12 +9,12 @@
     $correo = $_POST["correo"];
     $rol = $_POST["rol"];
     
- // Seguridad: Si no es admin, solo puede elegir rol 2 o 3
-if(!isset($_SESSION['fk_rol']) || $_SESSION['fk_rol'] != 1){
-    if($rol == 1){
-        $rol = 2;
+    // Seguridad: Si no es admin, solo puede elegir rol 2 o 3
+    if(!isset($_SESSION['fk_rol']) || $_SESSION['fk_rol'] != 1){
+        if($rol == 1){
+            $rol = 2;
+        }
     }
-}
     
     $foto = $_FILES["foto"]["name"];
     $tmp = $_FILES["foto"]["tmp_name"];
@@ -49,12 +49,19 @@ if(!isset($_SESSION['fk_rol']) || $_SESSION['fk_rol'] != 1){
 
     if($resultado){
         if(!isset($_SESSION['username'])){
-$_SESSION['idusuario'] = $clase->obtenerUltimoId();
+            $_SESSION['idusuario'] = $clase->obtenerUltimoId();
             $_SESSION['username'] = $nombre;
             $_SESSION['correo'] = $correo;
             $_SESSION['fk_rol'] = $rol;
             
-            header('location: ../index.php');
+            // ✅ CORREGIDO: Redirigir según el rol
+            if($rol == 3){
+                // Gestor de refugio -> va a crear su refugio
+                header('location: ../index.php');
+            } else {
+                // Usuario normal -> va al index
+                header('location: ../index.php');
+            }
         } else {
             header('location: ../Lista_usuario.php');
         }
