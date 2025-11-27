@@ -102,6 +102,12 @@ if (!$refugio) {
                         Cuestionario de adopción
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold text-dark px-3" href="Lista_respuesta_refugio.php?id_refugio=<?= $refugio['id_refugio'] ?>">
+                        Lista de respuestas
+                    </a>
+                </li>
                 <?php endif; ?>
                 <?php } ?>
 

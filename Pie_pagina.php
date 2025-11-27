@@ -46,7 +46,7 @@
           <li><a href="index.php" class="textocolor">Inicio</a></li>
           
           <li><a href="Lista_refugio.php" class="textocolor">Refugios</a></li>
-          <li><a href="Informacion.php" class="textocolor">información</a></li>
+          <!-- <li><a href="Informacion.php" class="textocolor">información</a></li> -->
         </ul>
       </div>
       
@@ -59,8 +59,7 @@
           Brayan<br>
           Lorena <br> 
           Pedro<br>
-          <strong>Correo del proyecto</strong><br>
-          <strong class="texto-lora">refupetsproyecto4tocuatri@gmail.com</strong>
+          
           
         </p>
         <p class="small">UNIVERSIDAD TECNOLOGICA DE ESCUINAPA<br>Aplicaciones web</p>
