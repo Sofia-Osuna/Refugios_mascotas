@@ -3,8 +3,6 @@ include('menu.php');
 include('menu_refugio.php');
 
 require_once('clases/Mascota.php');
-require_once('clases/refugio.php'); // Incluir la clase refugio para verificar propiedad
-
 $id = $_GET['id'];
 $id_refugio = $_GET['id_refugio'] ?? null;
 $origen = $_GET['origen'] ?? 'lista'; // 'lista' o 'todas'
@@ -139,7 +137,7 @@ if(isset($_SESSION['idusuario']) && $id_refugio) {
                 
                 <div class="d-flex gap-2">
                     <!-- Botón Adoptar como principal -->
-                    <a href="Lista_mascota.php?id_refugio=<?= $id_refugio ?>" 
+                    <a href="controladores/Insertar_adopcion.php?id_usuario=<?= $_SESSION['idusuario']?>&id_mascota=<?=$mascota['id_mascotas']?>" 
                        class="btn text-white px-4" 
                        style="background-color: #FCCA46; border-radius: 10px;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill me-2" viewBox="0 0 16 16">

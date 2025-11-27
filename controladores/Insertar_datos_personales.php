@@ -4,6 +4,8 @@
     include('../clases/Datos_personales.php');
 
 
+
+
     $nombre = $_POST["nombre"];
     $ap = $_POST['apellidop']; //apellido paterno pues
     $am = $_POST['apellidom'];

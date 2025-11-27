@@ -2,7 +2,6 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-
 include('menu.php');
 if(!isset($_SESSION['idusuario'])) {
     header('location: Inicio_sesion.php');
@@ -12,6 +11,8 @@ if(!isset($_SESSION['idusuario'])) {
 include('clases/Usuario.php');
 $clase_usuario = new Usuario();
 $usuario = $clase_usuario->obtenerPorId($_SESSION['idusuario']);
+
+
 $datos_personales = [];
 
 include('clases/Datos_personales.php');
@@ -76,7 +77,6 @@ $datos_personales = $clase_datos->obtener($_SESSION['idusuario']);
                                 <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
                             </svg>
                             <?= htmlspecialchars($usuario['correo'] ?? 'Correo no registrado') ?>
-
                         </p>
                     </div>
 
@@ -99,8 +99,6 @@ $datos_personales = $clase_datos->obtener($_SESSION['idusuario']);
                                     </svg>
                                     Editar datos
                                 </a>
-                                
-                                
                             <?php else: ?>
                                 <a href="Formulario_datos_personales.php?id=<?=$usuario['id_usuario']?>" class="btn btn-sm text-white" style="background-color: #85B79D;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16">
@@ -156,28 +154,35 @@ $datos_personales = $clase_datos->obtener($_SESSION['idusuario']);
                                         Dirección
                                     </h6>
                                     <div class="row">
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-6 mb-3">
                                             <small class="text-muted d-block">Estado</small>
                                             <p class="mb-0 fw-semibold" style="color: #283D3B;">
                                                 <?= htmlspecialchars($datos_personales['estado'] ?? '') ?>
                                             </p>
                                         </div>
 
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-6 mb-3">
                                             <small class="text-muted d-block">Municipio</small>
                                             <p class="mb-0 fw-semibold" style="color: #283D3B;">
                                                 <?= htmlspecialchars($datos_personales['municipio'] ?? '') ?>
                                             </p>
                                         </div>
 
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-6 mb-3">
                                             <small class="text-muted d-block">Colonia/Localidad</small>
                                             <p class="mb-0 fw-semibold" style="color: #283D3B;">
                                                 <?= htmlspecialchars($datos_personales['colonia'] ?? '') ?>
                                             </p>
                                         </div>
 
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-6 mb-3">
+                                            <small class="text-muted d-block">Código Postal</small>
+                                            <p class="mb-0 fw-semibold" style="color: #283D3B;">
+                                                <?= htmlspecialchars($datos_personales['codigo_postal'] ?? '') ?>
+                                            </p>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
                                             <small class="text-muted d-block">Calle</small>
                                             <p class="mb-0 fw-semibold" style="color: #283D3B;">
                                                 <?= htmlspecialchars($datos_personales['nombre_calle'] ?? '') ?>
@@ -191,17 +196,10 @@ $datos_personales = $clase_datos->obtener($_SESSION['idusuario']);
                                             </p>
                                         </div>
 
-                                        <div class="col-md-2 mb-3">
+                                        <div class="col-md-3 mb-3">
                                             <small class="text-muted d-block">Núm. Interior</small>
                                             <p class="mb-0 fw-semibold" style="color: #283D3B;">
                                                 <?= !empty($datos_personales['numero_interior']) ? htmlspecialchars($datos_personales['numero_interior']) : 's/n' ?> 
-                                            </p>
-                                        </div>
-
-                                        <div class="col-md-3 mb-3">
-                                            <small class="text-muted d-block">Código Postal</small>
-                                            <p class="mb-0 fw-semibold" style="color: #283D3B;">
-                                                <?= htmlspecialchars($datos_personales['codigo_postal'] ?? '') ?>
                                             </p>
                                         </div>
                                     </div>
