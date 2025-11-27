@@ -18,6 +18,8 @@ $datos_personales = [];
 include('clases/Datos_personales.php');
 $clase_datos = new Datos();
 $datos_personales = $clase_datos->obtener($_SESSION['idusuario']);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -140,6 +142,13 @@ $datos_personales = $clase_datos->obtener($_SESSION['idusuario']);
                                             </p>
                                         </div>
                                         <?php endif; ?>
+
+                                        <div class="col-md-3 mb-3">
+                                            <small class="text-muted d-block">telefono</small>
+                                            <p class="mb-0 fw-semibold" style="color: #283D3B;">
+                                                <?=($datos_personales['telefono'])?>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
