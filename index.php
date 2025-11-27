@@ -1,5 +1,48 @@
 <?php
     include('menu.php');
+
+    // php para el carrusel
+    $carpeta_imagenes = 'Imagenes_animales/'; // Carpeta donde están las imágenes
+    $extensiones_validas = array('jpg', 'jpeg', 'png', 'gif', 'webp'); // Extensiones permitidas
+    $numero_imagenes_aleatorias = 5; // Cuántas imágenes mostrar en el carrusel
+
+
+    $imagenes = array();
+    if (is_dir($carpeta_imagenes)) {
+        $archivos = scandir($carpeta_imagenes);
+        foreach ($archivos as $archivo) {
+            $extension = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
+            if (in_array($extension, $extensiones_validas)) {
+                $imagenes[] = $carpeta_imagenes . $archivo;
+            }
+        }
+    }
+    shuffle($imagenes);
+    $imagenes_carrusel = array_slice($imagenes, 0, $numero_imagenes_aleatorias);
+    //fin del php del carrusel
+
+    //imagenes dinamicas del pedro (Aqui pon todo el codigo de eso pedroo, para que no se revuelva con el html)
+    $conexion = new mysqli("localhost", "root", "", "refugios_mascotas");
+
+    if ($conexion->connect_error) {
+    
+        $mascotas = [];
+        $refugios = [];
+    } else {
+    
+        $query_mascotas = "SELECT * FROM mascotas WHERE estatus = 'disponible' ORDER BY RAND() LIMIT 3";
+        $result_mascotas = $conexion->query($query_mascotas);
+        $mascotas = $result_mascotas ? $result_mascotas->fetch_all(MYSQLI_ASSOC) : [];
+
+     
+        $query_refugios = "SELECT * FROM refugio WHERE estatus = 1 ORDER BY RAND() LIMIT 3";
+        $result_refugios = $conexion->query($query_refugios);
+        $refugios = $result_refugios ? $result_refugios->fetch_all(MYSQLI_ASSOC) : [];
+
+        $conexion->close();
+    }
+    
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -13,31 +56,6 @@
 <body>
 
   
-<?php
-// php para el carrusel
-
-$carpeta_imagenes = 'Imagenes_animales/'; // Carpeta donde están las imágenes
-$extensiones_validas = array('jpg', 'jpeg', 'png', 'gif', 'webp'); // Extensiones permitidas
-$numero_imagenes_aleatorias = 5; // Cuántas imágenes mostrar en el carrusel
-
-
-$imagenes = array();
-if (is_dir($carpeta_imagenes)) {
-    $archivos = scandir($carpeta_imagenes);
-    foreach ($archivos as $archivo) {
-        $extension = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
-        if (in_array($extension, $extensiones_validas)) {
-            $imagenes[] = $carpeta_imagenes . $archivo;
-        }
-    }
-}
-
-
-shuffle($imagenes);
-$imagenes_carrusel = array_slice($imagenes, 0, $numero_imagenes_aleatorias);
-
-
-?>
 
 <!--Inicio del carrusel -->
 <section class="carousel-section py-5" style="background: linear-gradient(135deg, #85B79D 0%, #FCCA46 100%);">
@@ -93,30 +111,7 @@ $imagenes_carrusel = array_slice($imagenes, 0, $numero_imagenes_aleatorias);
 </section>
     <!-- Fin del carusel -->
 
-    <?php
 
-$conexion = new mysqli("localhost", "root", "", "refugios_mascotas");
-
-
-if ($conexion->connect_error) {
-    
-    $mascotas = [];
-    $refugios = [];
-} else {
-    
-    $query_mascotas = "SELECT * FROM mascotas WHERE estatus = 'disponible' ORDER BY RAND() LIMIT 3";
-    $result_mascotas = $conexion->query($query_mascotas);
-    $mascotas = $result_mascotas ? $result_mascotas->fetch_all(MYSQLI_ASSOC) : [];
-
-     
-    $query_refugios = "SELECT * FROM refugio WHERE estatus = 1 ORDER BY RAND() LIMIT 3";
-    $result_refugios = $conexion->query($query_refugios);
-    $refugios = $result_refugios ? $result_refugios->fetch_all(MYSQLI_ASSOC) : [];
-
-    $conexion->close();
-}
-?>
-     
     <!-- Cómo Funciona -->
     <section class="py-5 bg-light">
         <div class="container">
@@ -160,7 +155,7 @@ if ($conexion->connect_error) {
                                 }
                                 ?>
                             </p>
-                            <a href="Detalle_mascota.php?id=<?php echo $mascota['id_mascotas']; ?>&id_refugio=<?php echo $mascota['fk_refugio']; ?>" 
+                            <a href="Detalle_mascota.php?id=<?php $mascota['id_mascotas']; ?>&id_refugio=<?php $mascota['fk_refugio']; ?>" 
                                class="btn text-white mt-auto" 
                                style="background-color: #85B79D;">
                                 Ver más información
