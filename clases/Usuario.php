@@ -36,7 +36,7 @@ function guardar($nombre, $password, $correo, $foto, $rol){
         
         function obtenerPorId($id_usuario){
             //en esta consulta es donde jalas todos los datos personales del usuario
-            $consulta = "SELECT u.*, c.correo FROM usuario u LEFT JOIN correo_usuario c ON c.fk_usuario = u.id_usuario WHERE id_usuario = {$id_usuario}";
+            $consulta = "SELECT u.*, c.correo FROM usuario u LEFT JOIN correo_usuario c ON c.fk_usuario = u.id_usuario AND c.estatus=1 WHERE id_usuario = {$id_usuario}";
             $respuesta = $this->conexion->query($consulta);
             $usuario = $respuesta->fetch_assoc();
             return $usuario;
