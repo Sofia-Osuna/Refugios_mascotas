@@ -27,8 +27,9 @@
         }
 
         function obtener($id_usuario){
-            //AHHHHH necesito hacer una consulta con un monton de inners joins, 
             //estado->municipio->colonia->direccion->usuarios_direcciones->usuario->datos_personales->telefono_usuario
+            //tuve que usar left joins pq..... 
+            // LEFT JOIN en lugar de INNER JOIN: Así devuelve el usuario aunque falten datos en tablas relacionadas -Deepseek xdxd
             $consulta ="SELECT 
             e.nombre as estado,
             e.id_estado,
@@ -50,20 +51,24 @@
             dp.edad,
             dp.fecha_nacimiento,
             t.telefono FROM estado e 
-            INNER JOIN municipio m ON e.id_estado=m.fk_estado
-            INNER JOIN colonia c ON m.id_municipio = c.fk_municipio
-            INNER JOIN direccion d ON c.id_colonia = d.fk_colonia
-            INNER JOIN usuarios_direcciones du ON d.id_direccion = du.fk_direccion
-            INNER JOIN usuario u ON du.fk_usuario=u.id_usuario
-            INNER JOIN datos_personales dp ON u.id_usuario = dp.fk_usuario
-            INNER JOIN telefono_usuario t ON u.id_usuario = t.fk_usuario
+            LEFT JOIN municipio m ON e.id_estado=m.fk_estado
+            LEFT JOIN colonia c ON m.id_municipio = c.fk_municipio
+            LEFT JOIN direccion d ON c.id_colonia = d.fk_colonia
+            LEFT JOIN usuarios_direcciones du ON d.id_direccion = du.fk_direccion
+            LEFT JOIN usuario u ON du.fk_usuario=u.id_usuario
+            LEFT JOIN datos_personales dp ON u.id_usuario = dp.fk_usuario
+            LEFT JOIN telefono_usuario t ON u.id_usuario = t.fk_usuario
             WHERE u.id_usuario = ?";
 
             $stmt = $this->conexion->prepare($consulta);
             $stmt->bind_param("i", $id_usuario);
             $stmt->execute();
             $resultado = $stmt->get_result();
-            return $resultado->fetch_assoc();
+    
+            $datos = $resultado->fetch_assoc();
+    
+            // SI ES NULL, DEVOLVER ARRAY VACÍO
+            return $datos ?? [];
         }
         
         function editar($nombre, $ap, $am, $edad, $fnac, $colonia, $nombre_calle, $n_exterior, $n_interior, $id_usuario, $telefono){

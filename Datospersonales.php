@@ -1,8 +1,9 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-include('menu.php');
 
+
+include('menu.php');
 if(!isset($_SESSION['idusuario'])) {
     header('location: Inicio_sesion.php');
     exit;
@@ -11,7 +12,6 @@ if(!isset($_SESSION['idusuario'])) {
 include('clases/Usuario.php');
 $clase_usuario = new Usuario();
 $usuario = $clase_usuario->obtenerPorId($_SESSION['idusuario']);
-
 $datos_personales = [];
 
 include('clases/Datos_personales.php');
@@ -75,7 +75,8 @@ $datos_personales = $clase_datos->obtener($_SESSION['idusuario']);
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16">
                                 <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
                             </svg>
-                            <?= htmlspecialchars($usuario['correo']) ?>
+                            <?= htmlspecialchars($usuario['correo'] ?? 'Correo no registrado') ?>
+
                         </p>
                     </div>
 
@@ -90,21 +91,23 @@ $datos_personales = $clase_datos->obtener($_SESSION['idusuario']);
                                 </svg>
                                 Datos personales
                             </h5>
-                            <?php if(empty($datos_personales)): ?>
-                                <a href="Formulario_datos_personales.php?id_usuario=<?=$usuario['id_usuario']?>" class="btn btn-sm text-white" style="background-color: #85B79D;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16">
-                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                                    </svg>
-                                    Agregar datos
-                                </a>
-                            <?php else: ?>
+                            <?php if(!empty($datos_personales)): ?>
                                 <a href="Editar_datos.php?id_usuario=<?=$usuario['id_usuario']?>" class="btn btn-sm text-white" style="background-color: #FCCA46;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16">
                                         <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                         <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
                                     </svg>
                                     Editar datos
+                                </a>
+                                
+                                
+                            <?php else: ?>
+                                <a href="Formulario_datos_personales.php?id=<?=$usuario['id_usuario']?>" class="btn btn-sm text-white" style="background-color: #85B79D;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                    </svg>
+                                    Agregar datos
                                 </a>
                             <?php endif; ?>
                         </div>
@@ -118,16 +121,16 @@ $datos_personales = $clase_datos->obtener($_SESSION['idusuario']);
                                         <div class="col-md-6 mb-3">
                                             <small class="text-muted d-block">Nombre completo</small>
                                             <p class="mb-0 fw-semibold" style="color: #283D3B;">
-                                                <?= htmlspecialchars($datos_personales['Nombre'] . ' ' . 
-                                                   $datos_personales['apellido_p'] . ' ' . 
-                                                   $datos_personales['apellido_m']) ?>
+                                                <?= htmlspecialchars(($datos_personales['Nombre'] ?? '') . ' ' . 
+                                                   ($datos_personales['apellido_p'] ?? '') . ' ' . 
+                                                   ($datos_personales['apellido_m'] ?? '')) ?>
                                             </p>
                                         </div>
                                         
                                         <div class="col-md-3 mb-3">
                                             <small class="text-muted d-block">Fecha de nacimiento</small>
                                             <p class="mb-0 fw-semibold" style="color: #283D3B;">
-                                                <?= date('d/m/Y', strtotime($datos_personales['fecha_nacimiento'])) ?>
+                                                <?= !empty($datos_personales['fecha_nacimiento']) ? date('d/m/Y', strtotime($datos_personales['fecha_nacimiento'])) : 'No especificada' ?>
                                             </p>
                                         </div>
 
@@ -156,28 +159,28 @@ $datos_personales = $clase_datos->obtener($_SESSION['idusuario']);
                                         <div class="col-md-4 mb-3">
                                             <small class="text-muted d-block">Estado</small>
                                             <p class="mb-0 fw-semibold" style="color: #283D3B;">
-                                                <?= htmlspecialchars($datos_personales['estado']) ?>
+                                                <?= htmlspecialchars($datos_personales['estado'] ?? '') ?>
                                             </p>
                                         </div>
 
                                         <div class="col-md-4 mb-3">
                                             <small class="text-muted d-block">Municipio</small>
                                             <p class="mb-0 fw-semibold" style="color: #283D3B;">
-                                                <?= htmlspecialchars($datos_personales['municipio']) ?>
+                                                <?= htmlspecialchars($datos_personales['municipio'] ?? '') ?>
                                             </p>
                                         </div>
 
                                         <div class="col-md-4 mb-3">
                                             <small class="text-muted d-block">Colonia/Localidad</small>
                                             <p class="mb-0 fw-semibold" style="color: #283D3B;">
-                                                <?= htmlspecialchars($datos_personales['colonia']) ?>
+                                                <?= htmlspecialchars($datos_personales['colonia'] ?? '') ?>
                                             </p>
                                         </div>
 
-                                        <div class="col-md-6 mb-3">
+                                        <div class="col-md-4 mb-3">
                                             <small class="text-muted d-block">Calle</small>
                                             <p class="mb-0 fw-semibold" style="color: #283D3B;">
-                                                <?= htmlspecialchars($datos_personales['nombre_calle']) ?>
+                                                <?= htmlspecialchars($datos_personales['nombre_calle'] ?? '') ?>
                                             </p>
                                         </div>
 
@@ -188,17 +191,17 @@ $datos_personales = $clase_datos->obtener($_SESSION['idusuario']);
                                             </p>
                                         </div>
 
-                                        <div class="col-md-3 mb-3">
+                                        <div class="col-md-2 mb-3">
                                             <small class="text-muted d-block">Núm. Interior</small>
                                             <p class="mb-0 fw-semibold" style="color: #283D3B;">
                                                 <?= !empty($datos_personales['numero_interior']) ? htmlspecialchars($datos_personales['numero_interior']) : 's/n' ?> 
                                             </p>
                                         </div>
 
-                                        <div class="col-md-12">
+                                        <div class="col-md-3 mb-3">
                                             <small class="text-muted d-block">Código Postal</small>
                                             <p class="mb-0 fw-semibold" style="color: #283D3B;">
-                                                <?= htmlspecialchars($datos_personales['codigo_postal']) ?>
+                                                <?= htmlspecialchars($datos_personales['codigo_postal'] ?? '') ?>
                                             </p>
                                         </div>
                                     </div>
@@ -229,7 +232,7 @@ $datos_personales = $clase_datos->obtener($_SESSION['idusuario']);
                     <!-- Botones de acción -->
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <a href="editar_perfil.php" class="btn btn-outline-secondary w-100">
+                            <a href="Editar_usuario.php?id=<?= $usuario['id_usuario'] ?>" class="btn btn-naranja w-100">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-2" viewBox="0 0 16 16">
                                     <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
                                 </svg>
