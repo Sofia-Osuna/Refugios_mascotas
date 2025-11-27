@@ -60,8 +60,8 @@
             LEFT JOIN usuarios_direcciones du ON d.id_direccion = du.fk_direccion
             LEFT JOIN usuario u ON du.fk_usuario=u.id_usuario
             LEFT JOIN datos_personales dp ON u.id_usuario = dp.fk_usuario
-            LEFT JOIN telefono_usuario t ON u.id_usuario = t.fk_usuario
-            WHERE u.id_usuario = ?";
+            LEFT JOIN telefono_usuario t ON u.id_usuario = t.fk_usuario AND t.estatus = 1 
+            WHERE u.id_usuario = ? ";
 
             $stmt = $this->conexion->prepare($consulta);
             $stmt->bind_param("i", $id_usuario);
@@ -91,14 +91,14 @@
             $respuesta2 = $this -> conexion -> query($consulta2);
             $id = mysqli_insert_id($this->conexion);
 
-            $consulta4 = "UPDATE telefono_usuario SET  telefono='$telefono', estatus=') VALUES (null, '{$telefono}', '{$id_usuario}', 1);";
+            $consulta4 = "UPDATE telefono_usuario SET estatus=0 WHERE  fk_usuario='$id_usuario'";
             $respuesta3 = $this -> conexion -> query($consulta4);
-            //Insertar la fk_usuario y fk_direccion a la tabla de usuario_direcciones
-            // $consulta3 = "INSERT INTO usuarios_direcciones (id_usuarios_direcciones, fk_usuario, fk_direccion, estatus) VALUES (null, '{$id_usuario}', '{$id}', 1);";
-            // $respuesta3 = $this -> conexion -> query($consulta3);
+            
+            $consulta5 = "INSERT INTO telefono_usuario (id_telefono_usuario, telefono, fk_usuario, estatus) VALUES (null, '{$telefono}', '{$id_usuario}', 1);";
+            $respuesta5 = $this -> conexion -> query($consulta5);
+
 
             return $respuesta1;
-            //creo que si lo arruinamos al no ponerle el estatus a direccion ToT en editar pues la tabla de 
         }
 
         }
