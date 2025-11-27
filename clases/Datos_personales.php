@@ -23,6 +23,9 @@
             $consulta3 = "INSERT INTO usuarios_direcciones (id_usuarios_direcciones, fk_usuario, fk_direccion, estatus) VALUES (null, '{$id_usuario}', '{$id}', 1);";
             $respuesta3 = $this -> conexion -> query($consulta3);
 
+            $consulta4 = "INSERT INTO telefono_usuario (id_telefono_usuario, telefono, fk_usuario, estatus) VALUES (null, '{$telefono}', '{$id_usuario}', 1);";
+            $respuesta3 = $this -> conexion -> query($consulta4);
+
             return $respuesta1;
         }
 
@@ -87,6 +90,9 @@
             $consulta2 = "UPDATE direccion SET nombre_calle='$nombre_calle', numero_exterior='$n_exterior', numero_interior='$n_interior', fk_colonia='$colonia' WHERE id_direccion= '$fk_direccion'";
             $respuesta2 = $this -> conexion -> query($consulta2);
             $id = mysqli_insert_id($this->conexion);
+
+            $consulta4 = "UPDATE telefono_usuario SET  telefono='$telefono', estatus=') VALUES (null, '{$telefono}', '{$id_usuario}', 1);";
+            $respuesta3 = $this -> conexion -> query($consulta4);
             //Insertar la fk_usuario y fk_direccion a la tabla de usuario_direcciones
             // $consulta3 = "INSERT INTO usuarios_direcciones (id_usuarios_direcciones, fk_usuario, fk_direccion, estatus) VALUES (null, '{$id_usuario}', '{$id}', 1);";
             // $respuesta3 = $this -> conexion -> query($consulta3);

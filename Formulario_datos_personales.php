@@ -1,13 +1,19 @@
 <?php
 include('menu.php');
-$id_usuario=$_GET['id_usuario'];
 //AAAAAAAAH ocupo lo de los estados xdxd
     require('clases/Conexion.php');
     $mysqli = new Conexion();
     $consulta = "SELECT nombre, id_estado FROM estado ORDER BY nombre ASC";
     $resultado = $mysqli->query($consulta);
 //eso fue lo de los estados
-?>
+
+$id_usuario = $_GET['id_usuario'] ?? $_SESSION['idusuario'] ?? '';
+
+// VALIDAR que no esté vacío
+if(empty($id_usuario)) {
+    echo "Error: No se pudo obtener el ID del usuario";
+    exit;
+}?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -277,9 +283,7 @@ $id_usuario=$_GET['id_usuario'];
     </div>
 </div>
 
-<!-- Bootstrap JS -->
-<script src="js/bootstrap.js"></script>
-<script src="js/bootstrap.bundle.min.js"></script>
+
 
 <?php include('Pie_pagina.php'); ?>
 
