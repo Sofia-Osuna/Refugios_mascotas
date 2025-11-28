@@ -247,7 +247,7 @@ $datos_personales = $clase_datos->obtener($_SESSION['idusuario']);
                             </a>
                         </div>
                         <div class="col-md-6">
-                            <a href="mis_adopciones.php" class="btn w-100 text-white" style="background-color: #85B79D;">
+                            <a href="Lista_mis_adopciones.php?id_usuario=<?=$usuario['id_usuario']?>" class="btn w-100 text-white" style="background-color: #85B79D;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-2" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
                                 </svg>

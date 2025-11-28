@@ -9,15 +9,21 @@ $id_refugio = $_GET['id_refugio'];
 $mascota_obj_filtro = new Mascota();
 $especies_filtro = $mascota_obj_filtro->obtenerEspecies();
 
-$clase_mascota = new Mascota();
-$mascotas = $clase_mascota->mostrarPorRefugio($id_refugio);
-
 // VERIFICAR SI ES DUEÑO DEL REFUGIO - usando la función esDelUsuario que ya existe
 $es_dueno = false;
 if(isset($_SESSION['idusuario']) && isset($clase)) {
     $es_dueno = $clase->esDelUsuario($id_refugio, $_SESSION['idusuario']) || $_SESSION['fk_rol'] == 1;
 }
 
+$clase_mascota = new Mascota();
+
+if($es_dueno) {
+    $mascotas = $clase_mascota->mostrarTodasPorRefugio($id_refugio);
+} else {
+    $mascotas = $clase_mascota->mostrarPorRefugio($id_refugio);
+}
+echo "<!-- DEBUG: es_dueno_o_admin = " . ($es_dueno? 'SÍ' : 'NO') . " -->";
+echo "<!-- DEBUG: Número de mascotas = " . count($mascotas) . " -->";
 ?>
 
 <!DOCTYPE html>

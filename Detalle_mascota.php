@@ -10,7 +10,6 @@ $origen = $_GET['origen'] ?? 'lista'; // 'lista' o 'todas'
 $mascota_obj = new Mascota();
 $refugio_obj = new Refugio(); // Instancia de la clase refugio
 $mascota = $mascota_obj->obtenerMascota($id);
-
 // Si no viene por URL, obtenerlo de la mascota misma
 if(empty($id_refugio)) {
     $id_refugio = $mascota['fk_refugio'] ?? null;
@@ -81,18 +80,33 @@ if(isset($_SESSION['idusuario']) && $id_refugio) {
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="d-flex align-items-center mb-3">
-                                            <div class="me-3" style="color: #FCCA46;">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-tag-fill" viewBox="0 0 16 16">
-                                                    <path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1H2zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
-                                                </svg>
-                                            </div>
+                                            
                                             <div>
                                                 <h6 class="fw-bold mb-1">Especie</h6>
                                                 <p class="mb-0 text-muted" style="font-size: 1.1rem;">
                                                     <?= htmlspecialchars($mascota['nombre_especie']) ?>
                                                 </p>
                                             </div>
+                                            
                                         </div>
+                                        <div class="d-flex align-items-center mb-3">
+                                            
+                                            <div>
+                                                <h6 class="fw-bold mb-1">Estatus</h6>
+                                                <?php
+                                                if($mascota['estatus'] == 'pendiente'):
+                                                ?>
+                                                <p class="mb-0 text-muted" style="font-size: 1.1rem;">
+                                                    <?= htmlspecialchars($mascota['estatus']) ?> : !Esta mascota esta en proceso de ser adoptada!
+                                                </p>
+                                                <?php else: ?>
+                                                <p class="mb-0 text-muted" style="font-size: 1.1rem;">
+                                                    <?= htmlspecialchars($mascota['estatus']) ?> : !Esta mascota Espera ser adoptada!
+                                                </p>
+                                                <?php endif ?>
+                                            </div> 
+                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -136,7 +150,8 @@ if(isset($_SESSION['idusuario']) && $id_refugio) {
                 </div>
                 
                 <div class="d-flex gap-2">
-                    <!-- Botón Adoptar como principal -->
+                         <?php if($mascota['estatus'] == 'disponible'): ?>
+                    <!-- Botón Adoptar como principal si el estatus de la mascota es disponible-->
                     <a href="controladores/Insertar_adopcion.php?id_usuario=<?= $_SESSION['idusuario']?>&id_mascota=<?=$mascota['id_mascotas']?>" 
                        class="btn text-white px-4" 
                        style="background-color: #FCCA46; border-radius: 10px;">
@@ -145,7 +160,7 @@ if(isset($_SESSION['idusuario']) && $id_refugio) {
                         </svg>
                         Adoptar
                     </a>
-                    
+                    <?php endif; ?>
                     <!-- BOTONES DE EDITAR Y ELIMINAR SOLO PARA EL DUEÑO O ADMINISTRADOR -->
                     <?php 
                     // Mostrar botones SOLO si:

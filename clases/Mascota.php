@@ -16,31 +16,47 @@ class Mascota{
     $respuesta = $this->conexion->query($consulta);
     return $respuesta;
 }
-function mostrarPorRefugio($id_refugio){
-    $consulta = "SELECT m.*, e.nombre as nombre_especie 
-                 FROM mascotas m, especie e 
-                 WHERE m.fk_especie = e.id_especie 
-                 AND m.fk_refugio = $id_refugio 
-                 AND m.estatus = 1";
+    function mostrarPorRefugio($id_refugio){
     
-    $respuesta = $this->conexion->query($consulta);
+        $consulta = "SELECT m.*, e.nombre as nombre_especie 
+                    FROM mascotas m, especie e 
+                    WHERE m.fk_especie = e.id_especie 
+                    AND m.fk_refugio = $id_refugio 
+                    AND m.estatus ='disponible'";
     
-    $mascotas = [];
-    while($row = $respuesta->fetch_assoc()){
-        $mascotas[] = $row;
+
+        $respuesta = $this->conexion->query($consulta);
+        $mascotas = [];
+        
+        while($row = $respuesta->fetch_assoc()){
+            $mascotas[] = $row;
+        }
+        return $mascotas;
     }
-    return $mascotas;
-}
+    function mostrarTodasPorRefugio($id_refugio){
+        $consulta = "SELECT m.*, e.nombre as nombre_especie 
+                    FROM mascotas m 
+                    INNER JOIN especie e ON m.fk_especie = e.id_especie 
+                    WHERE m.fk_refugio = $id_refugio";
+    
+        $respuesta = $this->conexion->query($consulta);
+    
+        $mascotas = [];
+        while($row = $respuesta->fetch_assoc()){
+            $mascotas[] = $row;
+        }
+        return $mascotas;
+    }
     function obtenerEspecies(){
-    $consulta = "SELECT * FROM especie";
-    $respuesta = $this->conexion->query($consulta);
+        $consulta = "SELECT * FROM especie";
+        $respuesta = $this->conexion->query($consulta);
     
-    $especies = [];
-    while($row = $respuesta->fetch_assoc()){
-        $especies[] = $row;
+        $especies = [];
+        while($row = $respuesta->fetch_assoc()){
+            $especies[] = $row;
+        }
+        return $especies;
     }
-    return $especies;
-}
 function obtenerMascota($id_mascota){
     $consulta = "SELECT m.*, e.nombre as nombre_especie 
                  FROM mascotas m, especie e 
