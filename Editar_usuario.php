@@ -41,17 +41,39 @@ $usuario = $clase->obtenerPorId($id);
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-12 mb-3">
-                                    <label for="foto" class="form-label fw-bold">Foto:</label>
-                                    <?php if($usuario['foto'] != 'sin_foto.jpg'){ ?>
-                                        <br><img src="img_usuarios/<?= $usuario['foto'] ?>" width="100" style="margin: 10px 0;"><br>
-                                    <?php } ?>
-                                    <input type="file" class="form-control" id="foto" name="foto" accept="image/*">
-                                    <small class="text-muted">Dejar vacío para mantener la foto actual</small>
-                                </div>
-                            </div>
-
+                    <div class="row">
+    <div class="col-12 mb-3">
+        <label for="foto" class="form-label fw-bold">Foto:</label>
+        
+        <div class="d-flex align-items-start gap-3 mb-2">
+            <!-- Imagen actual -->
+            <?php if(!empty($usuario['foto']) && $usuario['foto'] != 'sin_foto.jpg' && file_exists("img_usuarios/" . $usuario['foto'])): ?>
+                <img src="img_usuarios/<?= htmlspecialchars($usuario['foto']) ?>" 
+                     class="img-thumbnail" 
+                     style="width: 80px; height: 80px; object-fit: cover;"
+                     alt="Foto actual del usuario">
+            <?php else: ?>
+                <div class="bg-light p-2 rounded" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#ccc" class="bi bi-person" viewBox="0 0 16 16">
+                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
+                    </svg>
+                </div>
+            <?php endif; ?>
+            
+            <!-- Input file -->
+            <div class="flex-grow-1">
+                <input type="file" class="form-control" id="foto" name="foto" accept="image/*">
+                <div class="form-text small">
+                    <?php if(!empty($usuario['foto']) && $usuario['foto'] != 'sin_foto.jpg'): ?>
+                        Imagen actual: <?= htmlspecialchars($usuario['foto']) ?>
+                    <?php else: ?>
+                        No hay imagen actual
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
                             <div class="row">
                                 <div class="col-12 mb-3">
                                     <label for="correo" class="form-label fw-bold">Correo electronico:</label>

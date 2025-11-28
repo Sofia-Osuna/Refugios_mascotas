@@ -30,7 +30,12 @@ $historias = $historia_obj->mostrar();
             <h1 class="display-5 fw-bold">Todas las Historias Felices</h1>
             <p class="text-muted">Conoce las hermosas historias de mascotas que encontraron un hogar en todos los refugios</p>
         </div>
-       
+        <div class="col-auto">
+            <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)): ?>
+        
+            </a>
+            <?php endif; ?>
+        </div>
     </div>
 
     <!-- Grid de historias felices -->
@@ -96,7 +101,19 @@ $historias = $historia_obj->mostrar();
     </div>
     
     <!-- Mensaje si no hay historias -->
+    <?php if(empty($historias)): ?>
+    <div class="text-center py-5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="#ccc" class="bi bi-heart mb-3" viewBox="0 0 16 16">
+            <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+        </svg>
+        <h4 class="text-muted">No hay historias felices registradas</h4>
+        <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)): ?>
+        <p class="text-muted">Comparte la primera historia de adopción exitosa</p>
 
+        </a>
+        <?php endif; ?>
+    </div>
+    <?php endif; ?>
 
 </div>
 

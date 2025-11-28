@@ -54,7 +54,7 @@
             $_SESSION['correo'] = $correo;
             $_SESSION['fk_rol'] = $rol;
             
-            // ✅ CORREGIDO: Redirigir según el rol
+            //  CORREGIDO: Redirigir según el rol
             if($rol == 3){
                 // Gestor de refugio -> va a crear su refugio
                 header('location: ../index.php');

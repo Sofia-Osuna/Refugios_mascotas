@@ -1,5 +1,5 @@
 <?php
-    error_reporting(E_ALL);
+error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 session_start();
@@ -22,22 +22,28 @@ if($_SESSION['fk_rol'] != 1){ // Si NO es admin
     }
 }
 
+// OBTENER LA FOTO ACTUAL ANTES DE ACTUALIZAR
+$foto_actual = $clase_validar->obtenerFotoActual($id_refugio);
+
 // Si pasa la validación, continuar con la actualización
 $nombre = $_POST["nombre"];
 $descripcion = $_POST["descripcion"];
+$colonia = $_POST['cbx_colonia'];
+$nombre_calle = $_POST["nombre_calle"];
+$numero_exterior = $_POST["numero_exterior"];
+$numero_interior = $_POST["numero_interior"];
+$telefono = $_POST["telefono"];
+$correo = $_POST["correo"];
 
-    $colonia = $_POST['cbx_colonia'];//checar esto temprano por que no se si funciones
-    $nombre_calle = $_POST["nombre_calle"];
-    $numero_exterior = $_POST["numero_exterior"];
-    $numero_interior = $_POST["numero_interior"];
-    $telefono = $_POST["telefono"];
-    $correo = $_POST["correo"];
-$foto = $_FILES["foto"]["name"];
+// MANEJO CORRECTO DE LA FOTO
+$foto = $foto_actual; // Por defecto, mantener la foto actual
+
+if(isset($_FILES["foto"]) && $_FILES["foto"]["error"] === UPLOAD_ERR_OK && !empty($_FILES["foto"]["name"])) {
+    // Solo si se subió una nueva foto correctamente
+    $foto_nueva = $_FILES["foto"]["name"];
     $tmp = $_FILES["foto"]["tmp_name"];
-
-    //if que me dio la ia para que funcione en mac os xd
-    if($foto != ""){
-    $ruta = "../img_refugio/" . $foto;
+    
+    $ruta = "../img_refugio/" . $foto_nueva;
     
     // SOLUCIÓN MAC: Verificar y ajustar permisos silenciosamente
     $directorio_imagenes = dirname($ruta);
@@ -47,30 +53,26 @@ $foto = $_FILES["foto"]["name"];
         @chmod($directorio_imagenes, 0755);
     }
     
-    if(!move_uploaded_file($tmp, $ruta)){
+    if(move_uploaded_file($tmp, $ruta)){
+        $foto = $foto_nueva; // Usar la nueva foto
+    } else {
         // Si falla, usar nombre único para evitar conflictos de permisos
-        $extension = pathinfo($foto, PATHINFO_EXTENSION);
+        $extension = pathinfo($foto_nueva, PATHINFO_EXTENSION);
         $nombre_unico = uniqid() . '.' . $extension;
         $ruta_alternativa = "../img_refugio/" . $nombre_unico;
         
         if(move_uploaded_file($tmp, $ruta_alternativa)){
             $foto = $nombre_unico;
-        } else {
-            $foto = "sin_foto.jpg";
         }
+        // Si todo falla, $foto sigue siendo $foto_actual
     }
-    } else {
-        $foto = "sin_foto.jpg";
-    }
+}
 
-    $resultado = $clase_validar ->actualizar($id_refugio,$nombre,  $descripcion, $colonia, $nombre_calle,  $numero_exterior, $numero_interior, $telefono, $correo,$foto);
+$resultado = $clase_validar->actualizar($id_refugio, $nombre, $descripcion, $colonia, $nombre_calle, $numero_exterior, $numero_interior, $telefono, $correo, $foto);
 
-    if($resultado){
-        header('location: ../mis_refugios.php');
-       
-    }else{
-        echo"Error";
-    }
-
-
+if($resultado){
+    header('location: ../mis_refugios.php');
+} else {
+    echo "Error";
+}
 ?>
