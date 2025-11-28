@@ -7,6 +7,7 @@
     $descripcion = $_POST["descripcion"];
     $fk_especie = $_POST["fk_especie"];
     $id_refugio = $_POST["id_refugio"];
+    $estatus = $_POST["estatus"]; // Nuevo campo
     
     // Manejar la foto
     $foto = $_FILES["foto"]["name"];
@@ -25,7 +26,7 @@
     }
 
     $clase = new Mascota();
-    $resultado = $clase->actualizar($id_mascota, $nombre, $descripcion, $foto, $fk_especie);
+    $resultado = $clase->actualizar($id_mascota, $nombre, $descripcion, $foto, $fk_especie, $estatus);
 
     if($resultado){
         header('location: ../Lista_mascota.php?id_refugio=' . $id_refugio);

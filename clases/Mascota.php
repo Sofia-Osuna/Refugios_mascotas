@@ -70,10 +70,11 @@ function eliminar($id_mascota){
     $consulta = "UPDATE mascotas SET estatus = 'indisponible' WHERE id_mascotas = $id_mascota";
     return $this->conexion->query($consulta);
 }
-
-function actualizar($id_mascota, $nombre, $descripcion, $foto, $fk_especie){
-    $consulta = "UPDATE mascotas SET nombre = '$nombre', descripcion = '$descripcion', 
-                 foto = '$foto', fk_especie = '$fk_especie' WHERE id_mascotas = $id_mascota";
+function actualizar($id_mascota, $nombre, $descripcion, $foto, $fk_especie, $estatus){
+    $consulta = "UPDATE mascotas SET nombre = '$nombre', descripcion = '$descripcion',  foto = '$foto', 
+                 fk_especie = '$fk_especie',
+                 estatus = '$estatus' 
+                 WHERE id_mascotas = $id_mascota";
     return $this->conexion->query($consulta);
 }
 public function mostrarTodas() {
