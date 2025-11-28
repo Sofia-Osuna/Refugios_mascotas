@@ -1,9 +1,5 @@
 /*ES UN COCHINERO AQUI SOLO USEN LAS CLASES ESTABLECIDAS DE BOOTSTRAP UNICAMENTE*/
 
-h1{
-    text-align: center;
- }
-
  .margenGenerico{
     margin: 5%;
  }
@@ -195,22 +191,67 @@ h1 {
 .tabla-refugio tr:hover {
     background-color: #ececec;
 }
-/*ESTO ES PARA NAVBAR DE REFUGIO*/
 
-#navbarRefugio,
-#navbarRefugio .container-fluid,
-#navbarRefugio .navbar-collapse,
-#navbarRefugio .navbar-nav {
-    background-color: #FCCA46 !important;
-}
 
-#navbarRefugio .nav-link {
-    color: #000 !important;
-}
+        /* Estilos específicos para el navbar del refugio */
+        .navbar-refugio-custom {
+            background-color: #FCCA46;
+            padding: 1rem 2rem;
+        }
+        
+        .home-icon-link {
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .home-icon-link:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+        
+        .nav-link-refugio {
+            font-weight: 600;
+            color: #2c3e50 !important;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .nav-link-refugio:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+            color: #000 !important;
+        }
+        
+        .navbar-refugio-custom .navbar-collapse {
+            background-color: #FCCA46;
+        }
+        
+        /* Para pantallas muy grandes - espaciado normal */
+        @media (min-width: 1200px) {
+            .nav-link-refugio {
+                padding: 0.5rem 0.8rem;
+            }
+        }
+        
+        /* Colapsar el menú en pantallas menores a 1200px */
+        @media (max-width: 1199px) {
+            .navbar-refugio-custom .navbar-collapse {
+                margin-top: 1rem;
+                padding: 1rem;
+                border-radius: 10px;
+                background-color: rgba(252, 202, 70, 0.95);
+            }
+            
+            .navbar-refugio-custom .nav-item {
+                margin: 0.25rem 0;
+            }
+        }
 
-#navbarRefugio .nav-link:hover {
-    color: #85B79D !important;
-}
 
 /*
 Esto de aqui es para el tipo de letra, estamos usando Montserrat, Open sans Y Lora

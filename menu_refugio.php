@@ -48,73 +48,75 @@ if (!$refugio) {
     <title>Menú Refugio</title>
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/estilo.css">
+   
 </head>
 <body>
-    <!-- ESTE ARCHIVO LO VAN A AGREGAR EN TODOS LAS PAGINAS DE REFUGIO -->
-    <nav class="navbar navbar-expand-lg" style="background-color: #FCCA46; padding: 1rem;">
-    <div class="container-fluid">
-    
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarRefugio" aria-controls="navbarRefugio" aria-expanded="false" aria-label="Toggle navigation" style="border-color: #000;">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    
-        <div class="collapse navbar-collapse justify-content-center" id="navbarRefugio">
-            <ul class="navbar-nav gap-5">
-                <!-- Botón home -->
-                <li class="nav-item">
-                    <a href="detalles_refugio.php?id_refugio=<?= $refugio['id_refugio'] ?>" class="nav-link">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
-                            <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
-                        </svg> 
-                    </a>
-                </li>
-
-<?php if($es_suyo){ ?>
-                <li class="nav-item">
-                    <a class="nav-link fw-semibold text-dark px-3" href="editar_refugio.php?id_refugio=<?= $refugio['id_refugio'] ?>">
-                        Editar Refugio
-                    </a>
-                </li>
-                
-                <li class="nav-item">
-                    <a class="nav-link fw-semibold text-dark px-3" href="controladores/eliminar_refugio.php?id_refugio=<?= $refugio['id_refugio'] ?>" onclick="return confirm('¿Estás seguro de eliminar este refugio?')">
-                        Eliminar Refugio
-                    </a>
-                </li>
-<?php } ?>
+    <!-- NAVBAR MEJORADO DEL REFUGIO -->
+    <nav class="navbar navbar-expand-xl navbar-refugio-custom">
+        <div class="container-fluid">
+            <!-- Botón Home siempre a la izquierda -->
+            <a href="detalles_refugio.php?id_refugio=<?= $refugio['id_refugio'] ?>" class="home-icon-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#419D78" class="bi bi-house-fill" viewBox="0 0 16 16">
+                    <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"/>
+                    <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z"/>
+                </svg>
+            </a>
         
-                <li class="nav-item">
-                    <a class="nav-link fw-semibold text-dark px-3" href="Lista_mascota.php?id_refugio=<?= $refugio['id_refugio'] ?>">
-                        Lista de Mascotas
-                    </a>
-                </li>
+            <!-- Toggle button para móvil -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarRefugio" aria-controls="navbarRefugio" aria-expanded="false" aria-label="Toggle navigation" style="border-color: #000;">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        
+            <!-- Menú colapsable alineado a la derecha -->
+            <div class="collapse navbar-collapse" id="navbarRefugio">
+                <ul class="navbar-nav ms-auto">
+                    
+                    <?php if($es_suyo): ?>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-refugio" href="editar_refugio.php?id_refugio=<?= $refugio['id_refugio'] ?>">
+                            Editar Refugio
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-refugio text-danger" href="controladores/eliminar_refugio.php?id_refugio=<?= $refugio['id_refugio'] ?>" onclick="return confirm('¿Estás seguro de eliminar este refugio?')">
+                            Eliminar Refugio
+                        </a>
+                    </li>
+                    <?php endif; ?>
+            
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-refugio" href="Lista_mascota.php?id_refugio=<?= $refugio['id_refugio'] ?>">
+                            Lista de Mascotas
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link fw-semibold text-dark px-3" href="Lista_historia_feliz.php?id_refugio=<?= $refugio['id_refugio'] ?>">
-                        Historias Felices
-                    </a>
-                </li>
-                   <?php if($es_suyo){ ?>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-refugio" href="Lista_historia_feliz.php?id_refugio=<?= $refugio['id_refugio'] ?>">
+                            Historias Felices
+                        </a>
+                    </li>
+                    
+                    <?php if($es_suyo): ?>
+                        <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)): ?>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-refugio" href="Detalle_formulario.php?id_refugio=<?= $refugio['id_refugio'] ?>">
+                                Cuestionario de adopción
+                            </a>
+                        </li>
 
-                <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)): ?>
-                <li class="nav-item">
-                    <a class="nav-link fw-semibold text-dark px-3" href="Detalle_formulario.php?id_refugio=<?= $refugio['id_refugio'] ?>">
-                        Cuestionario de adopción
-                    </a>
-                </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-refugio" href="Lista_respuesta_refugio.php?id_refugio=<?= $refugio['id_refugio'] ?>">
+                                Lista de respuestas
+                            </a>
+                        </li>
+                        <?php endif; ?>
+                    <?php endif; ?>
 
-                <li class="nav-item">
-                    <a class="nav-link fw-semibold text-dark px-3" href="Lista_respuesta_refugio.php?id_refugio=<?= $refugio['id_refugio'] ?>">
-                        Lista de respuestas
-                    </a>
-                </li>
-                <?php endif; ?>
-                <?php } ?>
-
-            </ul>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
 </body>
 </html>

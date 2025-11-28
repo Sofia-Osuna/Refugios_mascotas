@@ -135,14 +135,6 @@ include('menu_refugio.php');
                 
             </div>
             
-            <!-- Botón de acción adicional (opcional) -->
-            <div class="text-center mt-4">
-                <a href="Lista_mascota.php?id_refugio=<?= $refugio['id_refugio'] ?>" 
-                   class="btn btn-lg px-5 text-white" 
-                   style="background-color: #FCCA46; border-radius: 10px;">
-                    Ver Mascotas Disponibles
-                </a>
-            </div>
             
         </div>
     </div>

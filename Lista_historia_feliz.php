@@ -2,7 +2,7 @@
 include('menu.php');
 include('menu_refugio.php');
 require_once('clases/Historias_f.php');
-require_once('clases/refugio.php');
+
 
 // Obtener el id_refugio de la URL
 $id_refugio = $_GET['id_refugio'] ?? null;
