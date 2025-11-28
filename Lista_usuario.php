@@ -100,84 +100,154 @@ $usuarios = $clase->mostrar();
         </div>
     </div>
 
-    <!-- Grid de usuarios -->
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="grid-usuarios">
-        
-        <?php if(count($usuarios) > 0): ?>
-            <?php foreach($usuarios as $usuario): ?>
-        
-            <div class="col usuario-item">
-                <div class="card h-100 shadow-sm border-0 hover-card">
+  <!-- Grid de usuarios -->
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="grid-usuarios">
+    
+    <?php if(count($usuarios) > 0): ?>
+        <?php foreach($usuarios as $usuario): ?>
+    
+        <div class="col usuario-item">
+            <div class="card h-100 shadow-sm border-0 hover-card">
+                
+                <div style="height: 200px; overflow: hidden;">
+                    <?php if(!empty($usuario['foto']) && file_exists("img_usuarios/" . $usuario['foto'])): ?>
+                        <img src="img_usuarios/<?= htmlspecialchars($usuario['foto']) ?>" 
+                             class="card-img-top w-100 h-100" 
+                             style="object-fit: cover;" 
+                             alt="<?= htmlspecialchars($usuario['nombre']) ?>">
+                    <?php else: ?>
+                        <div class="bg-light w-100 h-100 d-flex align-items-center justify-content-center" style="background-color: #85B79D !important;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="white" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                            </svg>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                
+                <div class="card-body d-flex flex-column">
                     
-                    <div style="height: 200px; overflow: hidden;">
-                        <?php if(!empty($usuario['foto']) && file_exists("img_usuarios/" . $usuario['foto'])): ?>
-                            <img src="img_usuarios/<?= htmlspecialchars($usuario['foto']) ?>" 
-                                 class="card-img-top w-100 h-100" 
-                                 style="object-fit: cover;" 
-                                 alt="<?= htmlspecialchars($usuario['nombre']) ?>">
-                        <?php else: ?>
-                            <div class="bg-light w-100 h-100 d-flex align-items-center justify-content-center" style="background-color: #85B79D !important;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="white" class="bi bi-person-circle" viewBox="0 0 16 16">
-                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                                </svg>
-                            </div>
-                        <?php endif; ?>
+                    <h5 class="card-title fw-bold mb-2 usuario-nombre" style="color: #2c3e50;">
+                        <?= htmlspecialchars($usuario['nombre']) ?>
+                    </h5>
+                    
+                    <div class="mb-2">
+                        <small class="text-muted d-flex align-items-center usuario-correo">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FCCA46" class="bi bi-envelope-fill me-1" viewBox="0 0 16 16">
+                                <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
+                            </svg>
+                            <?= htmlspecialchars($usuario['correo']) ?>
+                        </small>
                     </div>
-                    
-                    <div class="card-body d-flex flex-column">
-                        
-                        <h5 class="card-title fw-bold mb-2 usuario-nombre" style="color: #2c3e50;">
-                            <?= htmlspecialchars($usuario['nombre']) ?>
-                        </h5>
-                        
-                        <div class="mb-3">
-                            <small class="text-muted d-flex align-items-center usuario-correo">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FCCA46" class="bi bi-envelope-fill me-1" viewBox="0 0 16 16">
-                                    <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
-                                </svg>
-                                <?= htmlspecialchars($usuario['correo']) ?>
+
+                    <!-- TIPO DE USUARIO -->
+                    <div class="mb-2">
+                        <div class="d-flex align-items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-circle-fill me-1" 
+                                 style="color: <?= 
+                                     $usuario['fk_rol'] == 1 ? '#dc3545' : 
+                                     ($usuario['fk_rol'] == 2 ? '#28a745' : '#007bff') 
+                                 ?>;" 
+                                 viewBox="0 0 16 16">
+                                <circle cx="8" cy="8" r="8"/>
+                            </svg>
+                            <small class="fw-semibold" 
+                                   style="color: <?= 
+                                       $usuario['fk_rol'] == 1 ? '#dc3545' : 
+                                       ($usuario['fk_rol'] == 2 ? '#28a745' : '#007bff') 
+                                   ?>;">
+                                <?= 
+                                    $usuario['fk_rol'] == 1 ? 'Administrador' : 
+                                    ($usuario['fk_rol'] == 2 ? 'Usuario Normal' : 'Gestor de Refugio') 
+                                ?>
                             </small>
                         </div>
-                        
-                        <div class="mb-3">
-                            <small class="text-muted d-flex align-items-center">
+                    </div>
+                    
+                    <!-- CONTRASEÑA CON OPCIÓN DE MOSTRAR/OCULTAR -->
+                    <div class="mb-3">
+                        <small class="text-muted d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FE7F2D" class="bi bi-key-fill me-1" viewBox="0 0 16 16">
                                     <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
                                 </svg>
-                                Contraseña: ••••••••
-                            </small>
-                        </div>
-                        
-                        <div class="d-grid gap-2 mt-auto">
-                            <a href="Detalles_usuario.php?id=<?= $usuario['id_usuario'] ?>" 
-                               class="btn btn-sm text-white" 
-                               style="background-color: #85B79D; border-radius: 8px;">
-                                Ver detalles
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right ms-1" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                                <span id="password-text-<?= $usuario['id_usuario'] ?>">••••••••</span>
+                                <span id="real-password-<?= $usuario['id_usuario'] ?>" style="display: none;">
+                                    <?= htmlspecialchars($usuario['password']) ?>
+                                </span>
+                            </div>
+                            <button type="button" 
+                                    class="btn btn-sm btn-outline-secondary toggle-password" 
+                                    data-user-id="<?= $usuario['id_usuario'] ?>"
+                                    style="padding: 2px 8px; font-size: 0.75rem;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
                                 </svg>
-                            </a>
-                            
-                            <a href="controladores/eliminar_usuario.php?id=<?= $usuario['id_usuario'] ?>" 
-                               class="btn btn-sm btn-outline-danger"
-                               onclick="return confirm('¿Estás seguro de eliminar a este usuario?')">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash me-1" viewBox="0 0 16 16">
-                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                                </svg>
-                                Eliminar
-                            </a>
-                        </div>
-                        
+                            </button>
+                        </small>
                     </div>
+                    
+                    <div class="d-grid gap-2 mt-auto">
+                        <a href="Detalles_usuario.php?id=<?= $usuario['id_usuario'] ?>" 
+                           class="btn btn-sm text-white" 
+                           style="background-color: #85B79D; border-radius: 8px;">
+                            Ver detalles
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right ms-1" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                            </svg>
+                        </a>
+                        
+                        <a href="controladores/eliminar_usuario.php?id=<?= $usuario['id_usuario'] ?>" 
+                           class="btn btn-sm btn-outline-danger"
+                           onclick="return confirm('¿Estás seguro de eliminar a este usuario?')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash me-1" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                            </svg>
+                            Eliminar
+                        </a>
+                    </div>
+                    
                 </div>
             </div>
-            
-            <?php endforeach; ?>
-        <?php endif; ?>
+        </div>
         
-    </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+    
+</div>
+
+<!-- Script para mostrar/ocultar contraseñas -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleButtons = document.querySelectorAll('.toggle-password');
+    
+    toggleButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const userId = this.getAttribute('data-user-id');
+            const passwordText = document.getElementById(`password-text-${userId}`);
+            const realPassword = document.getElementById(`real-password-${userId}`);
+            const icon = this.querySelector('svg');
+            
+            if (passwordText.style.display !== 'none') {
+                // Mostrar contraseña real
+                passwordText.style.display = 'none';
+                realPassword.style.display = 'inline';
+                icon.innerHTML = `<path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7.028 7.028 0 0 0-2.79.588l.77.771A5.944 5.944 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.134 13.134 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755-.165.165-.337.328-.517.486l.708.709z"/>
+                                  <path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829l.822.822zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829z"/>
+                                  <path d="M3.35 5.47c-.18.16-.353.322-.518.487A13.134 13.134 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7.029 7.029 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12-.708.708z"/>`;
+            } else {
+                // Ocultar contraseña
+                passwordText.style.display = 'inline';
+                realPassword.style.display = 'none';
+                icon.innerHTML = `<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                                  <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>`;
+            }
+        });
+    });
+});
+</script>
     
     <!-- Mensaje si no hay resultados en el filtro -->
     <div id="mensaje-sin-resultados" class="text-center py-5" style="display: none;">

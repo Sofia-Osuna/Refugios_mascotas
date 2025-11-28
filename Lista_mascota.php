@@ -115,74 +115,100 @@ echo "<!-- DEBUG: Número de mascotas = " . count($mascotas) . " -->";
     </div>
 
     <!-- Grid de mascotas -->
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        
-        <?php if(count($mascotas) > 0): ?>
-            <?php foreach($mascotas as $mascota): ?>
-        
-            <div class="col">
-                <div class="card h-100 shadow-sm border-0 hover-card">
+   <!-- Grid de mascotas -->
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    
+    <?php if(count($mascotas) > 0): ?>
+        <?php foreach($mascotas as $mascota): ?>
+    
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0 hover-card">
+                
+                <!-- Foto de la mascota -->
+                <div style="height: 200px; overflow: hidden;">
+                    <?php if(!empty($mascota['foto']) && file_exists("imagenes_animales/" . $mascota['foto'])): ?>
+                        <img src="imagenes_animales/<?= htmlspecialchars($mascota['foto']) ?>" 
+                             class="card-img-top w-100 h-100" 
+                             style="object-fit: cover;" 
+                             alt="<?= htmlspecialchars($mascota['nombre']) ?>">
+                    <?php else: ?>
+                        <div class="bg-light w-100 h-100 d-flex align-items-center justify-content-center" style="background-color: #85B79D !important;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="white" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                            </svg>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                
+                <!-- Contenido de la tarjeta -->
+                <div class="card-body d-flex flex-column">
                     
-                    <!-- Foto de la mascota -->
-                    <div style="height: 200px; overflow: hidden;">
-                        <?php if(!empty($mascota['foto']) && file_exists("imagenes_animales/" . $mascota['foto'])): ?>
-                            <img src="imagenes_animales/<?= htmlspecialchars($mascota['foto']) ?>" 
-                                 class="card-img-top w-100 h-100" 
-                                 style="object-fit: cover;" 
-                                 alt="<?= htmlspecialchars($mascota['nombre']) ?>">
-                        <?php else: ?>
-                            <div class="bg-light w-100 h-100 d-flex align-items-center justify-content-center" style="background-color: #85B79D !important;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="white" class="bi bi-heart-fill" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-                                </svg>
-                            </div>
-                        <?php endif; ?>
-                    </div>
+                    <!-- Nombre de la mascota -->
+                    <h5 class="card-title fw-bold mb-2" style="color: #2c3e50;">
+                        <?= htmlspecialchars($mascota['nombre']) ?>
+                    </h5>
                     
-                    <!-- Contenido de la tarjeta -->
-                    <div class="card-body d-flex flex-column">
+                    <!-- Especie y Estatus -->
+                    <div class="mb-3">
+                        <small class="text-muted d-flex align-items-center mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FCCA46" class="bi bi-tag-fill me-1" viewBox="0 0 16 16">
+                                <path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1H2zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                            </svg>
+                            <?= htmlspecialchars($mascota['nombre_especie']) ?>
+                        </small>
                         
-                        <!-- Nombre de la mascota -->
-                        <h5 class="card-title fw-bold mb-2" style="color: #2c3e50;">
-                            <?= htmlspecialchars($mascota['nombre']) ?>
-                        </h5>
-                        
-                        <!-- Especie -->
-                        <div class="mb-3">
-                            <small class="text-muted d-flex align-items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FCCA46" class="bi bi-tag-fill me-1" viewBox="0 0 16 16">
-                                    <path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1H2zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
-                                </svg>
-                                <?= htmlspecialchars($mascota['nombre_especie']) ?>
+                        <!-- ESTATUS DE LA MASCOTA -->
+                        <div class="d-flex align-items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-circle-fill me-1" 
+                                 style="color: <?= 
+                                     $mascota['estatus'] == 'disponible' ? '#28a745' : 
+                                     ($mascota['estatus'] == 'adoptado' ? '#dc3545' : 
+                                     ($mascota['estatus'] == 'pendiente' ? '#ffc107' : '#6c757d')) 
+                                 ?>;" 
+                                 viewBox="0 0 16 16">
+                                <circle cx="8" cy="8" r="8"/>
+                            </svg>
+                            <small class="fw-semibold" 
+                                   style="color: <?= 
+                                       $mascota['estatus'] == 'disponible' ? '#28a745' : 
+                                       ($mascota['estatus'] == 'adoptado' ? '#dc3545' : 
+                                       ($mascota['estatus'] == 'pendiente' ? '#856404' : '#6c757d')) 
+                                   ?>;">
+                                <?= 
+                                    $mascota['estatus'] == 'disponible' ? 'Disponible' : 
+                                    ($mascota['estatus'] == 'adoptado' ? 'Adoptado' : 
+                                    ($mascota['estatus'] == 'pendiente' ? 'Pendiente' : 'Indisponible')) 
+                                ?>
                             </small>
                         </div>
-                        
-                        <!-- Descripción (truncada) -->
-                        <p class="card-text text-muted small mb-3 flex-grow-1">
-                            <?php 
-                            $descripcion = htmlspecialchars($mascota['descripcion']);
-                            echo strlen($descripcion) > 100 ? substr($descripcion, 0, 100) . '...' : $descripcion;
-                            ?>
-                        </p>
-                        
-                        <!-- Botón ver detalles -->
-                        <a href="Detalle_mascota.php?id=<?= $mascota['id_mascotas'] ?>&id_refugio=<?= $id_refugio ?>" 
-                           class="btn btn-sm w-100 text-white" 
-                           style="background-color: #85B79D; border-radius: 8px;">
-                            Ver más detalles
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right ms-1" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
-                            </svg>
-                        </a>
-                        
                     </div>
+                    
+                    <!-- Descripción (truncada) -->
+                    <p class="card-text text-muted small mb-3 flex-grow-1">
+                        <?php 
+                        $descripcion = htmlspecialchars($mascota['descripcion']);
+                        echo strlen($descripcion) > 100 ? substr($descripcion, 0, 100) . '...' : $descripcion;
+                        ?>
+                    </p>
+                    
+                    <!-- Botón ver detalles -->
+                    <a href="Detalle_mascota.php?id=<?= $mascota['id_mascotas'] ?>&id_refugio=<?= $id_refugio ?>" 
+                       class="btn btn-sm w-100 text-white" 
+                       style="background-color: #85B79D; border-radius: 8px;">
+                        Ver más detalles
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right ms-1" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                        </svg>
+                    </a>
+                    
                 </div>
             </div>
-            
-            <?php endforeach; ?>
-        <?php endif; ?>
+        </div>
         
-    </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+    
+</div>
     
     <!-- Mensaje si no hay resultados en el filtro -->
     <div id="mensaje-sin-resultados" class="text-center py-5" style="display: none;">
