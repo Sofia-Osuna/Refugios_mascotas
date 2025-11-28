@@ -92,12 +92,38 @@ include_once('menu.php');
                                         <input type="text" class="form-control" id="nombre" name="nombre" value="<?= $refugio['nombre'] ?>" required>
                                     </div>
 
-                                    <div class="col-md-6 mb-3">
-                                        <label for="foto" class="form-label fw-bold">Foto:</label>
-                                        <input type="file" class="form-control" id="foto" name="foto" accept="image/*">
-                                    </div>
-                                </div>
-
+                              <div class="col-md-6 mb-3">
+    <label for="foto" class="form-label fw-bold">Foto:</label>
+    
+    <div class="d-flex align-items-start gap-3 mb-2">
+        <!-- Imagen actual -->
+        <?php if(!empty($refugio['foto']) && file_exists("img_refugio/" . $refugio['foto'])): ?>
+            <img src="img_refugio/<?= htmlspecialchars($refugio['foto']) ?>" 
+                 class="img-thumbnail" 
+                 style="width: 80px; height: 80px; object-fit: cover;"
+                 alt="Foto actual">
+        <?php else: ?>
+            <div class="bg-light p-2 rounded" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#ccc" class="bi bi-image" viewBox="0 0 16 16">
+                    <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                    <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
+                </svg>
+            </div>
+        <?php endif; ?>
+        
+        <!-- Input file -->
+        <div class="flex-grow-1">
+            <input type="file" class="form-control" id="foto" name="foto" accept="image/*">
+            <div class="form-text small">
+                <?php if(!empty($refugio['foto'])): ?>
+                    Imagen actual: <?= htmlspecialchars($refugio['foto']) ?>
+                <?php else: ?>
+                    No hay imagen actual
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>
                     <div class="row">
                                 <div class="col-12 mb-4">
                             <label for="descripcion" class="form-label fw-bold">Descripción del refugio:</label>
@@ -194,6 +220,8 @@ include_once('menu.php');
                     </div>
                 </div>
             </div>
+        </div>
+        </div>
         </div>
 
 

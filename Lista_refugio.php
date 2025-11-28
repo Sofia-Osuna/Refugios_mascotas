@@ -148,21 +148,26 @@ $(document).ready(function(){
             <div class="card h-100 shadow-sm border-0 hover-card">
                 
                 <!-- Imagen del refugio -->
-                <div style="height: 200px; overflow: hidden;">
-                        <?php if(!empty($refugio['foto']) && file_exists("img_refugio/" . $refugio['foto'])): ?>
-                        <img src="img_refugio/<?= htmlspecialchars($refugio['foto']) ?>" 
-                             class="card-img-top w-100 h-100" 
-                             style="object-fit: cover;" 
-                             alt="<?= htmlspecialchars($refugio['nombre']) ?>">
-                    <?php else: ?>
-                        <div class="bg-light w-100 h-100 d-flex align-items-center justify-content-center" style="background-color: #85B79D !important;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="white" class="bi bi-house-heart" viewBox="0 0 16 16">
-                                <path d="M8 6.982C9.664 5.309 13.825 8.236 8 12 2.175 8.236 6.336 5.309 8 6.982Z"/>
-                                <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
-                            </svg>
-                        </div>
-                    <?php endif; ?>
-                </div>
+       <div style="height: 200px; overflow: hidden;">
+    <?php 
+    $ruta_imagen = "img_refugio/" . $refugio['foto'];
+    echo "<!-- Debug: Ruta: $ruta_imagen - Existe: " . (file_exists($ruta_imagen) ? 'Sí' : 'No') . " -->";
+    
+    if(!empty($refugio['foto']) && file_exists($ruta_imagen)): 
+    ?>
+        <img src="<?= $ruta_imagen ?>" 
+             class="card-img-top w-100 h-100" 
+             style="object-fit: cover;" 
+             alt="<?= htmlspecialchars($refugio['nombre']) ?>">
+    <?php else: ?>
+        <div class="bg-light w-100 h-100 d-flex align-items-center justify-content-center" style="background-color: #85B79D !important;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="white" class="bi bi-house-heart" viewBox="0 0 16 16">
+                <path d="M8 6.982C9.664 5.309 13.825 8.236 8 12 2.175 8.236 6.336 5.309 8 6.982Z"/>
+                <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
+            </svg>
+        </div>
+    <?php endif; ?>
+</div>
                 
                 <!-- Contenido de la tarjeta -->
                 <div class="card-body d-flex flex-column">

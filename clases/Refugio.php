@@ -39,23 +39,22 @@
         }
 
         // esto es para poder tener los refugios y mostrarlos en la tabla si te lo juro
-        function mostrar(){
-            $consulta = "SELECT r.id_refugio, r.nombre, r.descripcion, r.estatus, c.nombre as colonia, m.nombre as municipio, e.nombre as estado
-            FROM refugio r INNER JOIN refugio_direcciones rd ON r.id_refugio = rd.fk_refugio 
-            INNER JOIN direccion d ON rd.fk_direccion=d.id_direccion 
-            INNER JOIN colonia c ON d.fk_colonia=c.id_colonia 
-            INNER JOIN  municipio m ON c.fk_municipio=m.id_municipio
-            INNER JOIN estado e ON m.fk_estado=e.id_estado WHERE r.estatus = 1
-            ORDER BY r.nombre ASC";
-            $respuesta = $this->conexion->query($consulta);
-    
-            $refugios = [];
-            while($row = $respuesta->fetch_assoc()){
-                $refugios[] = $row;
-            }
-            return $refugios;
-        }
+       function mostrar(){
+    $consulta = "SELECT r.id_refugio, r.nombre, r.descripcion, r.estatus, r.foto, c.nombre as colonia, m.nombre as municipio, e.nombre as estado
+    FROM refugio r INNER JOIN refugio_direcciones rd ON r.id_refugio = rd.fk_refugio 
+    INNER JOIN direccion d ON rd.fk_direccion=d.id_direccion 
+    INNER JOIN colonia c ON d.fk_colonia=c.id_colonia 
+    INNER JOIN  municipio m ON c.fk_municipio=m.id_municipio
+    INNER JOIN estado e ON m.fk_estado=e.id_estado WHERE r.estatus = 1
+    ORDER BY r.nombre ASC";
+    $respuesta = $this->conexion->query($consulta);
 
+    $refugios = [];
+    while($row = $respuesta->fetch_assoc()){
+        $refugios[] = $row;
+    }
+    return $refugios;
+}
 //esto es pa obtener el id del refugio xd
 function Id($id_refugio){
     if (!$id_refugio) {
@@ -188,6 +187,14 @@ public function esDelUsuario($id_refugio, $id_usuario){
     error_log("DEBUG esDelUsuario: resultado = " . ($es_dueño ? 'TRUE' : 'FALSE'));
     
     return $es_dueño;
+}
+function obtenerFotoActual($id_refugio) {
+    $consulta = "SELECT foto FROM refugio WHERE id_refugio = $id_refugio";
+    $resultado = $this->conexion->query($consulta);
+    if($resultado && $row = $resultado->fetch_assoc()) {
+        return $row['foto'];
+    }
+    return "sin_foto.jpg"; // Valor por defecto si no encuentra
 }
 }
 ?>

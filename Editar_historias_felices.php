@@ -49,15 +49,40 @@ include('menu.php');
         </div>
 
         <!-- foto -->
-        <div class="row justify-content-center">
-            <div class="col-md-6 mb-3">
-                <?php if($historia['foto'] != 'sin_foto.jpg'){ ?>
-                    <img src="imagenes_animales/<?= $historia['foto'] ?>" width="200" class="mx-auto d-block" style="margin: 10px 0;"><br>
-                <?php } ?>
-                <label for="foto" class="form-label fw-bold">Nueva foto (opcional):</label>
+      <div class="row justify-content-center">
+    <div class="col-md-6 mb-3">
+        <label for="foto" class="form-label fw-bold">Foto:</label>
+        
+        <div class="d-flex align-items-start gap-3 mb-2">
+            <!-- Imagen actual -->
+            <?php if(!empty($historia['foto']) && $historia['foto'] != 'sin_foto.jpg' && file_exists("imagenes_animales/" . $historia['foto'])): ?>
+                <img src="imagenes_animales/<?= htmlspecialchars($historia['foto']) ?>" 
+                     class="img-thumbnail" 
+                     style="width: 80px; height: 80px; object-fit: cover;"
+                     alt="Foto actual de la historia">
+            <?php else: ?>
+                <div class="bg-light p-2 rounded" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#ccc" class="bi bi-image" viewBox="0 0 16 16">
+                        <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                        <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
+                    </svg>
+                </div>
+            <?php endif; ?>
+            
+            <!-- Input file -->
+            <div class="flex-grow-1">
                 <input type="file" class="form-control" id="foto" name="foto" accept="image/*">
+                <div class="form-text small">
+                    <?php if(!empty($historia['foto']) && $historia['foto'] != 'sin_foto.jpg'): ?>
+                        Imagen actual: <?= htmlspecialchars($historia['foto']) ?>
+                    <?php else: ?>
+                        No hay imagen actual
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
+    </div>
+</div>
         <!-- fin de foto -->
 
         <!-- select-->
