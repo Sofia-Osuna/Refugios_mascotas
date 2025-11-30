@@ -161,6 +161,16 @@ if(isset($_SESSION['idusuario']) && $id_refugio) {
                 </svg>
                 Adoptar
             </a>
+            <?php else: ?>
+            <a href="Inicio_sesion.php" 
+               class="btn text-white px-4" 
+               style="background-color: #FCCA46; border-radius: 10px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill me-2" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                </svg>
+              Inicia sesion para hacer una solicitud de adopcion
+            </a>
+
         <?php endif; ?>
     <?php endif; ?>
                     <!-- BOTONES DE EDITAR Y ELIMINAR SOLO PARA EL DUEÑO O ADMINISTRADOR -->
