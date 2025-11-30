@@ -30,7 +30,7 @@
         $refugios = [];
     } else {
     
-        $query_mascotas = "SELECT * FROM mascotas WHERE estatus = 'disponible' ORDER BY RAND() LIMIT 3";
+        $query_mascotas = "SELECT m.* FROM mascotas m INNER JOIN refugio r ON m.fk_refugio = r.id_refugio WHERE m.estatus = 'disponible' AND r.estatus = 1 ORDER BY RAND() LIMIT 3";
         $result_mascotas = $conexion->query($query_mascotas);
         $mascotas = $result_mascotas ? $result_mascotas->fetch_all(MYSQLI_ASSOC) : [];
 
@@ -155,11 +155,11 @@
                                 }
                                 ?>
                             </p>
-                            <a href="Detalle_mascota.php?id=<?php $mascota['id_mascotas']; ?>&id_refugio=<?php $mascota['fk_refugio']; ?>" 
-                               class="btn text-white mt-auto" 
-                               style="background-color: #85B79D;">
-                                Ver más información
-                            </a>
+                            <a href="Detalle_mascota.php?id=<?php echo $mascota['id_mascotas']; ?>&id_refugio=<?php echo $mascota['fk_refugio']; ?>" 
+                            class="btn text-white mt-auto" 
+                            style="background-color: #85B79D;">
+                             Ver más información
+                           </a>
                         </div>
                     </div>
                 </div>
@@ -199,7 +199,7 @@
                             <h5 class="card-title fw-bold"><?php echo htmlspecialchars($refugio['nombre']); ?></h5>
                             <p class="card-text flex-grow-1">
                                 <?php 
-                                $descripcion = $refugio['description'] ?? 'Descripción no disponible';
+                                $descripcion = $refugio['descripcion'] ?? 'Descripción no disponible';
                                 if (strlen($descripcion) > 120) {
                                     echo substr(htmlspecialchars($descripcion), 0, 120) . '...';
                                 } else {
