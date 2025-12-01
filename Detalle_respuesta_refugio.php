@@ -1,93 +1,259 @@
-<!-- Aqui es practicamente lo mismo que el detalle respuesta usuario, pero se accede a travez de la lista de respuestas de 
- de un refugio, el cual puede ser de muchos usuario, y se accede por medio del menu del refugio, -->
-
+<!-- Aquí el usuario podra ver todas sus respuestas de un formulario en especifico, en figma esta como "ver detalle de un respuesta"-->
 <?php 
-include("menu.php");
-?>  
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+include('menu.php');
+include('menu_refugio.php');
+include('clases/Adopcion.php');
+include('clases/Datos_personales.php');
+include('clases/Usuario.php');
+include('clases/Respuestas.php');
+
+$id_refugio = $_GET['id_refugio'];
+$id_adopcion = $_GET['id_adopcion'];
+$id_usuario = $_GET['id_usuario'];
+if(!$id_usuario || !$id_adopcion) {
+    echo "Error: Informacion no encontrada";
+    exit;
+}
+$clase = new Adopcion();
+$adopciones = $clase->mostrar($id_usuario, $id_adopcion);
+$clase2 = new Datos();
+$datos = $clase2 -> obtener($id_usuario);
+$clase3 = new Usuario();
+$user = $clase3 -> obtenerPorId($id_usuario);
+$clase4 = new Respuestas();
+$respuestas = $clase4 -> mostrar($adopciones['id_adopcion']);
+
+if(!$adopciones && !$datos && !$user){
+    echo"Error: datos no encontrados";
+}
+
+
+
+?>	
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalles formulario</title>
-    
+    <title>Detalle de Solicitud</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
 
-<div class="py-3" style="background-color: #FCCA46;">
-    <div class="container d-flex flex-wrap justify-content-start gap-4">
-        <span class="fw-bold">Ver Mascotas</span>
-        <span class="fw-bold">Historias Felices</span>
-        <span class="fw-bold">Formulario de Adopción / Respuestas</span>
-        <span class="fw-bold">Editar</span>
-    </div>
-</div>
-
 <div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-10">
-            <div class="card shadow-lg border-0 overflow-hidden">
-                <div class="card-body">
+    <!-- Header con estatus -->
+    <div class="card mb-4 border-0 shadow-sm" style="background: linear-gradient(135deg, #419D78 0%, #85B79D 100%);">
+        <div class="card-body text-white p-4">
+            <h2 class="mb-2">Solicitud de Adopción</h2>
+            <span class="badge rounded-pill px-4 py-2" style="background-color: #FCCA46; color: #2c3e50; font-size: 1rem;">
+                Estatus: <?=$adopciones['estatus']?>
+            </span>
+        </div>
+    </div>
 
-                 
-                    <form>
-                        <div class="row mb-3">
-                            <div class="col-md-4 mb-3 mb-md-0">
-                                <label for="refugio" class="form-label fw-bold">Refugio</label>
-                                <input type="text" id="refugio" name="refugio" class="form-control" placeholder="Nombre del refugio">
+    <!-- Botones de acción para administrador -->
+    <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-body p-4">
+            <h5 class="mb-3" style="color: #2c3e50;">Acciones de Administrador</h5>
+            <div class="d-flex gap-2 flex-wrap">
+                <a href="controladores/Rechazar_adopcion.php?accion=aceptar&id_mascota=<?=$adopciones['fk_mascota']?>&id_adopcion=<?=$adopciones['id_adopcion']?>&id_mascotas_adopcion=<?=$adopciones['id_mascotas_adopcion']?>&id_refugio=<?= $id_refugio?>" 
+                   class="btn btn-success px-4">
+                     Aceptar
+                </a>
+                <a href="controladores/Rechazar_adopcion.php?accion=rechazar&id_mascota=<?=$adopciones['fk_mascota']?>&id_adopcion=<?=$adopciones['id_adopcion']?>&id_mascotas_adopcion=<?=$adopciones['id_mascotas_adopcion']?>&id_refugio=<?= $id_refugio?>" 
+                   class="btn btn-danger px-4">
+                     Rechazar
+                </a>
+                <a href="controladores/Rechazar_adopcion.php?accion=en_revision&id_mascota=<?=$adopciones['fk_mascota']?>&id_adopcion=<?=$adopciones['id_adopcion']?>&id_mascotas_adopcion=<?=$adopciones['id_mascotas_adopcion']?>&id_refugio=<?= $id_refugio?>" 
+                   class="btn px-4" style="background-color: #FCCA46; color: #2c3e50;">
+                     En Revisión
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Datos de la Adopción -->
+    <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-body p-4">
+            <h3 class="mb-4" style="color: #419D78; border-bottom: 2px solid #FCCA46; padding-bottom: 10px;">
+                 Datos de la Adopción
+            </h3>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded">
+                        <strong class="d-block mb-1">ID Adopción:</strong>
+                        <span><?= $adopciones['id_adopcion'] ?? '' ?></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 bg-light rounded">
+                        <strong class="d-block mb-1">Fecha:</strong>
+                        <span><?= $adopciones['fecha'] ?? '' ?></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 bg-light rounded">
+                        <strong class="d-block mb-1">Hora:</strong>
+                        <span><?= $adopciones['hora'] ?? '' ?></span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="p-3 rounded" style="background: linear-gradient(135deg, #FCCA46 0%, #FE7F2D 100%);">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <strong class="d-block mb-2 text-white">Mascota a Adoptar:</strong>
+                                <h4 class="mb-1 text-white"><?= $adopciones['mascota'] ?? '' ?></h4>
+                                <small class="text-white">ID: <?= $adopciones['fk_mascota'] ?? '' ?></small>
                             </div>
-                            <div class="col-md-4 mb-3 mb-md-0">
-                                <label for="fecha" class="form-label fw-bold">Fecha</label>
-                                <input type="date" id="fecha" name="fecha" class="form-control">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="estatus" class="form-label fw-bold">Estatus</label>
-                                <select id="estatus" name="estatus" class="form-select">
-                                    <option value="">Seleccionar</option>
-                                    <option value="pendiente">Pendiente</option>
-                                    <option value="aprobado">Aprobado</option>
-                                    <option value="rechazado">Rechazado</option>
-                                </select>
+                            <div class="col-md-4 text-center">
+                                <img src="Imagenes_animales/<?=$adopciones['foto_mascota']?>" 
+                                     alt="foto pet" 
+                                     class="img-fluid rounded shadow"
+                                     style="max-width: 150px; max-height: 150px; object-fit: cover; border: 3px solid white;">
                             </div>
                         </div>
-
-                       
-                        <div class="row mb-3">
-                            <div class="col-md-6 mb-3 mb-md-0">
-                                <label for="mascotas" class="form-label fw-bold">Mascotas</label>
-                                <input type="text" id="mascotas" name="mascotas" class="form-control" placeholder="Nombre de mascotas">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="hora" class="form-label fw-bold">Hora</label>
-                                <input type="time" id="hora" name="hora" class="form-control">
-                            </div>
-                        </div>
-
-                      
-                        <div class="mb-3">
-                            <label for="respuestas" class="form-label fw-bold">Respuestas</label>
-                            <textarea id="respuestas" name="respuestas" class="form-control" rows="5"></textarea>
-                        </div>
-
-                        <!-- Botones Rechazar y Aceptar -->
-                        <div class="d-flex justify-content-center gap-3 mt-4">
-                            <button type="button" class="btn btn-danger fw-bold px-4">Rechazar</button>
-                            <button type="button" class="btn" style="background-color: #FCCA46; color: #333; font-weight: bold; padding: 10px 20px;">Aceptar</button>
-                        </div>
-                    </form>
-
-                   
-
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Datos Personales -->
+    <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-body p-4">
+            <h3 class="mb-4" style="color: #419D78; border-bottom: 2px solid #FCCA46; padding-bottom: 10px;">
+                 Datos Personales
+            </h3>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded">
+                        <strong class="d-block mb-1">Usuario:</strong>
+                        <span><?= $user['nombre'] ?? '' ?></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded">
+                        <strong class="d-block mb-1">Correo:</strong>
+                        <span><?= $user['correo'] ?? '' ?></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded">
+                        <strong class="d-block mb-1">Nombre Completo:</strong>
+                        <span><?= ($datos['Nombre'] ?? '') . ' ' . ($datos['apellido_p'] ?? '') . ' ' . ($datos['apellido_m'] ?? '') ?></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 bg-light rounded">
+                        <strong class="d-block mb-1">Edad:</strong>
+                        <span><?= $datos['edad'] ?? '' ?> </span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 bg-light rounded">
+                        <strong class="d-block mb-1">Fecha Nacimiento:</strong>
+                        <span><?= $datos['fecha_nacimiento'] ?? '' ?></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded">
+                        <strong class="d-block mb-1">Teléfono:</strong>
+                        <span><?= $datos['telefono'] ?? '' ?></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dirección -->
+    <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-body p-4">
+            <h3 class="mb-4" style="color: #419D78; border-bottom: 2px solid #FCCA46; padding-bottom: 10px;">
+                 Dirección
+            </h3>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded">
+                        <strong class="d-block mb-1">Estado:</strong>
+                        <span><?= $datos['estado'] ?? '' ?></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded">
+                        <strong class="d-block mb-1">Municipio:</strong>
+                        <span><?= $datos['municipio'] ?? '' ?></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded">
+                        <strong class="d-block mb-1">Colonia:</strong>
+                        <span><?= $datos['colonia'] ?? '' ?></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded">
+                        <strong class="d-block mb-1">Código Postal:</strong>
+                        <span><?= $datos['codigo_postal'] ?? '' ?></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded">
+                        <strong class="d-block mb-1">Calle:</strong>
+                        <span><?= $datos['nombre_calle'] ?? '' ?></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 bg-light rounded">
+                        <strong class="d-block mb-1">Número Exterior:</strong>
+                        <span><?= $datos['numero_exterior'] ?? '' ?></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 bg-light rounded">
+                        <strong class="d-block mb-1">Número Interior:</strong>
+                        <span><?= !empty($datos['numero_interior']) ? $datos['numero_interior'] : 's/n' ?></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Respuestas del Formulario -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <h3 class="mb-4" style="color: #419D78; border-bottom: 2px solid #FCCA46; padding-bottom: 10px;">
+                Respuestas del Formulario
+            </h3>
+            <?php if(!empty($respuestas)): ?>
+                <?php foreach($respuestas as $index => $respuesta): ?>
+                    <div class="mb-3 p-3 rounded" style="background-color: #f8f9fa; border-left: 4px solid #85B79D;">
+                        <div class="mb-2">
+                            <span class="badge rounded-circle bg-dark me-2"><?= $index + 1 ?></span>
+                            <strong style="color: #2c3e50;"><?= htmlspecialchars($respuesta['pregunta']) ?></strong>
+                        </div>
+                        <div class="ms-4">
+                            <p class="mb-0" style="color: #495057;">
+                                 <?= htmlspecialchars($respuesta['respuesta']) ?>
+                            </p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="alert alert-warning">
+                    No hay respuestas registradas para este formulario.
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+
 </div>
-
-<?php 
-include("Pie_pagina.php");
-?>
-
 
 </body>
 </html>
+<?php 
+include("Pie_pagina.php");
+?>

@@ -67,7 +67,7 @@ function actualizar($id_historia, $descripcion, $fecha, $hora, $foto, $fk_mascot
 function obtenerMascotas($id_refugio = null) {
     if ($id_refugio) {
         // Solo mascotas de este refugio
-        $consulta = "SELECT id_mascotas, nombre FROM mascotas WHERE fk_refugio = $id_refugio AND estatus = 1";
+        $consulta = "SELECT id_mascotas, nombre FROM mascotas WHERE fk_refugio = $id_refugio AND estatus = 'adoptado'";
     } else {
         // Todas las mascotas (comportamiento original)
         $consulta = "SELECT id_mascotas, nombre FROM mascotas WHERE estatus = 1";

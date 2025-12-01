@@ -99,9 +99,17 @@ if(isset($_SESSION['idusuario']) && $id_refugio) {
                                                 <p class="mb-0 text-muted" style="font-size: 1.1rem;">
                                                     <?= htmlspecialchars($mascota['estatus']) ?> : !Esta mascota esta en proceso de ser adoptada!
                                                 </p>
-                                                <?php else: ?>
+                                                <?php elseif($mascota['estatus'] == 'adoptado'): ?>
                                                 <p class="mb-0 text-muted" style="font-size: 1.1rem;">
-                                                    <?= htmlspecialchars($mascota['estatus']) ?> : !Esta mascota Espera ser adoptada!
+                                                    <?= htmlspecialchars($mascota['estatus']) ?> : !Esta mascota Ya ha sido adoptada!
+                                                </p>
+                                                <?php elseif($mascota['estatus'] == 'disponible'): ?>
+                                                <p class="mb-0 text-muted" style="font-size: 1.1rem;">
+                                                    <?= htmlspecialchars($mascota['estatus']) ?> : !Esta mascota espera ser adoptada pronto!
+                                                </p>
+                                                <?php elseif($mascota['estatus'] == 'indisponible'): ?>
+                                                <p class="mb-0 text-muted" style="font-size: 1.1rem;">
+                                                    <?= htmlspecialchars($mascota['estatus']) ?> : Por alguna razon, esta mascot ya no puede ser adoptada :(
                                                 </p>
                                                 <?php endif ?>
                                             </div> 
@@ -153,7 +161,7 @@ if(isset($_SESSION['idusuario']) && $id_refugio) {
     <?php if($mascota['estatus'] == 'disponible'): ?>
         <!-- Botón Adoptar solo para usuarios logueados -->
         <?php if(isset($_SESSION['idusuario']) && !empty($_SESSION['idusuario'])): ?>
-            <a href="controladores/Insertar_adopcion.php?id_usuario=<?= $_SESSION['idusuario']?>&id_mascota=<?=$mascota['id_mascotas']?>" 
+            <a href="controladores/Insertar_adopcion.php?id_usuario=<?= $_SESSION['idusuario']?>&id_mascota=<?=$mascota['id_mascotas']?>&id_refugio=<?=$id_refugio?>" 
                class="btn text-white px-4" 
                style="background-color: #FCCA46; border-radius: 10px;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill me-2" viewBox="0 0 16 16">
@@ -168,7 +176,7 @@ if(isset($_SESSION['idusuario']) && $id_refugio) {
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill me-2" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
                 </svg>
-              Inicia sesion para hacer una solicitud de adopcion
+              Inicia sesion para hacer una solicitud de adopcion
             </a>
 
         <?php endif; ?>
