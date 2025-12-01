@@ -12,6 +12,8 @@ include('clases/Respuestas.php');
 
 $id_adopcion = $_GET['id_adopcion'];
 $id_usuario = $_GET['id_usuario'];
+
+
 if(!$id_usuario || !$id_adopcion) {
     echo "Error: Informacion no encontrada";
     exit;
@@ -25,6 +27,8 @@ $user = $clase3 -> obtenerPorId($id_usuario);
 $clase4 = new Respuestas();
 $respuestas = $clase4 -> mostrar($adopciones['id_adopcion']);
 
+$id_mascota = $adopciones['fk_mascota'];
+$id_refugio = $adopciones['fk_refugio'];
 if(!$adopciones && !$datos && !$user){
     echo"Error: datos no encontrados";
 }
@@ -61,12 +65,6 @@ if(!$adopciones && !$datos && !$user){
                 Datos de la Adopción
             </h3>
             <div class="row g-3">
-                <div class="col-md-6">
-                    <div class="p-3 bg-light rounded">
-                        <strong class="d-block mb-1">ID Adopción:</strong>
-                        <span><?= $adopciones['id_adopcion'] ?? '' ?></span>
-                    </div>
-                </div>
                 <div class="col-md-3">
                     <div class="p-3 bg-light rounded">
                         <strong class="d-block mb-1">Fecha:</strong>
@@ -85,7 +83,6 @@ if(!$adopciones && !$datos && !$user){
                             <div class="col-md-8">
                                 <strong class="d-block mb-2 text-white">Mascota a Adoptar:</strong>
                                 <h4 class="mb-1 text-white"><?= $adopciones['mascota'] ?? '' ?></h4>
-                                <small class="text-white">ID: <?= $adopciones['fk_mascota'] ?? '' ?></small>
                             </div>
                             <div class="col-md-4 text-center">
                                 <img src="Imagenes_animales/<?=$adopciones['foto_mascota']?>" 
@@ -222,7 +219,13 @@ if(!$adopciones && !$datos && !$user){
                 <?php endforeach; ?>
             <?php else: ?>
                 <div class="alert alert-warning">
-                    No hay respuestas registradas para este formulario.
+                    No hay respuestas registradas para este formulario. Para que tu solicitud sea aceptada necesitas contestar el formulario
+                    <button>
+                        <a href="Formulario_respuesta.php?id_adopcion=<?=$id_adopcion?>&id_refugio=<?=$id_refugio?>&id_mascota=<?=$id_mascota?>&id_usuario=<?=$id_usuario?>">
+                            Regresar al formulario
+                        </a>
+                    </button>
+                    <!-- ?id_adopcion=20&id_refugio=10&id_mascota=9&id_usuario=19 -->
                 </div>
             <?php endif; ?>
         </div>

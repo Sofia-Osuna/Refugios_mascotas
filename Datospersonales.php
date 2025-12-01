@@ -226,7 +226,7 @@ $datos_personales = $clase_datos->obtener($_SESSION['idusuario']);
                                             Completa tu información personal
                                         </p>
                                         <p class="mb-0 small text-muted mt-1">
-                                            Agrega tus datos para una mejor experiencia en el proceso de adopción.
+                                            Agrega tus datos para completar el proceso de adopcion.
                                         </p>
                                     </div>
                                 </div>

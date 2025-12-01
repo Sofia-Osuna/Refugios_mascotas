@@ -249,7 +249,7 @@ if(!$adopciones && !$datos && !$user){
             <?php endif; ?>
         </div>
     </div>
-
+        
 </div>
 
 </body>
