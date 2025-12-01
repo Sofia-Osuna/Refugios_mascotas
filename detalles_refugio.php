@@ -68,32 +68,54 @@ $refugio = $refugio_obj->Id($id_refugio);
                                 <h5 class="fw-bold mb-3">Información de contacto</h5>
                                 
                         
-                                <div class="mb-3">
-                                    <div class="d-flex align-items-start">
-                                        <div class="me-3" style="color: #FCCA46;">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
-                                                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <h6 class="fw-bold mb-2">Dirección</h6>
-                                            <p class="mb-1 text-muted">
-                                                <?= htmlspecialchars($refugio['nombre_calle']) ?> 
-                                                #<?= htmlspecialchars($refugio['numero_exterior']) ?>
-                                                <?php if(!empty($refugio['numero_interior'])): ?>
-                                                    Int. <?= htmlspecialchars($refugio['numero_interior']) ?>
-                                                <?php endif; ?>
-                                            </p>
-                                            <p class="mb-1 text-muted">
-                                                <?= htmlspecialchars($refugio['localidad']) ?>
-                                            </p>
-                                            <p class="mb-0 text-muted">
-                                                <?= htmlspecialchars($refugio['municipio']) ?>, 
-                                                <?= htmlspecialchars($refugio['estado']) ?>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
+                                <!-- DIRECCIÓN - CORREGIDA -->
+<div class="mb-3">
+    <div class="d-flex align-items-start">
+        <div class="me-3" style="color: #FCCA46;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+            </svg>
+        </div>
+        <div>
+            <h6 class="fw-bold mb-2">Dirección</h6>
+            
+            <?php if(!empty($refugio['nombre_calle']) || !empty($refugio['localidad'])): ?>
+                
+                <?php if(!empty($refugio['nombre_calle'])): ?>
+                    <p class="mb-1 text-muted">
+                        <?= htmlspecialchars($refugio['nombre_calle']) ?> 
+                        <?php if(!empty($refugio['numero_exterior'])): ?>
+                            #<?= htmlspecialchars($refugio['numero_exterior']) ?>
+                        <?php endif; ?>
+                        <?php if(!empty($refugio['numero_interior'])): ?>
+                            Int. <?= htmlspecialchars($refugio['numero_interior']) ?>
+                        <?php endif; ?>
+                    </p>
+                <?php endif; ?>
+                
+                <?php if(!empty($refugio['localidad'])): ?>
+                    <p class="mb-1 text-muted">
+                        <?= htmlspecialchars($refugio['localidad']) ?>
+                    </p>
+                <?php endif; ?>
+                
+                <?php if(!empty($refugio['municipio']) || !empty($refugio['estado'])): ?>
+                    <p class="mb-0 text-muted">
+                        <?php if(!empty($refugio['municipio'])): ?>
+                            <?= htmlspecialchars($refugio['municipio']) ?>,
+                        <?php endif; ?>
+                        <?= htmlspecialchars($refugio['estado'] ?? '') ?>
+                    </p>
+                <?php endif; ?>
+            <?php else: ?>
+               
+                <p class="mb-0 text-muted">
+                    Dirección no especificada
+                </p>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
                                 
                                 <!-- Teléfono (si existe) -->
                                 <?php if(!empty($refugio['telefono'])): ?>
