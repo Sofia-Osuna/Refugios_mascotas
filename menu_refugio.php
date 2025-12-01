@@ -107,7 +107,7 @@ if (!$refugio) {
 
                         <li class="nav-item">
                             <a class="nav-link nav-link-refugio" href="Lista_respuesta_refugio.php?id_refugio=<?= $refugio['id_refugio'] ?>">
-                                Lista de respuestas
+                                Lista de peticiones
                             </a>
                         </li>
                         <?php endif; ?>

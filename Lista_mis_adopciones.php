@@ -67,6 +67,33 @@ $adopciones = $clase->mostrarPorId($id_usuario);
                 </div>
             <?php else: ?>
                 <!-- Tabla de adopciones -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <!-- Leyenda de estatus -->
+                <div class="card border-0 mt-3" style="background-color: #f8f9fa;">
+                    <div class="card-body p-3">
+                        <small class="text-muted d-block mb-2 fw-bold">Leyenda de estatus:</small>
+                        <div class="d-flex flex-wrap gap-3">
+                            <div>
+                                <span class="badge bg-secondary">Pendiente</span>
+                                <small class="text-muted ms-1">En espera de revisión</small>
+                            </div>
+                            <div>
+                                <span class="badge bg-warning">En revisión</span>
+                                <small class="text-muted ms-1">Siendo evaluada</small>
+                            </div>
+                            <div>
+                                <span class="badge bg-success">Aceptada</span>
+                                <small class="text-muted ms-1">¡Felicidades!</small>
+                            </div>
+                            <div>
+                                <span class="badge bg-danger">Rechazada</span>
+                                <small class="text-muted ms-1">No aprobada</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
                 <div class="card border-0 shadow-sm">
                     <div class="table-responsive">
                         <table class="table table-hover mb-0">
@@ -83,7 +110,7 @@ $adopciones = $clase->mostrarPorId($id_usuario);
                             </thead>
                             <tbody>
                                 <?php 
-                                $contador = 1; // ← CONTADOR AQUÍ
+                                $contador = 1;
                                 foreach($adopciones as $adopcion): 
                                 ?>
                                 <tr>
@@ -141,7 +168,7 @@ $adopciones = $clase->mostrarPorId($id_usuario);
                                         </span>
                                     </td>
                                     <td class="text-center">
-                                        <a href="Ver_respuestas.php" 
+                                        <a href="Detalle_respuesta_usuario.php?id_usuario=<?=$id_usuario?>&id_adopcion=<?=$adopcion['id_adopcion']?>" 
                                            class="btn btn-sm btn-outline-secondary">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="me-1" viewBox="0 0 16 16">
                                                 <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
@@ -160,30 +187,7 @@ $adopciones = $clase->mostrarPorId($id_usuario);
                     </div>
                 </div>
                 
-                <!-- Leyenda de estatus -->
-                <div class="card border-0 mt-3" style="background-color: #f8f9fa;">
-                    <div class="card-body p-3">
-                        <small class="text-muted d-block mb-2 fw-bold">Leyenda de estatus:</small>
-                        <div class="d-flex flex-wrap gap-3">
-                            <div>
-                                <span class="badge bg-secondary">Pendiente</span>
-                                <small class="text-muted ms-1">En espera de revisión</small>
-                            </div>
-                            <div>
-                                <span class="badge bg-warning">En revisión</span>
-                                <small class="text-muted ms-1">Siendo evaluada</small>
-                            </div>
-                            <div>
-                                <span class="badge bg-success">Aceptada</span>
-                                <small class="text-muted ms-1">¡Felicidades!</small>
-                            </div>
-                            <div>
-                                <span class="badge bg-danger">Rechazada</span>
-                                <small class="text-muted ms-1">No aprobada</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
             <?php endif; ?>
             
         </div>

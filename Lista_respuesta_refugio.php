@@ -15,6 +15,7 @@ if(!$id_refugio) {
 
 $clase = new Adopcion();
 $adopciones = $clase->mostrarPorRefugio($id_refugio);
+
 ?>
 
 <!DOCTYPE html>
@@ -80,18 +81,12 @@ $adopciones = $clase->mostrarPorRefugio($id_refugio);
                 <!-- Sin adopciones -->
                 <div class="card border-0 shadow-sm">
                     <div class="card-body text-center p-5">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="#85B79D" class="mb-3" viewBox="0 0 16 16">
-                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                        </svg>
-                        <h4 class="fw-bold mb-2" style="color: #283D3B;">No hay adopciones registradas</h4>
-                        <p class="text-muted mb-4">Comienza adoptando una mascota hoy mismo</p>
-                        <a href="Lista_refugio.php" class="btn btn-lg text-white" style="background-color: #FCCA46;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="me-2" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-                            </svg>
-                            Buscar mascotas
-                        </a>
+                        <div id="mensaje-sin-resultados" class="text-center py-5">
+                            <img src="img_sistema/_-ezgif.com-loop-count.gif" alt="rata" class="img-fluid mb-3"
+                                style="max-width: 300px; width: 100%; height: auto; border-radius: 10px;"> 
+                            <h4 class="text-muted fw-bold">No tienes ninguna solicitud de adopcion</h4>
+                            <p class="text-muted">Espera a que un usuario decida adoptar</p>
+                        </div>
                     </div>
                 </div>
             <?php else: ?>
@@ -132,12 +127,12 @@ $adopciones = $clase->mostrarPorRefugio($id_refugio);
                                     </td>
                                     <td>
                                         <span class="fw-semibold" style="color: #283D3B;">
-                                            <?= htmlspecialchars($adopcion['username']) ?>
+                                            <?= htmlspecialchars($adopcion['username']?? 'Usuario no disponible') ?>
                                         </span>
                                     </td>
                                     <td>
                                         <span class="fw-semibold" style="color: #283D3B;">
-                                            <?= htmlspecialchars($adopcion['correo']) ?>
+                                            <?= htmlspecialchars($adopcion['correo']?? 'Correo no disponible') ?>
                                         </span>
                                     </td>
                                     <td>
@@ -176,7 +171,7 @@ $adopciones = $clase->mostrarPorRefugio($id_refugio);
                                         </span>
                                     </td>
                                     <td class="text-center">
-                                        <a href="Ver_respuestas.php" 
+                                        <a href="Detalle_respuesta_refugio.php?id_adopcion=<?=$adopcion['id_adopcion']?>&id_refugio=<?=$id_refugio?>&id_usuario=<?=$adopcion['id_usuario']?>" 
                                            class="btn btn-sm btn-outline-secondary">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="me-1" viewBox="0 0 16 16">
                                                 <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
