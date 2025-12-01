@@ -7,7 +7,6 @@ $id_usuario=$_GET['id_usuario'];
 include('clases/Datos_personales.php');
 $clase_datos = new Datos();
 $datos_personales = $clase_datos->obtener($id_usuario);
-print_r($datos_personales);
 //AAAAAAAAH ocupo lo de los estados xdxd
     $mysqli = new Conexion();
     $consulta = "SELECT nombre, id_estado FROM estado ORDER BY nombre ASC";
