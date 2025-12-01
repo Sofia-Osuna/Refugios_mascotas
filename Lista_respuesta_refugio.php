@@ -9,7 +9,7 @@ $id_refugio = $_GET['id_refugio'];
 
 // Verificar que el usuario esté logueado
 if(!$id_refugio) {
-    echo "Error: REfugio no encontrado";
+    echo "Error: Refugio no encontrado";
     exit;
 }
 
@@ -23,9 +23,13 @@ $adopciones = $clase->mostrarPorRefugio($id_refugio);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Peticiones de adopcion</title>
+    <title>Peticiones de adopción</title>
     <link href="css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="css/estilo.css">
+    <!-- Incluir jQuery para el filtro -->
+    <script src="js/jquery-3.7.1.js"></script>
+    <script src="js/buscar_respuesta.js"></script>
+
 </head>
 <body>
 
@@ -40,42 +44,72 @@ $adopciones = $clase->mostrarPorRefugio($id_refugio);
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#85B79D" class="me-2" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
                         </svg>
-                        Peticiones de adopcion 
+                        Peticiones de adopción 
                     </h2>
-                    <p class="text-muted mb-0">Historial de solicitudes de adopción de tú refugio</p>
+                    <p class="text-muted mb-0">Historial de solicitudes de adopción de tu refugio</p>
                 </div>
                 <span class="badge fs-6" style="background-color: #85B79D;">
                     <?= count($adopciones) ?> solicitud<?= count($adopciones) != 1 ? 'es' : '' ?>
                 </span>
-                
             </div>
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div class="card border-0 mt-3" style="background-color: #f8f9fa;">
-                    <div class="card-body p-3">
-                        <small class="text-muted d-block mb-2 fw-bold">Leyenda de estatus:</small>
-                        <div class="d-flex flex-wrap gap-3">
-                            <div>
-                                <span class="badge bg-secondary">Pendiente</span>
-                                <small class="text-muted ms-1">En espera de revisión</small>
-                            </div>
-                            <div>
-                                <span class="badge bg-warning">En revisión</span>
-                                <small class="text-muted ms-1">Siendo evaluada</small>
-                            </div>
-                            <div>
-                                <span class="badge bg-success">Aceptada</span>
-                                <small class="text-muted ms-1">¡Felicidades!</small>
-                            </div>
-                            <div>
-                                <span class="badge bg-danger">Rechazada</span>
-                                <small class="text-muted ms-1">No aprobada</small>
-                            </div>
+            
+            <!-- Filtro por estatus -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-funnel me-2" viewBox="0 0 16 16">
+                            <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"/>
+                        </svg>
+                        Filtrar por estatus
+                    </h5>
+                    
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <select class="form-select" id="filtro_estatus" style="max-width: 300px;">
+                                <option value="">Todos los estatus</option>
+                                <option value="pendiente">Pendiente</option>
+                                <option value="en revision">En revisión</option>
+                                <option value="aceptado">Aceptado</option>
+                                <option value="rechazado">Rechazado</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 text-md-end mt-2 mt-md-0">
+                            <button type="button" id="btn-limpiar-estatus" class="btn btn-outline-secondary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise me-1" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                                </svg>
+                                Limpiar filtro
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
+            
             <!-- Leyenda de estatus -->
-                
+            <div class="card border-0 mt-3" style="background-color: #f8f9fa;">
+                <div class="card-body p-3">
+                    <small class="text-muted d-block mb-2 fw-bold">Leyenda de estatus:</small>
+                    <div class="d-flex flex-wrap gap-3">
+                        <div>
+                            <span class="badge bg-secondary">Pendiente</span>
+                            <small class="text-muted ms-1">En espera de revisión</small>
+                        </div>
+                        <div>
+                            <span class="badge bg-warning">En revisión</span>
+                            <small class="text-muted ms-1">Siendo evaluada</small>
+                        </div>
+                        <div>
+                            <span class="badge bg-success">Aceptada</span>
+                            <small class="text-muted ms-1">¡Felicidades!</small>
+                        </div>
+                        <div>
+                            <span class="badge bg-danger">Rechazada</span>
+                            <small class="text-muted ms-1">No aprobada</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
             <?php if(empty($adopciones)): ?>
                 <!-- Sin adopciones -->
@@ -84,14 +118,14 @@ $adopciones = $clase->mostrarPorRefugio($id_refugio);
                         <div id="mensaje-sin-resultados" class="text-center py-5">
                             <img src="img_sistema/_-ezgif.com-loop-count.gif" alt="rata" class="img-fluid mb-3"
                                 style="max-width: 300px; width: 100%; height: auto; border-radius: 10px;"> 
-                            <h4 class="text-muted fw-bold">No tienes ninguna solicitud de adopcion</h4>
+                            <h4 class="text-muted fw-bold">No tienes ninguna solicitud de adopción</h4>
                             <p class="text-muted">Espera a que un usuario decida adoptar</p>
                         </div>
                     </div>
                 </div>
             <?php else: ?>
                 <!-- Tabla de adopciones -->
-                <div class="card border-0 shadow-sm">
+                <div class="card border-0 shadow-sm mt-4">
                     <div class="table-responsive">
                         <table class="table table-hover mb-0">
                             <thead style="background-color: #85B79D; color: white;">
@@ -99,19 +133,19 @@ $adopciones = $clase->mostrarPorRefugio($id_refugio);
                                     <th class="text-center" style="width: 60px;">#</th>
                                     <th>Fecha</th>
                                     <th>Hora</th>
-                                    <th>Usario</th>
-                                    <th>correo del usuario</th>
+                                    <th>Usuario</th>
+                                    <th>Correo del usuario</th>
                                     <th>Mascota</th>
                                     <th class="text-center">Estatus</th>
                                     <th class="text-center">Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tabla-adopciones">
                                 <?php 
                                 $contador = 1; 
                                 foreach($adopciones as $adopcion): 
                                 ?>
-                                <tr>
+                                <tr class="fila-adopcion" data-estatus="<?= strtolower($adopcion['Estatus']) ?>">
                                     <td class="text-center">
                                         <strong style="color: #85B79D;"><?= $contador ?></strong>
                                     </td>
@@ -127,12 +161,12 @@ $adopciones = $clase->mostrarPorRefugio($id_refugio);
                                     </td>
                                     <td>
                                         <span class="fw-semibold" style="color: #283D3B;">
-                                            <?= htmlspecialchars($adopcion['username']?? 'Usuario no disponible') ?>
+                                            <?= htmlspecialchars($adopcion['username'] ?? 'Usuario no disponible') ?>
                                         </span>
                                     </td>
                                     <td>
                                         <span class="fw-semibold" style="color: #283D3B;">
-                                            <?= htmlspecialchars($adopcion['correo']?? 'Correo no disponible') ?>
+                                            <?= htmlspecialchars($adopcion['correo'] ?? 'Correo no disponible') ?>
                                         </span>
                                     </td>
                                     <td>
@@ -190,13 +224,19 @@ $adopciones = $clase->mostrarPorRefugio($id_refugio);
                     </div>
                 </div>
                 
+                <!-- Mensaje cuando no hay resultados del filtro -->
+                <div id="mensaje-sin-resultados-filtro" class="text-center py-5" style="display: none;">
+                    <img src="img_sistema/_-ezgif.com-loop-count.gif" alt="rata" class="img-fluid mb-3"
+                        style="max-width: 300px; width: 100%; height: auto; border-radius: 10px;"> 
+                    <h4 class="text-muted fw-bold">No hay solicitudes con ese estatus</h4>
+                    <p class="text-muted">Intenta con otro filtro</p>
+                </div>
                 
             <?php endif; ?>
             
         </div>
     </div>
 </div>
-
 
 
 <?php include('Pie_pagina.php'); ?>

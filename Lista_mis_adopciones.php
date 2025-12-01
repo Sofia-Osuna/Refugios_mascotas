@@ -24,6 +24,10 @@ $adopciones = $clase->mostrarPorId($id_usuario);
     <title>Mis Adopciones</title>
     <link href="css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="css/estilo.css">
+    <!-- Incluir jQuery y nuestro filtro reutilizable -->
+    <script src="js/jquery-3.7.1.js"></script>
+        <script src="js/buscar_respuesta.js"></script>
+
 </head>
 <body>
 
@@ -46,6 +50,39 @@ $adopciones = $clase->mostrarPorId($id_usuario);
                     <?= count($adopciones) ?> solicitud<?= count($adopciones) != 1 ? 'es' : '' ?>
                 </span>
             </div>
+
+            <!-- Filtro por estatus (NUEVO) -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-funnel me-2" viewBox="0 0 16 16">
+                            <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"/>
+                        </svg>
+                        Filtrar por estatus
+                    </h5>
+                    
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <select class="form-select" id="filtro_estatus" style="max-width: 300px;">
+                                <option value="">Todos los estatus</option>
+                                <option value="pendiente">Pendiente</option>
+                                <option value="en revision">En revisión</option>
+                                <option value="aceptado">Aceptado</option>
+                                <option value="rechazado">Rechazado</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 text-md-end mt-2 mt-md-0">
+                            <button type="button" id="btn-limpiar-estatus" class="btn btn-outline-secondary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise me-1" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                                </svg>
+                                Limpiar filtro
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
             <?php if(empty($adopciones)): ?>
                 <!-- Sin adopciones -->
@@ -66,10 +103,8 @@ $adopciones = $clase->mostrarPorId($id_usuario);
                     </div>
                 </div>
             <?php else: ?>
-                <!-- Tabla de adopciones -->
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <!-- Leyenda de estatus -->
-                <div class="card border-0 mt-3" style="background-color: #f8f9fa;">
+                <!-- Leyenda de estatus -->
+                <div class="card border-0 mt-3 mb-4" style="background-color: #f8f9fa;">
                     <div class="card-body p-3">
                         <small class="text-muted d-block mb-2 fw-bold">Leyenda de estatus:</small>
                         <div class="d-flex flex-wrap gap-3">
@@ -92,8 +127,8 @@ $adopciones = $clase->mostrarPorId($id_usuario);
                         </div>
                     </div>
                 </div>
-                </div>
 
+                <!-- Tabla de adopciones -->
                 <div class="card border-0 shadow-sm">
                     <div class="table-responsive">
                         <table class="table table-hover mb-0">
@@ -108,12 +143,13 @@ $adopciones = $clase->mostrarPorId($id_usuario);
                                     <th class="text-center">Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tabla-adopciones">
                                 <?php 
                                 $contador = 1;
                                 foreach($adopciones as $adopcion): 
                                 ?>
-                                <tr>
+                                <!-- Añadir clase fila-adopcion y data-estatus -->
+                                <tr class="fila-adopcion" data-estatus="<?= strtolower($adopcion['Estatus']) ?>">
                                     <td class="text-center">
                                         <strong style="color: #85B79D;"><?= $contador ?></strong>
                                     </td>
@@ -187,6 +223,13 @@ $adopciones = $clase->mostrarPorId($id_usuario);
                     </div>
                 </div>
                 
+                <!-- Mensaje cuando no hay resultados del filtro (NUEVO) -->
+                <div id="mensaje-sin-resultados-filtro" class="text-center py-5" style="display: none;">
+                    <img src="img_sistema/_-ezgif.com-loop-count.gif" alt="rata" class="img-fluid mb-3"
+                        style="max-width: 300px; width: 100%; height: auto; border-radius: 10px;"> 
+                    <h4 class="text-muted fw-bold">No hay solicitudes con ese estatus</h4>
+                    <p class="text-muted">Intenta con otro filtro</p>
+                </div>
                 
             <?php endif; ?>
             
@@ -194,8 +237,8 @@ $adopciones = $clase->mostrarPorId($id_usuario);
     </div>
 </div>
 
-<!-- Bootstrap JS -->
-
+<!-- Incluir el archivo JS del filtro (NUEVO) -->
+<script src="js/filtro_estatus_adopciones.js"></script>
 
 <?php include('Pie_pagina.php'); ?>
 

@@ -80,11 +80,11 @@ include('menu.php');
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label for="nombre" class="form-label fw-bold">Telefono:</label>
-                                        <input type="text" class="form-control" id="telefono" name="telefono" required>
+                                        <input type="text" class="form-control" id="telefono" name="telefono">
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="nombre" class="form-label fw-bold">Correo:</label>
-                                        <input type="text" class="form-control" id="correo" name="correo" required>
+                                        <input type="text" class="form-control" id="correo" name="correo" >
                                     </div>
                                 </div>
                             </div>
