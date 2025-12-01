@@ -2,8 +2,19 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+// DEBE ser lo primero
+
+
+// DEPURACIÓN: Mostrar información de la sesión
+echo "<!-- DEBUG: Sesión ID: " . session_id() . " -->\n";
+echo "<!-- DEBUG: Usuario en sesión: " . ($_SESSION['idusuario'] ?? 'NO HAY SESIÓN') . " -->\n";
+echo "<!-- DEBUG: Nombre en sesión: " . ($_SESSION['username'] ?? 'NO HAY NOMBRE') . " -->\n";
+
 include('menu.php');
+
+// Verificar sesión
 if(!isset($_SESSION['idusuario'])) {
+    echo "<!-- DEBUG: Redirigiendo a inicio de sesión -->\n";
     header('location: Inicio_sesion.php');
     exit;
 }
@@ -12,14 +23,16 @@ include('clases/Usuario.php');
 $clase_usuario = new Usuario();
 $usuario = $clase_usuario->obtenerPorId($_SESSION['idusuario']);
 
-
-$datos_personales = [];
+// DEPURACIÓN: Verificar qué usuario se obtuvo
+echo "<!-- DEBUG: Usuario obtenido de BD ID: " . ($usuario['id_usuario'] ?? 'NO ENCONTRADO') . " -->\n";
+echo "<!-- DEBUG: Usuario obtenido de BD Nombre: " . ($usuario['username'] ?? $usuario['nombre'] ?? 'NO ENCONTRADO') . " -->\n";
 
 include('clases/Datos_personales.php');
 $clase_datos = new Datos();
 $datos_personales = $clase_datos->obtener($_SESSION['idusuario']);
 
-
+// DEPURACIÓN: Verificar qué datos personales se obtuvieron
+echo "<!-- DEBUG: ID usado para datos personales: " . $_SESSION['idusuario'] . " -->\n";
 ?>
 
 <!DOCTYPE html>
@@ -264,8 +277,7 @@ $datos_personales = $clase_datos->obtener($_SESSION['idusuario']);
 </div>
 
 <!-- Bootstrap JS -->
-<script src="js/bootstrap.js"></script>
-<script src="js/bootstrap.bundle.min.js"></script>
+
 
 <?php include('Pie_pagina.php'); ?>
 
