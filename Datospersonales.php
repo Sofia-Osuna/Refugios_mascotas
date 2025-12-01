@@ -120,11 +120,11 @@ $datos_personales = $clase_datos->obtener($_SESSION['idusuario']);
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <small class="text-muted d-block">Nombre completo</small>
-                                            <p class="mb-0 fw-semibold" style="color: #283D3B;">
+                                           <p class="mb-0 fw-semibold" style="color: #283D3B;">
                                                 <?= htmlspecialchars(($datos_personales['Nombre'] ?? '') . ' ' . 
                                                    ($datos_personales['apellido_p'] ?? '') . ' ' . 
                                                    ($datos_personales['apellido_m'] ?? '')) ?>
-                                            </p>
+                                            </p> 
                                         </div>
                                         
                                         <div class="col-md-3 mb-3">

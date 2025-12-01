@@ -67,16 +67,16 @@ function Id($id_refugio){
         m.nombre as municipio, m.id_municipio, m.fk_estado,
         e.nombre as estado, e.id_estado
         FROM refugio r 
-        INNER JOIN telefono_refugio t ON t.fk_refugio = r.id_refugio
-        INNER JOIN correo_refugio cr ON cr.fk_refugio = r.id_refugio
-        INNER JOIN refugio_direcciones rd ON r.id_refugio = rd.fk_refugio
-        INNER JOIN direccion d ON rd.fk_direccion = d.id_direccion 
-        INNER JOIN colonia c ON d.fk_colonia = c.id_colonia
-        INNER JOIN municipio m ON c.fk_municipio = m.id_municipio
-        INNER JOIN estado e ON m.fk_estado = e.id_estado 
+        LEFT JOIN telefono_refugio t ON t.fk_refugio = r.id_refugio
+        LEFT JOIN correo_refugio cr ON cr.fk_refugio = r.id_refugio
+        LEFT JOIN refugio_direcciones rd ON r.id_refugio = rd.fk_refugio
+        LEFT JOIN direccion d ON rd.fk_direccion = d.id_direccion 
+        LEFT JOIN colonia c ON d.fk_colonia = c.id_colonia
+        LEFT JOIN municipio m ON c.fk_municipio = m.id_municipio
+        LEFT JOIN estado e ON m.fk_estado = e.id_estado 
         WHERE r.id_refugio = ?
         AND r.estatus = 1
-        AND rd.estatus = 1
+        
         LIMIT 1";
     
     $stmt = $this->conexion->prepare($consulta);
