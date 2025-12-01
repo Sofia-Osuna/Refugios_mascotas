@@ -35,7 +35,9 @@
         $mascotas = $result_mascotas ? $result_mascotas->fetch_all(MYSQLI_ASSOC) : [];
 
      
-        $query_refugios = "SELECT * FROM refugio WHERE estatus = 1 ORDER BY RAND() LIMIT 3";
+        $query_refugios = "SELECT r.* FROM refugio r 
+                  WHERE r.estatus = 1 
+                  ORDER BY RAND() LIMIT 3";
         $result_refugios = $conexion->query($query_refugios);
         $refugios = $result_refugios ? $result_refugios->fetch_all(MYSQLI_ASSOC) : [];
 
