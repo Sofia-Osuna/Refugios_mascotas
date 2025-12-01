@@ -133,11 +133,11 @@ include_once('menu.php');
                                     <div class="row">
                                     <div class="col-md-6 mb-3">
                             <label for="telefono" class="form-label fw-bold">Telefono:</label>
-                            <input type="text" class="form-control" id="telefono" name="telefono" value="<?= $refugio['telefono'] ?>" required>
+                            <input type="text" class="form-control" id="telefono" name="telefono" value="<?= $refugio['telefono'] ?>" >
                                         </div>
                                         <div class="col-md-6 mb-3">
                                         <label for="correo" class="form-label fw-bold">Correo:</label>
-                                    <input type="text" class="form-control" id="correo" name="correo" value="<?= $refugio['correo'] ?>" required>
+                                    <input type="text" class="form-control" id="correo" name="correo" value="<?= $refugio['correo'] ?>"     >
                                             </div>
                                     </div>
                                 </div>
