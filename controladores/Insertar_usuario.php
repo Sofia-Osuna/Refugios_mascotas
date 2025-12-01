@@ -3,11 +3,15 @@
     ini_set('display_errors', 1);
 
     session_start();
+    
+    if (ob_get_length()) {
+        ob_end_clean();
+    }
 
-    $nombre = $_POST["nombre"];
-    $password = $_POST["password"];
-    $correo = $_POST["correo"];
-    $rol = $_POST["rol"];
+    $nombre = $_POST["nombre"] ?? '';
+    $password = $_POST["password"] ?? '';
+    $correo = $_POST["correo"] ?? '';
+    $rol = $_POST["rol"] ?? 2;
     
     // Seguridad: Si no es admin, solo puede elegir rol 2 o 3
     if(!isset($_SESSION['fk_rol']) || $_SESSION['fk_rol'] != 1){
@@ -16,12 +20,11 @@
         }
     }
     
-    $foto = $_FILES["foto"]["name"];
-    $tmp = $_FILES["foto"]["tmp_name"];
+    $foto = $_FILES["foto"]["name"] ?? '';
+    $tmp = $_FILES["foto"]["tmp_name"] ?? '';
 
-    if($foto != ""){
+    if($foto != "" && $tmp != ""){
         $ruta = "../img_usuarios/" . $foto;
-        
         $directorio_imagenes = dirname($ruta);
         
         if (!is_writable($directorio_imagenes) && strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
@@ -48,24 +51,34 @@
     $resultado = $clase->guardar($nombre, $password, $correo, $foto, $rol);
 
     if($resultado){
-        if(!isset($_SESSION['username'])){
-            $_SESSION['idusuario'] = $clase->obtenerUltimoId();
-            $_SESSION['username'] = $nombre;
-            $_SESSION['correo'] = $correo;
-            $_SESSION['fk_rol'] = $rol;
-            
-            //  CORREGIDO: Redirigir según el rol
-            if($rol == 3){
-                // Gestor de refugio -> va a crear su refugio
-                header('location: ../index.php');
-            } else {
-                // Usuario normal -> va al index
-                header('location: ../index.php');
-            }
+        $id_usuario = $clase->obtenerUltimoId();
+        $datos_usuario = $clase->obtenerPorId($id_usuario);
+        
+        if(!$datos_usuario){
+            echo "Error: No se pudo recuperar los datos del usuario creado";
+            exit();
+        }
+        
+        session_regenerate_id(true);
+        session_unset();
+        
+        $_SESSION['idusuario'] = $datos_usuario['id_usuario'];
+        $_SESSION['username'] = $datos_usuario['nombre'];
+        $_SESSION['correo'] = $datos_usuario['correo'];
+        $_SESSION['fk_rol'] = $datos_usuario['fk_rol'];
+        $_SESSION['foto'] = $datos_usuario['foto'] ?? 'sin_foto.jpg';
+        
+        session_write_close();
+        
+        if($datos_usuario['fk_rol'] == 3){
+            header('Location: ../Formulario_refugio.php');
+            exit();
         } else {
-            header('location: ../Lista_usuario.php');
+            header('Location: ../index.php');
+            exit();
         }
     } else {
-        echo "Error";
+        echo "Error al registrar usuario";
+        exit();
     }
 ?>
