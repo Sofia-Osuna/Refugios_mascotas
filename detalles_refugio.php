@@ -3,6 +3,12 @@ include('menu.php');
 
 include('menu_refugio.php');
 
+require_once('clases/Refugio.php');
+$id_refugio = $_GET['id'] ?? null;
+
+$refugio_obj = new Refugio();
+$refugio = $refugio_obj->Id($id_refugio); 
+
 ?>
 
 <!DOCTYPE html>
