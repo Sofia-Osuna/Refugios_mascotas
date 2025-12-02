@@ -220,12 +220,12 @@ if(!$adopciones && !$datos && !$user){
             <?php else: ?>
                 <div class="alert alert-warning">
                     No hay respuestas registradas para este formulario. Para que tu solicitud sea aceptada necesitas contestar el formulario
-                    <button>
-                        <a href="Formulario_respuesta.php?id_adopcion=<?=$id_adopcion?>&id_refugio=<?=$id_refugio?>&id_mascota=<?=$id_mascota?>&id_usuario=<?=$id_usuario?>">
+                    <div>
+                        <a href="Formulario_respuesta.php?id_adopcion=<?=$id_adopcion?>&id_refugio=<?=$id_refugio?>&id_mascota=<?=$id_mascota?>&id_usuario=<?=$id_usuario?>"
+                         class="btn px-4" style="background-color: #FCCA46; color: #2c3e50;">
                             Regresar al formulario
                         </a>
-                    </button>
-                    <!-- ?id_adopcion=20&id_refugio=10&id_mascota=9&id_usuario=19 -->
+                    </div>
                 </div>
             <?php endif; ?>
         </div>
