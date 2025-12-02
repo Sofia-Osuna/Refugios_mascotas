@@ -94,7 +94,7 @@ $adopciones = $clase->mostrarPorId($id_usuario);
                         </svg>
                         <h4 class="fw-bold mb-2" style="color: #283D3B;">No hay adopciones registradas</h4>
                         <p class="text-muted mb-4">Comienza adoptando una mascota hoy mismo</p>
-                        <a href="Lista_refugio.php" class="btn btn-lg text-white" style="background-color: #FCCA46;">
+                        <a href="Todas_mascotas.php" class="btn btn-lg text-white" style="background-color: #FCCA46;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="me-2" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
                             </svg>
