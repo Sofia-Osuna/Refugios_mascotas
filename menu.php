@@ -54,21 +54,37 @@ session_start();
                     <?php } ?>
                 </div>
 
+                <!-- Sección Refugios - SOLO para Administrador (1) y Usuario normal (2) -->
+                <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 2)): ?>
                 <div class="col-md-4 mb-3">
                     <p class="menu-section-title"> Refugios</p>
                     <ul class="navbar-nav">
                         <li class="nav-item"><a class="nav-link" href="Lista_refugio.php"> Ver refugios</a></li>
                         
-                        <!-- Solo GESTOR (3) y ADMIN (1) pueden crear refugio -->
+                        <!-- Solo ADMIN (1) puede crear refugio desde aquí -->
+                        <?php if(isset($_SESSION['fk_rol']) && $_SESSION['fk_rol'] == 1){ ?>
+                            <li class="nav-item"><a class="nav-link" href="Formulario_refugio.php"> Crear refugio</a></li>
+                        <?php } ?>
+                    </ul>
+                </div>
+                <?php endif; ?>
+
+                <!-- Sección Gestión de refugios - para Administrador (1) y Gestor de refugio (3) -->
+                <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)): ?>
+                <div class="col-md-4 mb-3">
+                    <p class="menu-section-title"> Gestión de refugios</p>
+                    <ul class="navbar-nav">
+                        <!-- Para Administrador (1) y Gestor (3) -->
                         <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)){ ?>
                             <li class="nav-item"><a class="nav-link" href="Formulario_refugio.php"> Crear refugio</a></li>
                         <?php } ?>
                         
                         <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 3)){ ?>
-                            <li class="nav-item"><a class="nav-link" href="mis_refugios.php"> Mis refugio</a></li>
+                            <li class="nav-item"><a class="nav-link" href="mis_refugios.php"> Mis refugios</a></li>
                         <?php } ?>
                     </ul>
                 </div>
+                <?php endif; ?>
 
                 <!-- Sección Más opciones -->
                 <div class="col-md-4 mb-3">
@@ -79,8 +95,16 @@ session_start();
                             <li class="nav-item"><a class="nav-link" href="Lista_especie.php"> Ver especies</a></li>
                         <?php } ?>
                         
-                        <li class="nav-item"><a class="nav-link" href="Todas_historias_felices.php"> Historias felices</a></li>
-                        <li class="nav-item"><a class="nav-link" href="Todas_mascotas.php"> Mascotas</a></li>
+                        <!-- Historias felices SOLO para Administrador (1) y Usuario normal (2) -->
+                        <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 2)): ?>
+                            <li class="nav-item"><a class="nav-link" href="Todas_historias_felices.php"> Historias felices</a></li>
+                        <?php endif; ?>
+                        
+                        <!-- Mascotas SOLO para Administrador (1) y Usuario normal (2) -->
+                        <?php if(isset($_SESSION['fk_rol']) && ($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 2)): ?>
+                            <li class="nav-item"><a class="nav-link" href="Todas_mascotas.php"> Mascotas</a></li>
+                        <?php endif; ?>
+                        
                         <li class="nav-item"><a class="nav-link" href="index.php"> Inicio</a></li>
                     </ul>
                 </div>

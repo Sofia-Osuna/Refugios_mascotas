@@ -134,99 +134,110 @@ if(isset($_SESSION['idusuario']) && $id_refugio) {
             </div>
             
             <!-- Botones de acción - Mismo estilo que historias felices -->
-            <div class="d-flex justify-content-between mt-4">
-                <div>
-                    <?php if($origen == 'todas'): ?>
-                        <!-- Volver a Todas las Mascotas -->
-                        <a href="Todas_mascotas.php" 
-                           class="btn btn-outline-secondary px-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-                            </svg>
-                            Volver a todas las mascotas
-                        </a>
-                    <?php else: ?>
-                        <!-- Volver a Lista del Refugio -->
-                        <a href="Lista_mascota.php?id_refugio=<?= $id_refugio ?>" 
-                           class="btn btn-outline-secondary px-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-                            </svg>
-                            Volver a mascotas del refugio
-                        </a>
-                    <?php endif; ?>
-                </div>
-                
-              <div class="d-flex gap-2">
-    <?php if($mascota['estatus'] == 'disponible'): ?>
-        <!-- Botón Adoptar solo para usuarios logueados -->
-        <?php if(isset($_SESSION['idusuario']) && !empty($_SESSION['idusuario'])): ?>
-            <a href="controladores/Insertar_adopcion.php?id_usuario=<?= $_SESSION['idusuario']?>&id_mascota=<?=$mascota['id_mascotas']?>&id_refugio=<?=$id_refugio?>" 
-               class="btn text-white px-4" 
-               style="background-color: #FCCA46; border-radius: 10px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill me-2" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+          <!-- Botones de acción - Mismo estilo que historias felices -->
+<div class="d-flex justify-content-between mt-4">
+    <div>
+        <?php if($origen == 'todas'): ?>
+            <!-- Volver a Todas las Mascotas -->
+            <a href="Todas_mascotas.php" 
+               class="btn btn-outline-secondary px-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
                 </svg>
-                Adoptar
+                Volver a todas las mascotas
             </a>
-            <?php else: ?>
-            <a href="Inicio_sesion.php" 
-               class="btn text-white px-4" 
-               style="background-color: #FCCA46; border-radius: 10px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill me-2" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+        <?php else: ?>
+            <!-- Volver a Lista del Refugio -->
+            <a href="Lista_mascota.php?id_refugio=<?= $id_refugio ?>" 
+               class="btn btn-outline-secondary px-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
                 </svg>
-              Inicia sesion para hacer una solicitud de adopcion
+                Volver a mascotas del refugio
             </a>
-
         <?php endif; ?>
-    <?php endif; ?>
-                    <!-- BOTONES DE EDITAR Y ELIMINAR SOLO PARA EL DUEÑO O ADMINISTRADOR -->
-                    <?php 
-                    // Mostrar botones SOLO si:
-                    // 1. El usuario está logueado Y es administrador (rol 1) O dueño del refugio
-                    if(isset($_SESSION['fk_rol'])): 
-                        $mostrar_botones = false;
-                        
-                        if($_SESSION['fk_rol'] == 1) {
-                            // Administrador puede editar/eliminar cualquier mascota
-                            $mostrar_botones = true;
-                        } elseif($id_refugio && $es_dueño) {
-                            // Dueño del refugio específico
-                            $mostrar_botones = true;
-                        }
-                        
-                        if($mostrar_botones):
-                    ?>
-                    
-                    <!-- Botón Editar -->
-                    <a href="editar_mascota.php?id=<?= $mascota['id_mascotas'] ?>&id_refugio=<?= $id_refugio ?>" 
+    </div>
+    
+    <div class="d-flex gap-2">
+        <?php if($mascota['estatus'] == 'disponible'): ?>
+            <!-- Botón Adoptar solo para usuarios normales (rol 2) y administradores (rol 1) -->
+            <?php if(isset($_SESSION['idusuario']) && !empty($_SESSION['idusuario']) && isset($_SESSION['fk_rol'])): ?>
+                <?php 
+                // Solo mostrar botón de adoptar para usuarios normales (rol 2) o administradores (rol 1)
+                // No mostrar para gestores de refugios (rol 3)
+                if($_SESSION['fk_rol'] == 1 || $_SESSION['fk_rol'] == 2): 
+                    // Verificar que no sea dueño del refugio (por si acaso)
+                    if(!$es_dueño):
+                ?>
+                    <a href="controladores/Insertar_adopcion.php?id_usuario=<?= $_SESSION['idusuario']?>&id_mascota=<?=$mascota['id_mascotas']?>&id_refugio=<?=$id_refugio?>" 
                        class="btn text-white px-4" 
                        style="background-color: #FCCA46; border-radius: 10px;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil me-2" viewBox="0 0 16 16">
-                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill me-2" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
                         </svg>
-                        Editar
+                        Adoptar
                     </a>
-                    
-                    <!-- Botón Eliminar -->
-                    <a href="controladores/eliminar_mascota.php?id=<?= $mascota['id_mascotas'] ?>&id_refugio=<?= $id_refugio ?>" 
-                       class="btn btn-danger px-4"
-                       onclick="return confirm('¿Estás seguro de eliminar esta mascota?')">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash me-2" viewBox="0 0 16 16">
-                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                        </svg>
-                        Eliminar
-                    </a>
-                    
-                    <?php endif; ?>
-                    <?php endif; ?>
-                </div>
-            </div>
+                <?php endif; ?>
+                <?php endif; ?>
+            <?php else: ?>
+                <!-- Mostrar botón para iniciar sesión si no está logueado -->
+                <a href="Inicio_sesion.php" 
+                   class="btn text-white px-4" 
+                   style="background-color: #FCCA46; border-radius: 10px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill me-2" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                    </svg>
+                    Inicia sesión para hacer una solicitud de adopción
+                </a>
+            <?php endif; ?>
+        <?php endif; ?>
+        
+        <!-- BOTONES DE EDITAR Y ELIMINAR SOLO PARA EL DUEÑO O ADMINISTRADOR -->
+        <?php 
+        // Mostrar botones SOLO si:
+        // 1. El usuario está logueado Y es administrador (rol 1) O dueño del refugio
+        if(isset($_SESSION['fk_rol'])): 
+            $mostrar_botones = false;
             
-        </div>
+            if($_SESSION['fk_rol'] == 1) {
+                // Administrador puede editar/eliminar cualquier mascota
+                $mostrar_botones = true;
+            } elseif($id_refugio && $es_dueño) {
+                // Dueño del refugio específico
+                $mostrar_botones = true;
+            }
+            
+            if($mostrar_botones):
+        ?>
+        
+        <!-- Botón Editar -->
+        <a href="editar_mascota.php?id=<?= $mascota['id_mascotas'] ?>&id_refugio=<?= $id_refugio ?>" 
+           class="btn text-white px-4" 
+           style="background-color: #FCCA46; border-radius: 10px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil me-2" viewBox="0 0 16 16">
+                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+            </svg>
+            Editar
+        </a>
+        
+        <!-- Botón Eliminar -->
+        <a href="controladores/eliminar_mascota.php?id=<?= $mascota['id_mascotas'] ?>&id_refugio=<?= $id_refugio ?>" 
+           class="btn btn-danger px-4"
+           onclick="return confirm('¿Estás seguro de eliminar esta mascota?')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash me-2" viewBox="0 0 16 16">
+                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+            </svg>
+            Eliminar
+        </a>
+        
+        <?php endif; ?>
+        <?php endif; ?>
     </div>
+</div>
+</div>
+</div>
+</div>
 </div>
 
 </body>
