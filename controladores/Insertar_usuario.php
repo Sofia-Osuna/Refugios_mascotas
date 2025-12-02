@@ -81,4 +81,4 @@
         echo "Error al registrar usuario";
         exit();
     }
-?>
+?>  
