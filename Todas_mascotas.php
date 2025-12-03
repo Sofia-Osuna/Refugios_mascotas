@@ -1,7 +1,7 @@
 <?php
 include('menu.php');
 require_once('clases/Mascota.php');
-require_once('clases/refugio.php');
+require_once('clases/Refugio.php');
 
 $mascota_obj = new Mascota();
 $refugio_obj = new Refugio();

@@ -55,10 +55,10 @@
         <h5 class="textocolor">Proyecto Final 4to Cuatrimestre</h5>
         <p class="small textocolor textocolor">
           <strong>Integrantes del equipo:</strong><br>
-          Sofía <br>
-          Brayan<br>
-          Lorena <br> 
-          Pedro<br>
+          Sofía Osuna Delgado<br>
+          Brayan Martin Lopez Flores<br>
+          Carla Lorena Cardenaz Hernandez <br> 
+          Pedro Antonio Sanchez Sandoval<br>
           
           
         </p>
