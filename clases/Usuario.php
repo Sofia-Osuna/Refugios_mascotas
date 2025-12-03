@@ -4,10 +4,9 @@
 
     class Usuario{
         private $conexion;
-        private $ultimo_id_usuario; // ⭐ NUEVA PROPIEDAD
-        
+        private $ultimo_id_usuario;
         function __construct(){
-            require_once('conexion.php');
+            require_once('Conexion.php');
             $this -> conexion = new Conexion();
         }
 
@@ -33,7 +32,6 @@
                 return false;
             }
             
-            // ⭐ IMPORTANTE: Guardar el ID DEL USUARIO aquí
             $this->ultimo_id_usuario = $this->conexion->insert_id;
             
             if(!$this->ultimo_id_usuario){
@@ -97,7 +95,6 @@
             return $respuesta;
         }
 
-        // ⭐ MÉTODO ARREGLADO
         public function obtenerUltimoId() {
             return $this->ultimo_id_usuario;
         }

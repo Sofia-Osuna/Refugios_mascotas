@@ -6,9 +6,6 @@ ini_set('display_errors', 1);
 
 
 // DEPURACIÓN: Mostrar información de la sesión
-echo "<!-- DEBUG: Sesión ID: " . session_id() . " -->\n";
-echo "<!-- DEBUG: Usuario en sesión: " . ($_SESSION['idusuario'] ?? 'NO HAY SESIÓN') . " -->\n";
-echo "<!-- DEBUG: Nombre en sesión: " . ($_SESSION['username'] ?? 'NO HAY NOMBRE') . " -->\n";
 
 include('menu.php');
 

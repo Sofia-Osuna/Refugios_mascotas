@@ -3,7 +3,7 @@ class HistoriaFeliz{
     private $conexion;
     
     function __construct(){
-        require_once('conexion.php');
+        require_once('Conexion.php');
         $this->conexion = new Conexion();
     }
     

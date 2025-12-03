@@ -22,7 +22,7 @@
     //fin del php del carrusel
 
     //imagenes dinamicas del pedro (Aqui pon todo el codigo de eso pedroo, para que no se revuelva con el html)
-    $conexion = new mysqli("localhost", "root", "", "refugios_mascotas");
+    $conexion = new mysqli("localhost", "proye477_brayanlopez", "proye477_brayanlopez", "proye477_brayanlopez");
 
     if ($conexion->connect_error) {
     

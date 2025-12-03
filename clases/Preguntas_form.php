@@ -7,7 +7,7 @@
         //método constructor
         function __construct(){
             //hola, serequiere una vez el archivo de conexion
-            require_once('conexion.php');
+            require_once('Conexion.php');
             $this -> conexion = new Conexion();
         }
 

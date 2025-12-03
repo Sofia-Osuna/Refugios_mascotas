@@ -59,26 +59,34 @@
             exit();
         }
         
-        session_regenerate_id(true);
-        session_unset();
-        
-        $_SESSION['idusuario'] = $datos_usuario['id_usuario'];
-        $_SESSION['username'] = $datos_usuario['nombre'];
-        $_SESSION['correo'] = $datos_usuario['correo'];
-        $_SESSION['fk_rol'] = $datos_usuario['fk_rol'];
-        $_SESSION['foto'] = $datos_usuario['foto'] ?? 'sin_foto.jpg';
-        
-        session_write_close();
-        
-        if($datos_usuario['fk_rol'] == 3){
-            header('Location: ../Formulario_refugio.php');
+        // Si ya hay sesión activa (admin logeado creando usuario), no iniciar sesión
+        if(isset($_SESSION['idusuario'])){
+            // El admin ya estaba logeado, solo redirigir a la lista de usuarios
+            header('Location: ../Lista_usuario.php?msg=creado');
             exit();
         } else {
-            header('Location: ../index.php');
-            exit();
+            // No hay sesión activa, es un registro nuevo - iniciar sesión
+            session_regenerate_id(true);
+            session_unset();
+            
+            $_SESSION['idusuario'] = $datos_usuario['id_usuario'];
+            $_SESSION['username'] = $datos_usuario['nombre'];
+            $_SESSION['correo'] = $datos_usuario['correo'];
+            $_SESSION['fk_rol'] = $datos_usuario['fk_rol'];
+            $_SESSION['foto'] = $datos_usuario['foto'] ?? 'sin_foto.jpg';
+            
+            session_write_close();
+            
+            if($datos_usuario['fk_rol'] == 3){
+                header('Location: ../index.php');
+                exit();
+            } else {
+                header('Location: ../index.php');
+                exit();
+            }
         }
     } else {
         echo "Error al registrar usuario";
         exit();
     }
-?>  
+?>
